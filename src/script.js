@@ -3,7 +3,7 @@ console.log("Connected to the moon!");
 // create the context
 const actx = new AudioContext();
 
-function playNoteUgh(freq = 261.63, type = "sine", decay = 0.5) {
+function playNoteUgh(freq = 261.63, type = "sine", decay = 1) {
   // create oscillator and gain nodes
   let osc = actx.createOscillator();
   let vol = actx.createGain();
@@ -21,7 +21,7 @@ function playNoteUgh(freq = 261.63, type = "sine", decay = 0.5) {
   osc.stop(actx.currentTime + decay);
 }
 
-function playNote(freq = 261.63, type = "sine", decay = 0.5) {
+function playNote(freq = 261.63, type = "sine", decay = 1) {
   // Create a new oscillator and audio graph for each keypress
   createOsc(freq, type, decay);
 }
@@ -46,7 +46,8 @@ function createOsc(freq, type, decay) {
   osc.connect(vol).connect(compressor).connect(actx.destination);
 
   // Set the start point of the ramp down
-  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
+  // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
+  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
 
   // ramp down to minimise the ugly click when the oscillator stops
   vol.gain.exponentialRampToValueAtTime(
@@ -62,7 +63,7 @@ function createOsc(freq, type, decay) {
   osc.stop(actx.currentTime + decay + 0.03);
 }
 
-window.addEventListener("keydown", keyDown, { passive: false });
+window.addEventListener("keydown", keyDownHandler, { passive: false });
 
 // Some musical note values:
 let C4 = 261.63,
@@ -76,7 +77,7 @@ let C4 = 261.63,
   D5 = 587.33,
   E5 = 659.25;
 
-function keyDown(event) {
+function keyDownHandler(event) {
   let key = event.key;
 
   if (key === "1") playNote(C4);
