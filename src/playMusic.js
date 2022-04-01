@@ -1,5 +1,7 @@
 console.log("yeah! Landed!");
 
+// Note: `actx` is already declared in script.js
+// So, no need to define it again here.
 // const actx = new AudioContext();
 
 let soundBuffer;
@@ -33,6 +35,7 @@ function onLoad(event) {
 
 window.addEventListener("keydown", keyDownHandler, false);
 
+// This `keydown handler plays the music sample
 function keyDownHandler(e) {
   switch (e.code) {
     // Play music normally
@@ -92,6 +95,7 @@ function keyDownHandler(e) {
   }
 }
 
+// Set the initial `pan` value
 let pan = "left";
 
 // A panLoop that pans the sound from ear to ear
@@ -113,6 +117,7 @@ function panLoop() {
 
 // Kick Drum from scratch
 // Oscillator frequency set at 150Hz
+
 // A useful variable!
 let now = actx.currentTime;
 console.log("now", now);
@@ -162,7 +167,7 @@ class Kick {
     this.setup();
 
     this.osc.frequency.setValueAtTime(150, time);
-    this.gain.gain.setValueAtTime(0.2, time);
+    this.gain.gain.setValueAtTime(0.25, time);
 
     this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
     this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
@@ -176,11 +181,17 @@ class Kick {
   }
 }
 
-import { impulseResponse } from "../lib/sound.js";
+// Lets see what our `soundEffect ` function can do
+import { soundEffect } from "../lib/sound.js";
+function kick2() {
+  soundEffect(150, 0, 0.5, "sine", 0.25);
+}
+
+// Lets import some useful functions :)
 import { keyboard } from "../lib/interactive.js";
 
 // ****** A Snare Drum ******
-
+// ...... from scratch! ......
 class Snare {
   constructor(actx) {
     this.actx = actx;
@@ -198,7 +209,7 @@ class Snare {
       output[i] = Math.random() * 2 - 1;
     }
 
-    console.log(buffer);
+    // console.log(buffer);
     return buffer;
   }
   // Remove some of the lowest frequency sounds
@@ -231,7 +242,7 @@ class Snare {
   play(time) {
     this.setup();
 
-    this.noiseEnvelope.gain.setValueAtTime(0.025, time);
+    this.noiseEnvelope.gain.setValueAtTime(0.0525, time);
     this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
     this.noise.start(time);
 
@@ -245,9 +256,36 @@ class Snare {
   }
 }
 
+// lets wrap our snare class in a function so that we keep
+// our api consistent and we can play our snare at any time
+// by simply writing `snare()`
+function snare() {
+  let snare = new Snare(actx);
+  let now = actx.currentTime;
+  snare.play(now);
+}
+
+// ... and then do the same with our kick drum
+function kick() {
+  let kick = new Kick(actx);
+  let now = actx.currentTime;
+  kick.play(now);
+  //   // kick.play(now + 0.5);
+  //   // kick.play(now + 1);
+  //   // kick.play(now + 1.5);
+  //   // kick.play(now + 2);
+}
+
+// and hihat!
+function hihat() {
+  let hihat = assets["../audio/hihat2.wav"];
+  hihat.volume = 0.5;
+  hihat.play();
+}
+
 // ****** A HiHat ****** \\
 import { assets } from "../lib/assets.js";
-assets.load(["../audio/hihat.wav"]).then(() => setup());
+assets.load(["../audio/hihat2.wav"]).then(() => setup());
 
 // import { makeSound } from "../lib/sound.js";
 
@@ -255,34 +293,28 @@ function setup() {
   // ****** ****** Keyboard Controls ****** ****** \\
   // Setup the keyboard
   let z = keyboard(90);
+  let x = keyboard(88);
   let m = keyboard(77);
   let k = keyboard(75);
 
   // console.log(assets());
 
-  let hihat = assets["../audio/hihat.wav"];
-  hihat.volume = 0.1;
-
   // Play the hihat
   k.press = () => {
-    hihat.play();
+    hihat();
   };
 
   // Play the Kick
   z.press = () => {
-    let kick = new Kick(actx);
-    let now = actx.currentTime;
-    kick.play(now);
-    //   // kick.play(now + 0.5);
-    //   // kick.play(now + 1);
-    //   // kick.play(now + 1.5);
-    //   // kick.play(now + 2);
+    kick();
+  };
+
+  // Play th kick2
+  x.press = () => {
+    kick2();
   };
   // Play the snare
   m.press = () => {
-    let snare = new Snare(actx);
-    let now = actx.currentTime;
-
-    snare.play(now);
+    snare();
   };
 }
