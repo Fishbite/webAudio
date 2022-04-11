@@ -4,8 +4,10 @@ console.log("yeah! Landed!");
 // So, no need to define it again here.
 // const actx = new AudioContext();
 
+// A variable to store our arrayBuffer
 let soundBuffer;
 
+// A stereo panner node
 let panNode = actx.createStereoPanner();
 
 // Load the sound \\
@@ -181,13 +183,23 @@ class Kick {
   }
 }
 
-// Lets see what our `soundEffect ` function can do
+// Lets see what our `soundEffect ` function can do?
+// Sounds more like a kettle drum because we have a
+// `linearRampToValue` not an `exponentialRampToValue`
 import { soundEffect } from "../lib/sound.js";
-function kick2() {
+function kettle1() {
   soundEffect(150, 0, 0.5, "sine", 0.25);
 }
 
-// Lets import some useful functions :)
+function kettle2() {
+  soundEffect(100, 0, 0.5, "sine", 0.25);
+}
+
+function kettle3() {
+  soundEffect(80, 0, 0.5, "sine", 0.25);
+}
+
+// Lets import a useful function :)
 import { keyboard } from "../lib/interactive.js";
 
 // ****** A Snare Drum ******
@@ -276,28 +288,25 @@ function kick() {
   //   // kick.play(now + 2);
 }
 
-// and hihat!
+// ****** A HiHat ****** \\
+import { assets } from "../lib/assets.js";
+assets.load(["../audio/hihat2.wav"]).then(() => setup());
+// and hihat function
 function hihat() {
   let hihat = assets["../audio/hihat2.wav"];
   hihat.volume = 0.5;
   hihat.play();
 }
 
-// ****** A HiHat ****** \\
-import { assets } from "../lib/assets.js";
-assets.load(["../audio/hihat2.wav"]).then(() => setup());
-
-// import { makeSound } from "../lib/sound.js";
-
 function setup() {
   // ****** ****** Keyboard Controls ****** ****** \\
   // Setup the keyboard
   let z = keyboard(90);
   let x = keyboard(88);
+  let c = keyboard(67);
+  let v = keyboard(86);
   let m = keyboard(77);
   let k = keyboard(75);
-
-  // console.log(assets());
 
   // Play the hihat
   k.press = () => {
@@ -309,9 +318,15 @@ function setup() {
     kick();
   };
 
-  // Play th kick2
+  // Play the kettle1
   x.press = () => {
-    kick2();
+    kettle1();
+  };
+  c.press = () => {
+    kettle2();
+  };
+  v.press = () => {
+    kettle3();
   };
   // Play the snare
   m.press = () => {

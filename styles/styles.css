@@ -13,3 +13,8 @@ p {
 h2 {
   color: darkred;
 }
+
+button {
+  padding: 2px;
+  color: white;
+}
