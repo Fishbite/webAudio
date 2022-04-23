@@ -88,24 +88,11 @@ function playNote(freq, decay = 1, type = "sine") {
 
   osc.connect(mainVol); // connect to stream destination via main gain node
 
-  // *** Moved this into the keydown handler ***\\
   // Only start the media recorder if it is not already recording
-  // if (recorder.state !== "recording") {
-  //   startRecording();
-  // }
-
-  osc.start(actx.currentTime);
-  osc.stop(actx.currentTime + decay);
-}
-
-function playNote2(freq, decay = 1, type = "square") {
-  let osc = actx.createOscillator();
-  osc.frequency.value = freq;
-  osc.type = type;
-  console.log(osc);
-
-  osc.connect(mainVol);
-
+  if (recorder.state !== "recording") {
+    startRecording();
+  }
+  console.log(mainVol);
   osc.start(actx.currentTime);
   osc.stop(actx.currentTime + decay);
 }
@@ -115,19 +102,12 @@ window.addEventListener("keydown", keyDownHandler, false);
 
 // The keydown handler
 function keyDownHandler(e) {
-  if (recorder.state !== "recording") {
-    startRecording();
-  }
   if (e.key === "1") {
     console.log(e.key, "pressed");
-    playNote(50);
+    playNote(440);
   }
 
   if (e.key === "2") {
-    playNote(75);
-  }
-
-  if (e.key === "3") {
-    playNote2(100);
+    playNote(600);
   }
 }
