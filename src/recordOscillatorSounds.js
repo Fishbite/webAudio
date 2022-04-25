@@ -52,7 +52,9 @@ function startRecording() {
 
 // Function to run when we want to terminate the recording
 function stopRecording() {
+  // collect the blob of data when the mediaRecorder stops
   recorder.ondataavailable = function (e) {
+    // set the audio element's source to the blob
     audioTag.src = URL.createObjectURL(e.data);
 
     stopped = true;

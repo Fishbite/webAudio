@@ -4,6 +4,25 @@ console.log("yeah! Landed!");
 // So, no need to define it again here.
 // const actx = new AudioContext();
 
+// ****** Variables To Setup Recording Ability Start ****** \\
+
+let mainVol = actx.createGain(),
+  // A mediaStreamDestination Node
+  streamDest = actx.createMediaStreamDestination(),
+  audioTag = document.getElementById("audioTag"),
+  stopBtn = document.getElementById("stopBtn"),
+  // Our Media Recorder
+  recorder = new MediaRecorder(streamDest.stream);
+
+// ****** Variables To Setup Recording Ability End ****** \\
+
+// Connect the mainVol to the destination stream and the speakers
+// All sound generators that we want to record must be connected
+// to mainVol
+mainVol.connect(streamDest); // connect to the stream
+mainVol.connect(actx.destination); // Connect to the speakers
+
+// ****** Pre-recorded Music Start ****** \\
 // A variable to store our arrayBuffer
 let soundBuffer;
 
@@ -40,7 +59,7 @@ window.addEventListener("keydown", keyDownHandler, false);
 // This `keydown handler plays the music sample
 function keyDownHandler(e) {
   switch (e.code) {
-    // Play music normally
+    // Play music normally (without panning)
     case "KeyA":
       if (soundBuffer) {
         let soundNode = actx.createBufferSource();
@@ -116,6 +135,7 @@ function panLoop() {
     if (panNode.pan.value <= -1) pan = "left";
   }
 }
+// ****** Pre-recorded Music End ****** \\
 
 // Kick Drum from scratch
 // Oscillator frequency set at 150Hz
@@ -280,6 +300,7 @@ function snare() {
 // ... and then do the same with our kick drum
 function kick() {
   let kick = new Kick(actx);
+
   let now = actx.currentTime;
   kick.play(now);
   //   // kick.play(now + 0.5);
@@ -294,7 +315,7 @@ assets.load(["../audio/hihat2.wav"]).then(() => setup());
 // and hihat function
 function hihat() {
   let hihat = assets["../audio/hihat2.wav"];
-  hihat.volume = 0.5;
+  hihat.volume = 0.1;
   hihat.play();
 }
 
