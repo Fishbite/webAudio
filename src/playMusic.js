@@ -1,26 +1,28 @@
 console.log("yeah! Landed!");
 
+// ****** NOTE: script.js MUST BE LOADED ****** {{
+
 // Note: `actx` is already declared in script.js
 // So, no need to define it again here.
 // const actx = new AudioContext();
 
 // ****** Variables To Setup Recording Ability Start ****** \\
 
-let mainVol = actx.createGain(),
-  // A mediaStreamDestination Node
-  streamDest = actx.createMediaStreamDestination(),
-  audioTag = document.getElementById("audioTag"),
-  stopBtn = document.getElementById("stopBtn"),
-  // Our Media Recorder
-  recorder = new MediaRecorder(streamDest.stream);
+// let mainVol = actx.createGain(),
+//   // A mediaStreamDestination Node
+//   streamDest = actx.createMediaStreamDestination(),
+//   audioTag = document.getElementById("audioTag"),
+//   stopBtn = document.getElementById("stopBtn"),
+//   // Our Media Recorder
+//   recorder = new MediaRecorder(streamDest.stream);
 
-// ****** Variables To Setup Recording Ability End ****** \\
+// // ****** Variables To Setup Recording Ability End ****** \\
 
-// Connect the mainVol to the destination stream and the speakers
-// All sound generators that we want to record must be connected
-// to mainVol
-mainVol.connect(streamDest); // connect to the stream
-mainVol.connect(actx.destination); // Connect to the speakers
+// // Connect the mainVol to the destination stream and the speakers
+// // All sound generators that we want to record must be connected
+// // to mainVol
+// mainVol.connect(streamDest); // connect to the stream
+// mainVol.connect(actx.destination); // Connect to the speakers
 
 // ****** Pre-recorded Music Start ****** \\
 // A variable to store our arrayBuffer
@@ -60,7 +62,11 @@ window.addEventListener("keydown", keyDownHandler, false);
 function keyDownHandler(e) {
   switch (e.code) {
     // Play music normally (without panning)
+    // If not recording, start the recorder
     case "KeyA":
+      if (recorder.state !== "recording") {
+        startRecording();
+      }
       if (soundBuffer) {
         let soundNode = actx.createBufferSource();
         soundNode.buffer = soundBuffer;
@@ -69,6 +75,10 @@ function keyDownHandler(e) {
         let volumeNode = actx.createGain();
         volumeNode.gain.value = 0.15;
 
+        // Connect to the recording chain
+        if (mainVol) {
+          soundNode.connect(mainVol);
+        } // connect to global node
         soundNode.connect(volumeNode).connect(actx.destination);
         soundNode.start(actx.currentTime);
 
@@ -81,6 +91,10 @@ function keyDownHandler(e) {
 
     // Play music panning
     case "KeyS":
+      // If not recording, start the recorder
+      if (recorder.state !== "recording") {
+        startRecording();
+      }
       if (soundBuffer) {
         let soundNode = actx.createBufferSource();
         soundNode.buffer = soundBuffer;
@@ -97,18 +111,23 @@ function keyDownHandler(e) {
           .connect(panNode)
           .connect(actx.destination);
 
+        // Connect to the recording chain
+        if (mainVol) {
+          soundNode.connect(mainVol);
+        }
+
         soundNode.start(actx.currentTime);
         panLoop();
 
-        window.addEventListener("keydown", keyDownHandler, false);
-        function keyDownHandler(e) {
+        window.addEventListener("keydown", stopHandler, false);
+        function stopHandler(e) {
           if (e.code === "KeyD") {
             volumeNode.gain.exponentialRampToValueAtTime(
               0.0001,
               actx.currentTime + 0.03
             );
             soundNode.stop(actx.currentTime + 0.03);
-            soundNode.disconnect(volumeNode);
+            // soundNode.disconnect(volumeNode);
           }
         }
       }
@@ -267,6 +286,10 @@ class Snare {
 
     this.oscEnvelope = this.actx.createGain();
     this.osc.connect(this.oscEnvelope);
+
+    // Connect to the recording chain
+    this.oscEnvelope.connect(mainVol);
+
     this.oscEnvelope.connect(this.actx.destination);
   }
 
@@ -331,6 +354,9 @@ function setup() {
 
   // Play the hihat
   k.press = () => {
+    // if (recorder.state !== "recording") {
+    //   startRecording();
+    // }
     hihat();
   };
 

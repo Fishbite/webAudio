@@ -11,10 +11,14 @@ let mainVol = actx.createGain(),
   streamDest = actx.createMediaStreamDestination(),
   // create a recorder and connect it to the stream
   recorder = new MediaRecorder(streamDest.stream),
+  // Get our audio element from the document
   audioTag = document.getElementById("audioTag"),
+  // Get our stop button
   stopBtn = document.getElementById("stopBtn");
 
 // now connect the above
+// We just need to connect our audio graphs to the
+// mainVol node in our sound generators
 mainVol.connect(streamDest);
 mainVol.connect(actx.destination);
 
@@ -49,6 +53,7 @@ stopBtn.addEventListener("click", (e) => {
 
 // This function plays raw oscillator sounds
 // Stopping them abruptly causes an audible ugly "click"
+// We're not recording this tripe!
 function playNoteUgh(freq = 261.63, type = "sine", decay = 1) {
   // create oscillator and gain nodes
   let osc = actx.createOscillator();
@@ -76,6 +81,7 @@ function playNote(freq = 261.63, type = "sine", decay = 1) {
 
 // This function creates soft sounding oscilators that use compressors and ramps
 // to take the volume down to zero in order to help eleminate those ugly "clicks"
+// We are recording these better sounds
 function createOsc(freq, type, decay) {
   console.log(freq, type, decay);
 
@@ -143,6 +149,8 @@ window.addEventListener("keydown", keyDownHandler, false);
 
 function keyDownHandler(event) {
   let key = event.key;
+  // Start recording if a key is pressed and the
+  // recorder's state is not "recording"
   console.log(recorder.state);
   if (recorder.state !== "recording") {
     startRecording();
@@ -160,6 +168,7 @@ function keyDownHandler(event) {
   if (key === "9") playNote(D5);
   if (key === "0") playNote(E5);
 
+  // We are not recording these sounds
   if (key === "q") playNoteUgh(C4);
   if (key === "w") playNoteUgh(D4);
   if (key === "e") playNoteUgh(E4);
