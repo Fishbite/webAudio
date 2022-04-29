@@ -33,7 +33,7 @@ function stopRecording() {
   recorder.ondataavailable = function (e) {
     // Set the audioTag html element source to the Blob
     audioTag.src = URL.createObjectURL(e.data);
-    console.log(e.data, recorder.src);
+    // console.log(e.data, audioTag.src);
   };
 
   recorder.stop();
@@ -149,12 +149,14 @@ window.addEventListener("keydown", keyDownHandler, false);
 
 function keyDownHandler(event) {
   let key = event.key;
-  // Start recording if a key is pressed and the
+  // Start recording if the 'Space' key is pressed and the
   // recorder's state is not "recording"
-  console.log(recorder.state);
-  if (recorder.state !== "recording") {
-    startRecording();
-    console.log(recorder.state);
+  // console.log(event.code, recorder.state, event);
+  if (key == " ") {
+    if (recorder.state !== "recording") {
+      startRecording();
+      console.log(recorder.state);
+    }
   }
 
   if (key === "1") playNote(C4);

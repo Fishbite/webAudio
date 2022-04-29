@@ -1,6 +1,7 @@
 console.log("yeah! Landed!");
 
 // ****** NOTE: script.js MUST BE LOADED ****** {{
+// This commented out stuff is loaded via script.js
 
 // Note: `actx` is already declared in script.js
 // So, no need to define it again here.
@@ -64,9 +65,9 @@ function keyDownHandler(e) {
     // Play music normally (without panning)
     // If not recording, start the recorder
     case "KeyA":
-      if (recorder.state !== "recording") {
-        startRecording();
-      }
+      // if (recorder.state !== "recording") {
+      //   startRecording();
+      // }
       if (soundBuffer) {
         let soundNode = actx.createBufferSource();
         soundNode.buffer = soundBuffer;
@@ -91,10 +92,11 @@ function keyDownHandler(e) {
 
     // Play music panning
     case "KeyS":
+      console.log("Arse");
       // If not recording, start the recorder
-      if (recorder.state !== "recording") {
-        startRecording();
-      }
+      // if (recorder.state !== "recording") {
+      //   startRecording();
+      // }
       if (soundBuffer) {
         let soundNode = actx.createBufferSource();
         soundNode.buffer = soundBuffer;
@@ -131,6 +133,33 @@ function keyDownHandler(e) {
           }
         }
       }
+      break;
+
+    case "KeyM":
+      // If not recording, start the recorder
+      // if (recorder.state !== "recording") {
+      //   startRecording();
+      // }
+      snare();
+
+      break;
+
+    case "KeyZ":
+      // If not recording, start the recorder
+      // if (recorder.state !== "recording") {
+      //   startRecording();
+      // }
+      kick();
+
+      break;
+
+    case "KeyK":
+      // If not recording, start the recorder
+      // if (recorder.state !== "recording") {
+      //   startRecording();
+      // }
+      hihat();
+
       break;
   }
 }
@@ -195,14 +224,18 @@ console.log("now", now);
 // Because we can't restart an oscilator once it has been stopped
 // we need to wrap the code in a simple object
 class Kick {
-  constructor(actx) {
+  constructor(actx, mainVol) {
     this.actx = actx;
+    this.mainVol = mainVol;
   }
   setup() {
     this.osc = this.actx.createOscillator();
     this.gain = this.actx.createGain();
     this.osc.connect(this.gain);
     this.gain.connect(this.actx.destination);
+
+    // *** Connect to the recording chain
+    this.gain.connect(this.mainVol);
   }
   play(time) {
     this.setup();
@@ -213,11 +246,11 @@ class Kick {
     this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
     this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
     // console.log("Playing");
-    // this.gain.gain.linearRampToValueAtTime(0, time + 0.05);
+    this.gain.gain.linearRampToValueAtTime(0, time + 0.6);
 
     this.osc.start(time);
 
-    this.osc.stop(time + 0.55);
+    // this.osc.stop(time + 0.55);
     // console.log("Stopped");
   }
 }
@@ -225,17 +258,62 @@ class Kick {
 // Lets see what our `soundEffect ` function can do?
 // Sounds more like a kettle drum because we have a
 // `linearRampToValue` not an `exponentialRampToValue`
-import { soundEffect } from "../lib/sound.js";
+import { soundEffect } from "../lib/soundToRecorder.js";
 function kettle1() {
-  soundEffect(150, 0, 0.5, "sine", 0.25);
+  soundEffect(
+    150,
+    0,
+    0.5,
+    "sine",
+    0.5,
+    0,
+    0,
+    0,
+    false,
+    0,
+    0,
+    undefined,
+    undefined,
+    mainVol
+  );
 }
 
 function kettle2() {
-  soundEffect(100, 0, 0.5, "sine", 0.25);
+  soundEffect(
+    100,
+    0,
+    0.5,
+    "sine",
+    0.5,
+    0,
+    0,
+    0,
+    false,
+    0,
+    0,
+    undefined,
+    undefined,
+    mainVol
+  );
 }
 
 function kettle3() {
-  soundEffect(80, 0, 0.5, "sine", 0.25);
+  soundEffect(
+    80,
+    0,
+    0.5,
+    "sine",
+    0.5,
+    0,
+    0,
+    0,
+    false,
+    0,
+    0,
+    undefined,
+    undefined,
+    mainVol
+  );
 }
 
 // Lets import a useful function :)
@@ -244,8 +322,9 @@ import { keyboard } from "../lib/interactive.js";
 // ****** A Snare Drum ******
 // ...... from scratch! ......
 class Snare {
-  constructor(actx) {
+  constructor(actx, mainVol) {
     this.actx = actx;
+    this.mainVol = mainVol;
   }
   // Synthesize the rattle of the wire by creating
   // a random noise generator
@@ -286,11 +365,11 @@ class Snare {
 
     this.oscEnvelope = this.actx.createGain();
     this.osc.connect(this.oscEnvelope);
-
-    // Connect to the recording chain
-    this.oscEnvelope.connect(mainVol);
-
     this.oscEnvelope.connect(this.actx.destination);
+
+    // *** Connect to the recording chain ***
+    this.oscEnvelope.connect(this.mainVol);
+    this.noiseEnvelope.connect(this.mainVol);
   }
 
   // Add some values to the nodes
@@ -315,14 +394,14 @@ class Snare {
 // our api consistent and we can play our snare at any time
 // by simply writing `snare()`
 function snare() {
-  let snare = new Snare(actx);
+  let snare = new Snare(actx, mainVol);
   let now = actx.currentTime;
   snare.play(now);
 }
 
 // ... and then do the same with our kick drum
 function kick() {
-  let kick = new Kick(actx);
+  let kick = new Kick(actx, mainVol);
 
   let now = actx.currentTime;
   kick.play(now);
@@ -338,7 +417,7 @@ assets.load(["../audio/hihat2.wav"]).then(() => setup());
 // and hihat function
 function hihat() {
   let hihat = assets["../audio/hihat2.wav"];
-  hihat.volume = 0.1;
+  hihat.volume = 0.5;
   hihat.play();
 }
 
@@ -353,17 +432,14 @@ function setup() {
   let k = keyboard(75);
 
   // Play the hihat
-  k.press = () => {
-    // if (recorder.state !== "recording") {
-    //   startRecording();
-    // }
-    hihat();
-  };
+  // k.press = () => {
+  //   hihat();
+  // };
 
   // Play the Kick
-  z.press = () => {
-    kick();
-  };
+  // z.press = () => {
+  //   kick();
+  // };
 
   // Play the kettle1
   x.press = () => {
@@ -376,7 +452,7 @@ function setup() {
     kettle3();
   };
   // Play the snare
-  m.press = () => {
-    snare();
-  };
+  // m.press = () => {
+  //   snare();
+  // };
 }
