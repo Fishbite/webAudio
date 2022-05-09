@@ -26,6 +26,9 @@ mainVol.connect(actx.destination);
 function startRecording() {
   if (recorder.state !== "recording") {
     recorder.start();
+
+    stopBtn.innerHTML = "__Stop__Recording__";
+    stopBtn.style.color = "goldenrod";
   }
 }
 
@@ -37,40 +40,24 @@ function stopRecording() {
   };
 
   recorder.stop();
+
+  stopBtn.innerHTML = "_Recording_Stopped_";
+  stopBtn.style.color = "red";
 }
 
 // attach event listener to the stop button
 stopBtn.addEventListener("click", (e) => {
   console.log("stopBtn clicked");
 
-  stopRecording();
-  console.log(recorder.state);
+  if (recorder.state === "recording") {
+    stopRecording();
+    console.log(recorder.state);
+  }
 });
 
 // ************* Live Output Recording Setup END ************ \\
 
 // ************* Musical Note Generators START ************ \\
-
-// This function plays raw oscillator sounds
-// Stopping them abruptly causes an audible ugly "click"
-// We're not recording this tripe!
-function playNoteUgh(freq = 261.63, type = "sine", decay = 1) {
-  // create oscillator and gain nodes
-  let osc = actx.createOscillator();
-  let vol = actx.createGain();
-
-  // set the supplied values
-  osc.frequency.value = freq;
-  osc.type = type;
-
-  vol.gain.value = 1;
-
-  //create the audio graph
-  osc.connect(vol).connect(actx.destination);
-
-  osc.start(actx.currentTime);
-  osc.stop(actx.currentTime + decay);
-}
 
 // This function just sets default values for oscillator values
 // then runs the create oscillator function
@@ -142,6 +129,24 @@ let C4 = 261.63,
   C5 = 523.25,
   D5 = 587.33,
   E5 = 659.25;
+
+// let's calculate the notes instead of hard coding them:
+const A4 = 440;
+const arrayOfAs = [];
+for (let i = -4; i < 4; i++) {
+  // multiplying A4 by (a number multiplied by a negative power)
+  // is the same as dividing A4 by a number with a positive power
+  let a = A4 * Math.pow(2, i);
+
+  arrayOfAs.push(a);
+  // console.log(arrayOfAs.indexOf(a), a);
+}
+
+for (let i = 0; i < arrayOfAs.length; i++) {
+  let val = arrayOfAs[i];
+  // output the actual index of `val` & its value
+  console.log(arrayOfAs.indexOf(val), val);
+}
 // ************* Variables to Hold Musical Notes END ************ \\
 
 // ************* Keyboard Controls START ************ \\
@@ -159,6 +164,7 @@ function keyDownHandler(event) {
     }
   }
 
+  // Musical notes
   if (key === "1") playNote(C4);
   if (key === "2") playNote(D4);
   if (key === "3") playNote(E4);
@@ -169,17 +175,5 @@ function keyDownHandler(event) {
   if (key === "8") playNote(C5);
   if (key === "9") playNote(D5);
   if (key === "0") playNote(E5);
-
-  // We are not recording these sounds
-  if (key === "q") playNoteUgh(C4);
-  if (key === "w") playNoteUgh(D4);
-  if (key === "e") playNoteUgh(E4);
-  if (key === "r") playNoteUgh(F4);
-  if (key === "t") playNoteUgh(G4);
-  if (key === "y") playNoteUgh(A5);
-  if (key === "u") playNoteUgh(B5);
-  if (key === "i") playNoteUgh(C5);
-  if (key === "o") playNoteUgh(D5);
-  if (key === "p") playNoteUgh(E5);
 }
 // ************* Keyboard Controls END ************ \\

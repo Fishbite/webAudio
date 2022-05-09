@@ -57,113 +57,6 @@ function onLoad(event) {
   );
 }
 
-window.addEventListener("keydown", keyDownHandler, false);
-
-// This `keydown handler plays the music sample
-function keyDownHandler(e) {
-  switch (e.code) {
-    // Play music normally (without panning)
-    // If not recording, start the recorder
-    case "KeyA":
-      // if (recorder.state !== "recording") {
-      //   startRecording();
-      // }
-      if (soundBuffer) {
-        let soundNode = actx.createBufferSource();
-        soundNode.buffer = soundBuffer;
-        soundNode.loop = true;
-
-        let volumeNode = actx.createGain();
-        volumeNode.gain.value = 0.15;
-
-        // Connect to the recording chain
-        if (mainVol) {
-          soundNode.connect(mainVol);
-        } // connect to global node
-        soundNode.connect(volumeNode).connect(actx.destination);
-        soundNode.start(actx.currentTime);
-
-        window.addEventListener("keydown", keyDownHandler, false);
-        function keyDownHandler(e) {
-          if (e.code === "KeyD") soundNode.stop();
-        }
-      }
-      break;
-
-    // Play music panning
-    case "KeyS":
-      console.log("Arse");
-      // If not recording, start the recorder
-      // if (recorder.state !== "recording") {
-      //   startRecording();
-      // }
-      if (soundBuffer) {
-        let soundNode = actx.createBufferSource();
-        soundNode.buffer = soundBuffer;
-
-        let volumeNode = actx.createGain();
-        volumeNode.gain.value = 0.2;
-
-        panNode.pan.value = -1;
-
-        soundNode.loop = true;
-
-        soundNode
-          .connect(volumeNode)
-          .connect(panNode)
-          .connect(actx.destination);
-
-        // Connect to the recording chain
-        if (mainVol) {
-          soundNode.connect(mainVol);
-        }
-
-        soundNode.start(actx.currentTime);
-        panLoop();
-
-        window.addEventListener("keydown", stopHandler, false);
-        function stopHandler(e) {
-          if (e.code === "KeyD") {
-            volumeNode.gain.exponentialRampToValueAtTime(
-              0.0001,
-              actx.currentTime + 0.03
-            );
-            soundNode.stop(actx.currentTime + 0.03);
-            // soundNode.disconnect(volumeNode);
-          }
-        }
-      }
-      break;
-
-    case "KeyM":
-      // If not recording, start the recorder
-      // if (recorder.state !== "recording") {
-      //   startRecording();
-      // }
-      snare();
-
-      break;
-
-    case "KeyZ":
-      // If not recording, start the recorder
-      // if (recorder.state !== "recording") {
-      //   startRecording();
-      // }
-      kick();
-
-      break;
-
-    case "KeyK":
-      // If not recording, start the recorder
-      // if (recorder.state !== "recording") {
-      //   startRecording();
-      // }
-      hihat();
-
-      break;
-  }
-}
-
 // Set the initial `pan` value
 let pan = "left";
 
@@ -187,10 +80,6 @@ function panLoop() {
 
 // Kick Drum from scratch
 // Oscillator frequency set at 150Hz
-
-// A useful variable!
-let now = actx.currentTime;
-console.log("now", now);
 
 // Create the nodes
 // let kickOsc = actx.createOscillator();
@@ -261,7 +150,7 @@ class Kick {
 import { soundEffect } from "../lib/soundToRecorder.js";
 function kettle1() {
   soundEffect(
-    150,
+    110, // 110 = A2
     0,
     0.5,
     "sine",
@@ -280,7 +169,7 @@ function kettle1() {
 
 function kettle2() {
   soundEffect(
-    100,
+    82.41, // 82.41 = E2
     0,
     0.5,
     "sine",
@@ -299,7 +188,7 @@ function kettle2() {
 
 function kettle3() {
   soundEffect(
-    80,
+    61.74, // 61.74 = B1
     0,
     0.5,
     "sine",
@@ -315,9 +204,6 @@ function kettle3() {
     mainVol
   );
 }
-
-// Lets import a useful function :)
-import { keyboard } from "../lib/interactive.js";
 
 // ****** A Snare Drum ******
 // ...... from scratch! ......
@@ -390,13 +276,18 @@ class Snare {
   }
 }
 
+// A useful variable which for some reason doesn't
+// work in the snare() and kick() functions below
+// let now = actx.currentTime;
+// console.log("now", now);
+
 // lets wrap our snare class in a function so that we keep
 // our api consistent and we can play our snare at any time
 // by simply writing `snare()`
 function snare() {
   let snare = new Snare(actx, mainVol);
-  let now = actx.currentTime;
-  snare.play(now);
+
+  snare.play(actx.currentTime);
 }
 
 // ... and then do the same with our kick drum
@@ -405,10 +296,10 @@ function kick() {
 
   let now = actx.currentTime;
   kick.play(now);
-  //   // kick.play(now + 0.5);
-  //   // kick.play(now + 1);
-  //   // kick.play(now + 1.5);
-  //   // kick.play(now + 2);
+  // kick.play(now + 0.5);
+  // kick.play(now + 1);
+  // kick.play(now + 1.5);
+  // kick.play(now + 2);
 }
 
 // ****** A HiHat ****** \\
@@ -422,37 +313,102 @@ function hihat() {
 }
 
 function setup() {
-  // ****** ****** Keyboard Controls ****** ****** \\
-  // Setup the keyboard
-  let z = keyboard(90);
-  let x = keyboard(88);
-  let c = keyboard(67);
-  let v = keyboard(86);
-  let m = keyboard(77);
-  let k = keyboard(75);
+  window.addEventListener("keydown", playSample, false);
 
-  // Play the hihat
-  // k.press = () => {
-  //   hihat();
-  // };
+  // This `keydown handler plays the music sample
+  function playSample(e) {
+    switch (e.key) {
+      // Play music normally (without panning)
+      // If not recording, start the recorder
+      case "a":
+        // if (recorder.state !== "recording") {
+        //   startRecording();
+        // }
+        if (soundBuffer) {
+          let soundNode = actx.createBufferSource();
+          soundNode.buffer = soundBuffer;
+          soundNode.loop = true;
 
-  // Play the Kick
-  // z.press = () => {
-  //   kick();
-  // };
+          let volumeNode = actx.createGain();
+          volumeNode.gain.value = 0.15;
 
-  // Play the kettle1
-  x.press = () => {
-    kettle1();
-  };
-  c.press = () => {
-    kettle2();
-  };
-  v.press = () => {
-    kettle3();
-  };
-  // Play the snare
-  // m.press = () => {
-  //   snare();
-  // };
+          // Connect to the recording chain
+          if (mainVol) {
+            volumeNode.connect(mainVol);
+          } // connect to global node
+          soundNode.connect(volumeNode).connect(actx.destination);
+          soundNode.start(actx.currentTime);
+
+          window.addEventListener("keydown", keyDownHandler, false);
+          function keyDownHandler(e) {
+            if (e.key === "d") soundNode.stop();
+          }
+        }
+        break;
+
+      // Play music panning
+      case "s":
+        if (soundBuffer) {
+          let soundNode = actx.createBufferSource();
+          soundNode.buffer = soundBuffer;
+
+          let volumeNode = actx.createGain();
+          volumeNode.gain.value = 0.2;
+
+          panNode.pan.value = -1;
+
+          soundNode.loop = true;
+
+          soundNode
+            .connect(volumeNode)
+            .connect(panNode)
+            .connect(actx.destination);
+
+          // Connect to the recording chain
+          if (mainVol) {
+            soundNode.connect(mainVol);
+          }
+
+          soundNode.start(actx.currentTime);
+          panLoop();
+
+          window.addEventListener("keydown", stopHandler, false);
+          function stopHandler(e) {
+            if (e.key === "d") {
+              volumeNode.gain.exponentialRampToValueAtTime(
+                0.0001,
+                actx.currentTime + 0.03
+              );
+              soundNode.stop(actx.currentTime + 0.03);
+              // soundNode.disconnect(volumeNode);
+            }
+          }
+        }
+        break;
+
+      case "m":
+        snare();
+        break;
+
+      case "z":
+        kick();
+        break;
+
+      case "k":
+        hihat();
+        break;
+
+      case "x":
+        kettle1();
+        break;
+
+      case "c":
+        kettle2();
+        break;
+
+      case "v":
+        kettle3();
+        break;
+    }
+  }
 }
