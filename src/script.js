@@ -119,40 +119,108 @@ function createOsc(freq, type, decay) {
 
 // ************* Variables to Hold Musical Notes START ************ \\
 // Some musical note values:
-let C4 = 261.63,
-  D4 = 293.66,
-  E4 = 329.63,
-  F4 = 349.23,
-  G4 = 392,
-  A5 = 440,
-  B5 = 493.88,
-  C5 = 523.25,
-  D5 = 587.33,
-  E5 = 659.25;
+// let C4 = 261.63,
+//   D4 = 293.66,
+//   E4 = 329.63,
+//   F4 = 349.23,
+//   G4 = 392,
+//   A4 = 440,
+//   B4 = 493.88,
+//   C5 = 523.25,
+//   D5 = 587.33,
+//   E5 = 659.25;
 
 // let's calculate the notes instead of hard coding them:
+// All the A's A0 to A7
+// const A = [];
+// for (let i = -4; i < 4; i++) {
+//   // multiplying A4 by (a number multiplied by a negative power)
+//   // is the same as dividing A4 by a number with a positive power
+//   let a = A4 * Math.pow(2, i);
+
+//   A.push(a);
+//   // console.log(arrayOfAs.indexOf(a), a);
+// }
+
+// for (let i = 0; i < A.length; i++) {
+//   let val = A[i];
+//   // output the actual index of `val` & its value
+//   console.log(A.indexOf(val), val);
+// }
+
+// Now we need the octave to fill in the notes between A's
+
+/* Formula to Calculate The Frequencies of Notes of
+   The Even Tempered Scale:
+
+   Fn = Fo * (a)^n
+
+   Where Fo = A4 = 440Hz
+
+         n = the number of half steps away from A4
+             For notes higher than A4 n is positve
+             else lower notes, n is negative
+
+         Fn = the frequency of the note in half steps
+
+         a = (2)^1/12 = 12th root of 2, which is the number which when multiplied by itelf 12 times equals 2 = 1.059463....
+
+    e.g. C5 is 3/12 steps away from A4, thus:
+
+            C5 = Fn = Fo * (a)^n
+               = 3/12 steps = 440 * ((2)^1/12)^3 = 523.26...Hz
+
+         C4 is -9/12 steps away from A4, thus:
+
+            C4 = Fn = Fo * (a)^n
+               = -9/12 steps = 440 * ((2)^1/12)^-9 = 261.63...Hz
+
+*/
+class Octave {
+  constructor(a) {
+    this.C = a * Math.pow(2, -9 / 12);
+    this.Cs = a * Math.pow(2, -8 / 12);
+    this.D = a * Math.pow(2, -7 / 12);
+    this.Ds = a * Math.pow(2, -6 / 12);
+    this.E = a * Math.pow(2, -5 / 12);
+    this.F = a * Math.pow(2, -4 / 12);
+    this.Fs = a * Math.pow(2, -3 / 12);
+    this.G = a * Math.pow(2, -2 / 12);
+    this.Gs = a * Math.pow(2, -1 / 12);
+    this.A = a;
+    this.As = a * Math.pow(2, 1 / 12);
+    this.B = a * Math.pow(2, 2 / 12);
+  }
+  build() {
+    for (let note in this) {
+      console.log("Note:", note, this[note]);
+    }
+  }
+}
+
+// let octave = new Octave(440);
+// console.log(octave.build());
+
 const A4 = 440;
-const arrayOfAs = [];
+let scale = [];
+
 for (let i = -4; i < 4; i++) {
-  // multiplying A4 by (a number multiplied by a negative power)
-  // is the same as dividing A4 by a number with a positive power
   let a = A4 * Math.pow(2, i);
+  let octave = new Octave(a);
 
-  arrayOfAs.push(a);
-  // console.log(arrayOfAs.indexOf(a), a);
+  scale.push(octave);
 }
 
-for (let i = 0; i < arrayOfAs.length; i++) {
-  let val = arrayOfAs[i];
-  // output the actual index of `val` & its value
-  console.log(arrayOfAs.indexOf(val), val);
-}
+// console.log("An array of scales", scale);
+// console.log(scale[4].C);
+
 // ************* Variables to Hold Musical Notes END ************ \\
 
 // ************* Keyboard Controls START ************ \\
 window.addEventListener("keydown", keyDownHandler, false);
 
 function keyDownHandler(event) {
+  // let A = arrayOfAs;
   let key = event.key;
   // Start recording if the 'Space' key is pressed and the
   // recorder's state is not "recording"
@@ -164,16 +232,25 @@ function keyDownHandler(event) {
     }
   }
 
+  let s4 = scale[4],
+    s5 = scale[5];
   // Musical notes
-  if (key === "1") playNote(C4);
-  if (key === "2") playNote(D4);
-  if (key === "3") playNote(E4);
-  if (key === "4") playNote(F4);
-  if (key === "5") playNote(G4);
-  if (key === "6") playNote(A5);
-  if (key === "7") playNote(B5);
-  if (key === "8") playNote(C5);
-  if (key === "9") playNote(D5);
-  if (key === "0") playNote(E5);
+  if (key === "q") playNote(s4.C);
+  if (key === "2") playNote(s4.Cs);
+  if (key === "w") playNote(s4.D);
+  if (key === "3") playNote(s4.Ds);
+  if (key === "e") playNote(s4.E);
+  if (key === "r") playNote(s4.F);
+  if (key === "5") playNote(s4.Fs);
+  if (key === "t") playNote(s4.G);
+  if (key === "6") playNote(s4.Gs);
+  if (key === "y") playNote(s4.A);
+  if (key === "7") playNote(s4.As);
+  if (key === "u") playNote(s4.B);
+  if (key === "i") playNote(s5.C);
+  if (key === "9") playNote(s5.Cs);
+  if (key === "o") playNote(s5.D);
+  if (key === "0") playNote(s5.Ds);
+  if (key === "p") playNote(s5.E);
 }
 // ************* Keyboard Controls END ************ \\
