@@ -1,5 +1,7 @@
 console.log("Connected to the moon!");
 
+let waveTypeValue = document.getElementById("waveTypeValue");
+
 // create the context
 const actx = new AudioContext();
 
@@ -58,10 +60,20 @@ stopBtn.addEventListener("click", (e) => {
 // ************* Live Output Recording Setup END ************ \\
 
 // ************* Musical Note Generators START ************ \\
+// Set The Wave Type From User Input
+window.addEventListener("keydown", keyDownHandler, false);
+waveTypeValue.addEventListener("change", updateWaveType);
+const waveType = ["saw", "triangle", "square", "sawtooth"];
+let setWave;
+function updateWaveType(e) {
+  console.log(waveType[waveTypeValue.value]);
+  setWave = waveType[waveTypeValue.value];
+  return setWave;
+}
 
 // This function just sets default values for oscillator values
 // then runs the create oscillator function
-function playNote(freq = 261.63, type = "sine", decay = 1) {
+function playNote(freq = 261.63, type = setWave, decay = 3) {
   // Create a new oscillator and audio graph for each keypress
   createOsc(freq, type, decay);
 }
@@ -211,13 +223,12 @@ for (let i = -4; i < 4; i++) {
   scale.push(octave);
 }
 
-// console.log("An array of scales", scale);
+console.log("An array of scales", scale);
 // console.log(scale[4].C);
 
 // ************* Variables to Hold Musical Notes END ************ \\
 
 // ************* Keyboard Controls START ************ \\
-window.addEventListener("keydown", keyDownHandler, false);
 
 function keyDownHandler(event) {
   // let A = arrayOfAs;
