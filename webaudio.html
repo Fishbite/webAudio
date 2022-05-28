@@ -10,38 +10,69 @@
   <body>
     <header>
       <h2>Web Audio API</h2>
-      <p>Press The Space Bar to Start Recording</p>
+      <p><i>CTRL+Z</i> Keys to Start Recording</p>
     </header>
 
     <main>
       <h2>Compressed & Ramped Oscilators</h2>
-      <p>Key 1 to 0: play C4 through E5</p>
+      <p><i>Keys q to p:</i> play C4 through E5</p>
+      <p><i>Keys 2, 3, 5, 6, 7, 9, 0:</i> play sharps/flats</p>
 
       <h2>Play Pre-recorded Music</h2>
-      <p>Key A: play music normal</p>
-      <p>Key S: play music panning. Key D to stop</p>
+      <p><i>Key A:</i> play music normal</p>
+      <p><i>Key S:</i> play music panning. Key D to stop</p>
 
       <h2>Play Some Drum Sounds</h2>
-      <p>Key Z: Kick drum (synthesized)</p>
-      <p>Keys X, C, & V: Kettle drums (synthesized)</p>
-      <p>Key M: Snare drum (synthesized)</p>
-      <p>Key K: Hihat (sampled)</p>
+      <p><i>Key Z:</i> Kick drum (synthesized)</p>
+      <p><i>Keys X, C, & V:</i> Kettle drums (synthesized)</p>
+
+      <p><i>Key M:</i> Snare drum (synthesized)</p>
+      <p><i>Key K:</i> Hihat (sampled)</p>
     </main>
 
-    <br />
-    <p><button id="stopBtn">______READY______</button></p>
+    <div class="audioContainer">
+      <fieldset class="audioContainer">
+        <legend>Controls</legend>
+        <p id="recordBtnDescription" role="description">
+          The 'Stop Recording' button is only active when 'recording'
+        </p>
+        <div>
+          <button
+            type="button"
+            aria-disabled="true"
+            aria-describedby="recordBtnDescription"
+            class="btn"
+            id="stopBtn"
+          >
+            _READY_TO_RECORD_
+          </button>
+        </div>
 
-    <audio id="audioTag" controls="true"></audio>
-    <label for="waveTypeValue">Voice</label>
-    <input
-      id="waveTypeValue"
-      name="waveTypeValue"
-      type="range"
-      min="0"
-      max="3"
-      value="0"
-      step="1"
-    />
+        <audio id="audioTag" controls="true"></audio>
+
+        <div class="waveTagContainer">
+          <div>
+            <p>
+              Set The Wave Type:
+              <label class="label" id="waveTypeLabel" for="waveTypeValue"
+                >sine</label
+              >
+            </p>
+          </div>
+
+          <input
+            class="slider"
+            id="waveTypeValue"
+            name="waveTypeValue"
+            type="range"
+            min="0"
+            max="3"
+            value="0"
+            step="1"
+          />
+        </div>
+      </fieldset>
+    </div>
 
     <script src="./src/script.js"></script>
     <script type="module" src="./src/playMusic.js"></script>

@@ -1,7 +1,40 @@
-* {
+:root {
+  /* ****** TYPE SETTINGS ****** */
+  --ff-primary: Verdana, Geneva, Tahoma, sans-serif;
+
+  --spacing: 0.05rem;
+  /* ****** COLOURS ****** */
+
+  /* Reds */
+  --clr-red-1: #d41515;
+
+  /* Yellows */
+  --clr-pastel-y1: #fffabe;
+  --clr-pastel-y2: #fffcdd;
+
+  /* Greens */
+  --clr-green-1: #426b00;
+
+  /* Blues */
+  --clr-Blue-1: #000b6b;
+  --clr-Blue-2: #c3c9ff;
+
+  /* Greys */
+  --clr-grey-1: rgb(47, 45, 61);
+  --clr-grey-2: rgb(56, 54, 71);
+}
+
+*,
+::after,
+::before {
   margin: 0;
   padding: 0;
-  background-color: #1c1524;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--clr-Blue-2);
+  font-size: 16px;
 }
 
 header {
@@ -14,21 +47,79 @@ main {
 }
 
 p {
-  padding: 0.25vw 0 0 1vw;
-  color: rgb(250, 255, 255);
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  line-height: 1.5;
+  padding: 0.5vw 1vw;
+  background-color: var(--clr-pastel-y2);
+  color: rgb(45, 61, 61);
+  font-family: var(--ff-primary);
+  font-weight: 500;
+  line-height: 1.25;
+  display: inline-block;
+  letter-spacing: var(--spacing);
+  border-radius: 4px;
+}
+
+p i {
+  font-weight: 900;
 }
 
 h2 {
   padding: 8px 0px 0px 0px;
-  color: rgb(0, 51, 51);
-  text-shadow: 0.5px 0.5px 0px rgb(107, 114, 131),
-    -1px -1px 0px rgb(163, 147, 103), -1px 1px 0px rgb(163, 147, 103);
-  letter-spacing: 0.15rem;
+  color: var(--clr-grey-1);
+  /* text-shadow: 0.5px 0.5px 0px rgb(107, 114, 131),
+    -1px -1px 0px rgb(163, 147, 103), -1px 1px 0px rgb(163, 147, 103); */
+  letter-spacing: var(--spacing);
 }
 
-button {
-  padding: 2px;
+.btn {
+  padding: 8px;
   color: white;
+  background-color: var(--clr-green-1);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bolder;
+}
+
+[aria-disabled="true"] {
+  opacity: 75%;
+  cursor: auto;
+  pointer-events: none;
+}
+
+.label {
+  /* padding: 0.25vw 0 0 1vw; */
+  color: var(--clr-grey-1);
+  font-family: var(--ff-primary);
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.audioContainer {
+  padding: 1vw;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.audioContainer .btn {
+  margin-top: 1vw;
+}
+
+.audioContainer fieldset {
+  border: 2px solid var(--clr-Blue-1);
+  border-radius: 4px;
+  color: var(--clr-grey-1);
+  font-weight: bold;
+}
+
+.audioContainer legend {
+  border: 1px dotted var(--clr-Blue-1);
+  border-radius: 4px;
+  padding: 0.25rem;
+}
+
+.audioContainer p {
+  margin-top: 0.5rem;
+}
+
+.slider {
+  padding: 0.5rem 0;
 }

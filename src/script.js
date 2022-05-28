@@ -1,6 +1,7 @@
 console.log("Connected to the moon!");
 
 let waveTypeValue = document.getElementById("waveTypeValue");
+const waveTypeLabel = document.getElementById("waveTypeLabel");
 
 // create the context
 const actx = new AudioContext();
@@ -16,7 +17,8 @@ let mainVol = actx.createGain(),
   // Get our audio element from the document
   audioTag = document.getElementById("audioTag"),
   // Get our stop button
-  stopBtn = document.getElementById("stopBtn");
+  stopBtn = document.getElementById("stopBtn"),
+  recordingStopped = false;
 
 // now connect the above
 // We just need to connect our audio graphs to the
@@ -29,6 +31,7 @@ function startRecording() {
   if (recorder.state !== "recording") {
     recorder.start();
 
+    stopBtn.setAttribute("aria-disabled", "false");
     stopBtn.innerHTML = "__Stop__Recording__";
     stopBtn.style.color = "goldenrod";
   }
@@ -43,8 +46,9 @@ function stopRecording() {
 
   recorder.stop();
 
+  stopBtn.setAttribute("aria-disabled", "true");
   stopBtn.innerHTML = "_Recording_Stopped_";
-  stopBtn.style.color = "red";
+  stopBtn.style.backgroundColor = "var(--clr-red-1)";
 }
 
 // attach event listener to the stop button
@@ -61,13 +65,19 @@ stopBtn.addEventListener("click", (e) => {
 
 // ************* Musical Note Generators START ************ \\
 // Set The Wave Type From User Input
+// For keys in general
 window.addEventListener("keydown", keyDownHandler, false);
+
+// For the range slider to select wave type
 waveTypeValue.addEventListener("change", updateWaveType);
-const waveType = ["saw", "triangle", "square", "sawtooth"];
+
+const waveType = ["sine", "triangle", "square", "sawtooth"];
+
 let setWave;
+
 function updateWaveType(e) {
-  console.log(waveType[waveTypeValue.value]);
   setWave = waveType[waveTypeValue.value];
+  waveTypeLabel.innerHTML = setWave;
   return setWave;
 }
 
@@ -235,8 +245,9 @@ function keyDownHandler(event) {
   let key = event.key;
   // Start recording if the 'Space' key is pressed and the
   // recorder's state is not "recording"
-  // console.log(event.code, recorder.state, event);
-  if (key == " ") {
+  // NOTE!!! Functionallity moved from 'Space' key to the 'Control' key to
+  // avoid problems with focus remaining on the stopBtn after being clicked.
+  if (event.ctrlKey && key === "z") {
     if (recorder.state !== "recording") {
       startRecording();
       console.log(recorder.state);
