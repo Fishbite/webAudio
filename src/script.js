@@ -33,7 +33,8 @@ function startRecording() {
 
     stopBtn.setAttribute("aria-disabled", "false");
     stopBtn.innerHTML = "__Stop__Recording__";
-    stopBtn.style.color = "goldenrod";
+    stopBtn.style.color = "var(--clr-silver-2)";
+    stopBtn.style.backgroundColor = "var(--clr-green-1)";
   }
 }
 

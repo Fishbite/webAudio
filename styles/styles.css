@@ -9,19 +9,27 @@
   --clr-red-1: #d41515;
 
   /* Yellows */
+  --clr-pastel-y0: #ffba53;
   --clr-pastel-y1: #fffabe;
   --clr-pastel-y2: #fffcdd;
+
+  --clr-goldenrod-1: goldenrod;
+  --clr-goldenrod-2: rgb(253, 192, 37);
 
   /* Greens */
   --clr-green-1: #426b00;
 
   /* Blues */
   --clr-Blue-1: #000b6b;
+  --clr-Blue-1-1: #33375a;
   --clr-Blue-2: #c3c9ff;
 
   /* Greys */
   --clr-grey-1: rgb(47, 45, 61);
   --clr-grey-2: rgb(56, 54, 71);
+
+  --clr-silver-1: silver;
+  --clr-silver-2: rgb(231, 231, 231);
 }
 
 *,
@@ -48,13 +56,15 @@ main {
 
 p {
   padding: 0.5vw 1vw;
+  margin: 0.25rem 0;
   background-color: var(--clr-pastel-y2);
-  color: rgb(45, 61, 61);
+  color: var(--clr-grey-1);
   font-family: var(--ff-primary);
   font-weight: 500;
   line-height: 1.25;
   display: inline-block;
   letter-spacing: var(--spacing);
+  border: 2px solid var(--clr-silver-1);
   border-radius: 4px;
 }
 
@@ -71,16 +81,18 @@ h2 {
 }
 
 .btn {
-  padding: 8px;
+  padding: 4px;
   color: white;
   background-color: var(--clr-green-1);
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: bolder;
+  border-radius: 4px;
 }
 
 [aria-disabled="true"] {
-  opacity: 75%;
+  background-color: rgb(233, 232, 232);
+  color: var(--clr-grey-1);
   cursor: auto;
   pointer-events: none;
 }
@@ -99,25 +111,35 @@ h2 {
   border-radius: 4px;
 }
 
+.audioContainer p {
+  margin: 0 0 0.5rem 0;
+  border: 1px solid var(--clr-pastel-y0);
+  border-radius: 2px;
+}
+
 .audioContainer .btn {
-  margin-top: 1vw;
+  margin-top: 0.5rem;
+}
+
+.audioContainer audio {
+  margin: 1rem 0;
 }
 
 .audioContainer fieldset {
-  border: 2px solid var(--clr-Blue-1);
+  border: 2px solid var(--clr-silver-2);
   border-radius: 4px;
   color: var(--clr-grey-1);
+  background-color: var(--clr-Blue-1-1);
   font-weight: bold;
 }
 
 .audioContainer legend {
-  border: 1px dotted var(--clr-Blue-1);
+  border: 1px solid var(--clr-silver-2);
   border-radius: 4px;
   padding: 0.25rem;
-}
+  color: var(--clr-silver-2);
 
-.audioContainer p {
-  margin-top: 0.5rem;
+  background-color: var(--clr-Blue-1-1);
 }
 
 .slider {
