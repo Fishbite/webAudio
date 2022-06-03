@@ -61,6 +61,6 @@ window.addEventListener("keydown", keydownHandler, false);
 function keydownHandler(e) {
   if (e.key === "1") {
     playNote(440);
-    setTimeout(stopRecording, 1000);
+    // setTimeout(stopRecording, 1000);
   }
 }
