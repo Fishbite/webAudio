@@ -1,7 +1,11 @@
 console.log("Connected to the moon!");
 
-let waveTypeValue = document.getElementById("waveTypeValue");
+// Get the control stuff from the document
+const waveTypeValue = document.getElementById("waveTypeValue"); // wave form slider
 const waveTypeLabel = document.getElementById("waveTypeLabel");
+const decayTimeValue = document.getElementById("decayTimeValue"); // decay time slider
+const decayTimeLabel = document.getElementById("decayTimeLabel");
+console.log(decayTimeLabel, decayTimeValue);
 
 // create the context
 const actx = new AudioContext();
@@ -9,6 +13,7 @@ const actx = new AudioContext();
 // ************* Live Output Recording Setup START ************ \\
 // Create the things we need to reocord live output from
 // our music generators
+// Connect your audio graphs to this `mainVol` node
 let mainVol = actx.createGain(),
   // create a media stream destination
   streamDest = actx.createMediaStreamDestination(),
@@ -67,14 +72,15 @@ stopBtn.addEventListener("click", (e) => {
 // ************* Musical Note Generators START ************ \\
 // Set The Wave Type From User Input
 // For keys in general
-window.addEventListener("keydown", keyDownHandler, false);
 
 // For the range slider to select wave type
 waveTypeValue.addEventListener("change", updateWaveType);
 
 const waveType = ["sine", "triangle", "square", "sawtooth"];
+decayTimeValue.addEventListener("change", updateDecay, false);
 
-let setWave;
+let setWave,
+  setDecay = 2;
 
 function updateWaveType(e) {
   setWave = waveType[waveTypeValue.value];
@@ -82,12 +88,22 @@ function updateWaveType(e) {
   return setWave;
 }
 
+function updateDecay(e) {
+  setDecay = parseFloat(decayTimeValue.value);
+  decayTimeLabel.innerHTML = setDecay;
+  return setDecay;
+}
+
 // This function just sets default values for oscillator values
 // then runs the create oscillator function
-function playNote(freq = 261.63, type = setWave, decay = 3) {
+let decay = setDecay;
+function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   // Create a new oscillator and audio graph for each keypress
   createOsc(freq, type, decay);
 }
+
+// An object to hold running oscillators
+const runningOscs = {};
 
 // This function creates soft sounding oscilators that use compressors and ramps
 // to take the volume down to zero in order to help eleminate those ugly "clicks"
@@ -104,6 +120,10 @@ function createOsc(freq, type, decay) {
   osc.frequency.value = freq;
   osc.type = type;
 
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+  console.log(runningOscs[freq]);
+
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
   vol.gain.value = 0.1;
@@ -115,10 +135,13 @@ function createOsc(freq, type, decay) {
   // defined in the global scope
   if (mainVol) {
     // Let's get connected!!!!
-    osc.connect(vol).connect(compressor).connect(mainVol);
+    runningOscs[freq].connect(vol).connect(compressor).connect(mainVol);
   } else {
     //create the audio graph
-    osc.connect(vol).connect(compressor).connect(actx.destination);
+    runningOscs[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
   }
 
   // Set the start point of the ramp down
@@ -135,9 +158,10 @@ function createOsc(freq, type, decay) {
   // never actually reaches zero with an exponential ramp down
   vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
 
-  osc.start(actx.currentTime);
-  osc.stop(actx.currentTime + decay + 0.03);
+  runningOscs[freq].start();
+  // osc.stop(actx.currentTime + decay + 0.03);
 }
+
 // ************* Musical Note Generators END ************ \\
 
 // ************* Variables to Hold Musical Notes START ************ \\
@@ -214,11 +238,11 @@ class Octave {
     this.As = a * Math.pow(2, 1 / 12);
     this.B = a * Math.pow(2, 2 / 12);
   }
-  build() {
-    for (let note in this) {
-      console.log("Note:", note, this[note]);
-    }
-  }
+  // build() {
+  //   for (let note in this) {
+  //     console.log("Note:", note, this[note]);
+  //   }
+  // }
 }
 
 // let octave = new Octave(440);
@@ -237,13 +261,39 @@ for (let i = -4; i < 4; i++) {
 console.log("An array of scales", scale);
 // console.log(scale[4].C);
 
+// map of keyboard keys to notes in array scale
+const notes = {
+  q: scale[4].C,
+  2: scale[4].Cs,
+  w: scale[4].D,
+  3: scale[4].Ds,
+  e: scale[4].E,
+  r: scale[4].F,
+  5: scale[4].Fs,
+  t: scale[4].G,
+  6: scale[4].Gs,
+  y: scale[4].A,
+  7: scale[4].As,
+  u: scale[4].B,
+  i: scale[5].C,
+  9: scale[5].Cs,
+  o: scale[5].D,
+  0: scale[5].Ds,
+  p: scale[5].E,
+};
+// console.log(notes["y"]);
+
 // ************* Variables to Hold Musical Notes END ************ \\
 
 // ************* Keyboard Controls START ************ \\
+window.addEventListener("keydown", keyDownHandler, false);
+window, addEventListener("keyup", keyupHandler, false);
 
 function keyDownHandler(event) {
   // let A = arrayOfAs;
   let key = event.key;
+  let freq = notes[key];
+  console.log(key, runningOscs);
   // Start recording if the 'Space' key is pressed and the
   // recorder's state is not "recording"
   // NOTE!!! Functionallity moved from 'Space' key to the 'Control' key to
@@ -255,25 +305,19 @@ function keyDownHandler(event) {
     }
   }
 
-  let s4 = scale[4],
-    s5 = scale[5];
-  // Musical notes
-  if (key === "q") playNote(s4.C);
-  if (key === "2") playNote(s4.Cs);
-  if (key === "w") playNote(s4.D);
-  if (key === "3") playNote(s4.Ds);
-  if (key === "e") playNote(s4.E);
-  if (key === "r") playNote(s4.F);
-  if (key === "5") playNote(s4.Fs);
-  if (key === "t") playNote(s4.G);
-  if (key === "6") playNote(s4.Gs);
-  if (key === "y") playNote(s4.A);
-  if (key === "7") playNote(s4.As);
-  if (key === "u") playNote(s4.B);
-  if (key === "i") playNote(s5.C);
-  if (key === "9") playNote(s5.Cs);
-  if (key === "o") playNote(s5.D);
-  if (key === "0") playNote(s5.Ds);
-  if (key === "p") playNote(s5.E);
+  if (freq && !runningOscs[freq]) {
+    playNote(freq);
+    console.log(freq, runningOscs[freq]);
+  }
+}
+
+function keyupHandler(event) {
+  const key = event.key;
+  const freq = notes[key];
+  if (freq && runningOscs[freq]) {
+    console.log(runningOscs);
+    runningOscs[freq].stop(actx.currentTime + decay + 2);
+    delete runningOscs[freq];
+  }
 }
 // ************* Keyboard Controls END ************ \\
