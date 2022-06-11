@@ -5,7 +5,8 @@ const waveTypeValue = document.getElementById("waveTypeValue"); // wave form sli
 const waveTypeLabel = document.getElementById("waveTypeLabel");
 const decayTimeValue = document.getElementById("decayTimeValue"); // decay time slider
 const decayTimeLabel = document.getElementById("decayTimeLabel");
-console.log(decayTimeLabel, decayTimeValue);
+const octaveValue = document.getElementById("octaveValue");
+const octaveValueLabel = document.getElementById("octaveValueLabel");
 
 // create the context
 const actx = new AudioContext();
@@ -79,8 +80,12 @@ waveTypeValue.addEventListener("change", updateWaveType);
 const waveType = ["sine", "triangle", "square", "sawtooth"];
 decayTimeValue.addEventListener("change", updateDecay, false);
 
+octaveValue.addEventListener("change", updateOctaveValue, false);
+
 let setWave,
-  setDecay = 2;
+  setDecay = 2,
+  setOct = 4,
+  oct = setOct;
 
 function updateWaveType(e) {
   setWave = waveType[waveTypeValue.value];
@@ -90,8 +95,22 @@ function updateWaveType(e) {
 
 function updateDecay(e) {
   setDecay = parseFloat(decayTimeValue.value);
+
   decayTimeLabel.innerHTML = setDecay;
   return setDecay;
+}
+
+function updateOctaveValue(e) {
+  setOct = parseFloat(octaveValue.value);
+
+  octaveValueLabel.innerHTML = setOct;
+  console.log("`oct` value:", setOct);
+
+  oct = setOct;
+  console.log("oct has been set:", oct);
+  console.log(notes.y);
+
+  // return oct;
 }
 
 // This function just sets default values for oscillator values
@@ -108,7 +127,7 @@ const runningOscs = {};
 // This function creates soft sounding oscilators that use compressors and ramps
 // to take the volume down to zero in order to help eleminate those ugly "clicks"
 // We are recording these better sounds
-function createOsc(freq, type, decay) {
+function createOsc(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
   // create oscillator, gain and compressor nodes
@@ -122,11 +141,11 @@ function createOsc(freq, type, decay) {
 
   // copy the osc to the runningOscs object
   runningOscs[freq] = osc;
-  console.log(runningOscs[freq]);
+  // console.log(runningOscs[freq]);
 
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
-  vol.gain.value = 0.1;
+  vol.gain.value = 1;
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
@@ -164,7 +183,7 @@ function createOsc(freq, type, decay) {
 
 // ************* Musical Note Generators END ************ \\
 
-// ************* Variables to Hold Musical Notes START ************ \\
+// ************* The Musical Notes Bit! ************ \\
 // Some musical note values:
 // let C4 = 261.63,
 //   D4 = 293.66,
@@ -246,7 +265,7 @@ class Octave {
 }
 
 // let octave = new Octave(440);
-// console.log(octave.build());
+// console.log(Octave.build);
 
 const A4 = 440;
 let scale = [];
@@ -258,30 +277,99 @@ for (let i = -4; i < 4; i++) {
   scale.push(octave);
 }
 
-console.log("An array of scales", scale);
 // console.log(scale[4].C);
+console.log(scale);
 
 // map of keyboard keys to notes in array scale
+// let oct = setOct;
 const notes = {
-  q: scale[4].C,
-  2: scale[4].Cs,
-  w: scale[4].D,
-  3: scale[4].Ds,
-  e: scale[4].E,
-  r: scale[4].F,
-  5: scale[4].Fs,
-  t: scale[4].G,
-  6: scale[4].Gs,
-  y: scale[4].A,
-  7: scale[4].As,
-  u: scale[4].B,
-  i: scale[5].C,
-  9: scale[5].Cs,
-  o: scale[5].D,
-  0: scale[5].Ds,
-  p: scale[5].E,
+  // q: scale[oct].C,
+  // Use getter functions so that the
+  // current value of `oct` is read
+  get q() {
+    console.log(`C${oct}`);
+    return scale[oct].C;
+  },
+  // 2: scale[oct].Cs,
+  get 2() {
+    console.log(`C${oct}#`);
+    return scale[oct].Cs;
+  },
+  // w: scale[oct].D,
+  get w() {
+    console.log(`D${oct}`);
+    return scale[oct].D;
+  },
+  // 3: scale[oct].Ds,
+  get 3() {
+    console.log(`D${oct}#`);
+    return scale[oct].Ds;
+  },
+  // e: scale[oct].E,
+  get e() {
+    console.log(`E${oct}`);
+    return scale[oct].E;
+  },
+  // r: scale[oct].F,
+  get r() {
+    console.log(`F${oct}`);
+    return scale[oct].F;
+  },
+  // 5: scale[oct].Fs,
+  get 5() {
+    console.log(`F${oct}#`);
+    return scale[oct].Fs;
+  },
+  // t: scale[oct].G,
+  get t() {
+    console.log(`G${oct}`);
+    return scale[oct].G;
+  },
+  // 6: scale[oct].Gs,
+  get 6() {
+    console.log(`G${oct}#`);
+    return scale[oct].Gs;
+  },
+  get y() {
+    console.log(`A${oct}`);
+    return scale[oct].A;
+  },
+  // 7: scale[oct].As,
+  get 7() {
+    console.log(`A${oct}#`);
+    return scale[oct].As;
+  },
+  // u: scale[oct].B,
+  get u() {
+    console.log(`B${oct}`);
+    return scale[oct].B;
+  },
+  // i: scale[oct + 1].C,
+  get i() {
+    console.log(`C${oct + 1}`);
+    if (scale[oct + 1]) return scale[oct + 1].C;
+  },
+  // 9: scale[oct + 1].Cs,
+  get 9() {
+    console.log(`C${oct + 1}#`);
+    if (scale[oct + 1]) return scale[oct + 1].Cs;
+  },
+  // o: scale[oct + 1].D,
+  get o() {
+    console.log(`D${oct + 1}`);
+    if (scale[oct + 1]) return scale[oct + 1].D;
+  },
+  // 0: scale[oct + 1].Ds,
+  get 0() {
+    console.log(`D${oct + 1}#`);
+    if (scale[oct + 1]) return scale[oct + 1].Ds;
+  },
+  // p: scale[oct + 1].E,
+  get p() {
+    console.log(`E${oct + 1}`);
+    if (scale[oct + 1]) return scale[oct + 1].E;
+  },
 };
-// console.log(notes["y"]);
 
 // ************* Variables to Hold Musical Notes END ************ \\
 
@@ -293,7 +381,6 @@ function keyDownHandler(event) {
   // let A = arrayOfAs;
   let key = event.key;
   let freq = notes[key];
-  console.log(key, runningOscs);
   // Start recording if the 'Space' key is pressed and the
   // recorder's state is not "recording"
   // NOTE!!! Functionallity moved from 'Space' key to the 'Control' key to
@@ -307,7 +394,7 @@ function keyDownHandler(event) {
 
   if (freq && !runningOscs[freq]) {
     playNote(freq);
-    console.log(freq, runningOscs[freq]);
+    // console.log("`oct` value:", oct);
   }
 }
 
@@ -315,7 +402,7 @@ function keyupHandler(event) {
   const key = event.key;
   const freq = notes[key];
   if (freq && runningOscs[freq]) {
-    console.log(runningOscs);
+    // console.log(runningOscs);
     runningOscs[freq].stop(actx.currentTime + decay + 2);
     delete runningOscs[freq];
   }
