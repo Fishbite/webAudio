@@ -84,8 +84,7 @@ octaveValue.addEventListener("change", updateOctaveValue, false);
 
 let setWave,
   setDecay = 2,
-  setOct = 4,
-  oct = setOct;
+  oct = 4;
 
 function updateWaveType(e) {
   setWave = waveType[waveTypeValue.value];
@@ -101,12 +100,11 @@ function updateDecay(e) {
 }
 
 function updateOctaveValue(e) {
-  setOct = parseFloat(octaveValue.value);
+  oct = parseFloat(octaveValue.value);
 
-  octaveValueLabel.innerHTML = setOct;
-  console.log("`oct` value:", setOct);
+  octaveValueLabel.innerHTML = oct;
+  console.log("`oct` value:", oct);
 
-  oct = setOct;
   console.log("oct has been set:", oct);
   console.log(notes.y);
 
@@ -281,7 +279,6 @@ for (let i = -4; i < 4; i++) {
 console.log(scale);
 
 // map of keyboard keys to notes in array scale
-// let oct = setOct;
 const notes = {
   // q: scale[oct].C,
   // Use getter functions so that the
@@ -385,7 +382,7 @@ function keyDownHandler(event) {
   // recorder's state is not "recording"
   // NOTE!!! Functionallity moved from 'Space' key to the 'Control' key to
   // avoid problems with focus remaining on the stopBtn after being clicked.
-  if (event.ctrlKey && key === "z") {
+  if (event.altKey && key === "z") {
     if (recorder.state !== "recording") {
       startRecording();
       console.log(recorder.state);
@@ -408,3 +405,6 @@ function keyupHandler(event) {
   }
 }
 // ************* Keyboard Controls END ************ \\
+
+globalThis.test = "Arse";
+console.log(globalThis.test);
