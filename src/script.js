@@ -406,5 +406,7 @@ function keyupHandler(event) {
 }
 // ************* Keyboard Controls END ************ \\
 
-globalThis.test = "Arse";
-console.log(globalThis.test);
+globalThis.TEST = "Arse";
+const TEST = 1234;
+let test = "Hole";
+console.log(globalThis.TEST + test, TEST, globalThis);
