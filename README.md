@@ -37,4 +37,4 @@ to get involved just DM me, fork the repo', do some cool stuff, do a pull reques
 
 ## Open Source
 That's the question, do we make this an open source project, or, do we license it
-some other way?
+some other way? We are all ears on this topic!
