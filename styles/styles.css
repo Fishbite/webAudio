@@ -46,6 +46,10 @@ body {
   position: relative;
 }
 
+main {
+  margin-top: 3rem;
+}
+
 .headWrap {
   position: sticky;
   top: 0;
@@ -127,7 +131,7 @@ header {
 }
 
 p {
-  padding: 0.5vw 1vw;
+  padding: 2rem 4rem;
   margin: 0.25rem 0;
   background-color: var(--clr-pastel-y2);
   color: var(--clr-grey-1);
@@ -137,7 +141,7 @@ p {
   display: inline-block;
   letter-spacing: var(--spacing);
   border: 2px solid var(--clr-silver-1);
-  border-radius: 4px;
+  border-radius: 4rem;
 }
 
 p i {
