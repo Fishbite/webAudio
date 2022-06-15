@@ -1,24 +1,25 @@
-# The Synth Dude
+# Da Synth Dude
 
-**The Synth Dude** has been built using the Web Audio API and is unique in as much as
+**Da Synth Dude** has been built using the Web Audio API and is unique in as much as
 it allows the user to record the music they are creating directly from the running
 oscillators, rather than though a microphone.
 
 The project is in its infancy, but we do have a machine that allows you to do the
 following:
 
- - Play musical notes from a range of twelve octaves:- 0 through 7 as on a full size
+- Play musical notes from a range of twelve octaves:- 0 through 7 as on a full size
   keyboard
- - Change the octave, wave and decay of the notes to create different voices
- - Play a range of drums: Kick, Kettle, Snare, Hi-hat
- - Play pre-recorded music to play along side with
- - Record as you play including the ability to record on top of pre-reorcded music that
+- Change the octave, wave and decay of the notes to create different voices
+- Play a range of drums: Kick, Kettle, Snare, Hi-hat
+- Play pre-recorded music to play along side with
+- Record as you play including the ability to record on top of pre-reorcded music that
   that you are playing along to.
- - Download the recording directly from the Audio Player for editing etc.
+- Download the recording directly from the Audio Player for editing etc.
 
 This could be the start of something great!
 
 ## The State of Play
+
 At the moment, the user has no direct way to upload the musical composition that they
 have created. However, the file can be saved as **music.wav** in the **audio folder.**
 That file can then be played back via the **Pre-Recorded Music** function of the UI.
@@ -32,9 +33,11 @@ played via the GUI, At present, the app only looks for one file **music.wav** an
 the only file that can be played, however, it can be overwritten as stated above.
 
 ## Collaborators
+
 We'd love to have anyone interested in music contribute to this project. If you'd like
 to get involved just DM me, fork the repo', do some cool stuff, do a pull request :¬)
 
 ## Open Source
+
 That's the question, do we make this an open source project, or, do we license it
 some other way? We are all ears on this topic!
