@@ -1,11 +1,37 @@
 console.log("Connected to the moon!");
 
+/*
+  This is the main file that sets up the recording facitliy to enable
+  live recording of oscillators and pre-recorded music i.e. The user
+  can record music as they play it, play that music back and record
+  additional musical compsition on top of that, such as the addition
+  of drums, percusion, other voices etc.
+
+  The file also computes note frequencies and sets up the keyboard
+  to play musical notes as heard on electronic keyboard & pianos.
+
+  Connection to the user interface is also established in here. That
+  gives the user the ability to change some attributes of the notes:
+
+    * Decay - the duration of the note/s to be played
+
+    * Wave Form - sine, traingle, square & sawtooth
+
+    * Octave value - to give facilitate the full range of notes
+      from octave 0 through to octave 7
+
+  ****** This File Must Be Loaded First So That Other ******
+  ******    Files Can Connect Other Audio Graphs To   ******
+  ****** The Global Audio Context & The Recording Chain ******
+
+*/
+
 // Get the control stuff from the document
 const waveTypeValue = document.getElementById("waveTypeValue"); // wave form slider
 const waveTypeLabel = document.getElementById("waveTypeLabel");
 const decayTimeValue = document.getElementById("decayTimeValue"); // decay time slider
 const decayTimeLabel = document.getElementById("decayTimeLabel");
-const octaveValue = document.getElementById("octaveValue");
+const octaveValue = document.getElementById("octaveValue"); // octave value slider
 const octaveValueLabel = document.getElementById("octaveValueLabel");
 
 // create the context
@@ -16,7 +42,7 @@ const actx = new AudioContext();
 // our music generators
 // Connect your audio graphs to this `mainVol` node
 let mainVol = actx.createGain(),
-  // create a media stream destination
+  // create a media stream destination node
   streamDest = actx.createMediaStreamDestination(),
   // create a recorder and connect it to the stream
   recorder = new MediaRecorder(streamDest.stream),
@@ -405,8 +431,3 @@ function keyupHandler(event) {
   }
 }
 // ************* Keyboard Controls END ************ \\
-
-globalThis.TEST = "Arse";
-const TEST = 1234;
-let test = "Hole";
-console.log(globalThis.TEST + test, TEST, globalThis);
