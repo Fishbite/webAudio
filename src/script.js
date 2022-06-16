@@ -394,7 +394,7 @@ const notes = {
   },
 };
 
-// ************* Variables to Hold Musical Notes END ************ \\
+// ************* The Musical Notes Bit END ************ \\
 
 // ************* Keyboard Controls START ************ \\
 window.addEventListener("keydown", keyDownHandler, false);
@@ -431,3 +431,19 @@ function keyupHandler(event) {
   }
 }
 // ************* Keyboard Controls END ************ \\
+
+/* ****** File Upload Handling START ****** */
+/* ****** show the upload file details in the GUI ****** */
+
+const selectedFile = document.getElementById("fileupload");
+const fileSize = document.getElementById("fileSize");
+
+selectedFile.addEventListener("change", handleChange, false);
+console.log(selectedFile);
+
+function handleChange(e) {
+  //   console.log(Math.ceil(selectedFile.files[0].size / 1024));
+  fileSize.innerHTML = Math.ceil(selectedFile.files[0].size / 1024);
+}
+
+/* ****** File Upload Handling END ****** */
