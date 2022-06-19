@@ -3,9 +3,15 @@ console.log("Connected to the moon!");
 /*
   This is the main file that sets up the recording facitliy to enable
   live recording of oscillators and pre-recorded music i.e. The user
-  can record music as they play it, play that music back and record
+  can record music as they play it, play that music back and play
   additional musical compsition on top of that, such as the addition
   of drums, percusion, other voices etc.
+
+  The user can download the recording, edit it using some software to
+  trim the begining and end, for example...
+  
+  ...and then UPLOAD IT and RECORD ON TOP OF THAT! Yeah!!!
+  OK! That's a TODO, but we is working on it :¬/
 
   The file also computes note frequencies and sets up the keyboard
   to play musical notes as heard on electronic keyboard & pianos.
@@ -432,18 +438,103 @@ function keyupHandler(event) {
 }
 // ************* Keyboard Controls END ************ \\
 
-/* ****** File Upload Handling START ****** */
-/* ****** show the upload file details in the GUI ****** */
+/* ************* File Upload Handling START ************* */
+/*
+    Turns out that the file `type` property just reads the
+    file extension to give the file type, which is PANTS
 
-const selectedFile = document.getElementById("fileupload");
-const fileSize = document.getElementById("fileSize");
+    So we're gonna have to look at the first four bytes
+    in the actual file to establish what it is ugh!
+
+    Easy is not secure ======================== is true!
+*/
+
+/* ****** show the upload file details in the GUI ****** */
+const selectedFile = document.getElementById("fileupload"); // the file to be uploaded
+const fileSizeTag = document.getElementById("fileSize"); // span to write size
+const fileTypeTag = document.getElementById("fileType"); // span to write type
+const hexTag = document.getElementById("hexTag");
+const uploadBtn = document.getElementById("uploadBtn"); // UPLOAD BUTTON!!!!!
 
 selectedFile.addEventListener("change", handleChange, false);
-console.log(selectedFile);
 
 function handleChange(e) {
-  //   console.log(Math.ceil(selectedFile.files[0].size / 1024));
-  fileSize.innerHTML = Math.ceil(selectedFile.files[0].size / 1024);
+  const file = selectedFile.files[0];
+  const sizeLimit = 1024 * 2000;
+  let hex = "";
+
+  const disableBtn = () => {
+    uploadBtn.setAttribute("aria-disabled", "true");
+    uploadBtn.innerHTML = "DISABLED";
+  };
+
+  const enableBtn = () => {
+    uploadBtn.setAttribute("aria-disabled", "false");
+    uploadBtn.innerHTML = "upload";
+  };
+
+  // ****** Lets Read the Bytes ****** \\
+  // Magic Numbers = first four bytes of the file
+  // Start a timer to track how long the operation takes
+  // Syntax `.time("UniqueNameOfTimer")`
+  console.time("FileOpen");
+
+  // create a  new `FileReader` instance
+  const fileReader = new FileReader();
+
+  fileReader.onloadend = (e) => {
+    if (e.target.readyState === FileReader.DONE) {
+      const uInt8 = new Uint8Array(e.target.result);
+      console.log("uInt8", uInt8);
+      let bytes = [];
+      uInt8.forEach((byte) => {
+        console.log(byte.toString(16));
+        bytes.push(byte.toString(16));
+        console.log("bytes: ", bytes);
+      });
+
+      hex = bytes.join("").toUpperCase();
+      console.log(typeof hex, hex);
+      hexTag.innerHTML = `HEX: ${hex}`;
+    }
+    console.timeEnd("FileOpen");
+  };
+
+  const blob = file.slice(0, 4);
+  fileReader.readAsArrayBuffer(blob);
+
+  console.log(file.type === "audio/wav");
+  fileSizeTag.innerHTML = Math.ceil(file.size / 1024, " KB");
+  fileTypeTag.innerHTML = file.type;
+
+  if (file.type !== "audio/wav") {
+    disableBtn();
+
+    console.log(
+      "Sorry Dude, only .wav file types allowed. Upload has been disabled :¬/"
+    );
+  } else if (file.type === "audio/wav" && file.size <= sizeLimit) {
+    enableBtn();
+  }
+
+  if (file.size > sizeLimit) {
+    disableBtn();
+
+    console.log(
+      "File size MUST BE LESS than 2Meg man! Upload has been disabled"
+    );
+  } else if (file.size <= sizeLimit && file.type === "audio/wav") {
+    enableBtn();
+  }
 }
 
-/* ****** File Upload Handling END ****** */
+const getMimetype = (signature) => {
+  switch (signature) {
+    case "52494646":
+      return "audio/wav";
+  }
+};
+
+console.log(getMimetype("52494646"));
+
+/* ************* File Upload Handling END ************* */
