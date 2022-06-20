@@ -450,10 +450,11 @@ function keyupHandler(event) {
 */
 
 /* ****** show the upload file details in the GUI ****** */
-const selectedFile = document.getElementById("fileupload"); // the file to be uploaded
+const selectedFile = document.getElementById("fileupload"); // Input tag for file upload
+
 const fileSizeTag = document.getElementById("fileSize"); // span to write size
 const fileTypeTag = document.getElementById("fileType"); // span to write type
-const hexTag = document.getElementById("hexTag");
+const hexTag = document.getElementById("hexTag"); // span to wrote magic numbers
 const uploadBtn = document.getElementById("uploadBtn"); // UPLOAD BUTTON!!!!!
 
 selectedFile.addEventListener("change", handleChange, false);
@@ -461,7 +462,6 @@ selectedFile.addEventListener("change", handleChange, false);
 function handleChange(e) {
   const file = selectedFile.files[0];
   const sizeLimit = 1024 * 2000;
-  let hex = "";
 
   const disableBtn = () => {
     uploadBtn.setAttribute("aria-disabled", "true");
@@ -493,16 +493,28 @@ function handleChange(e) {
         console.log("bytes: ", bytes);
       });
 
-      hex = bytes.join("").toUpperCase();
+      const hex = bytes.join("").toUpperCase();
+
+      // ****** Test File OK To Upload ****** \\
       console.log(typeof hex, hex);
-      hexTag.innerHTML = `HEX: ${hex}`;
+      console.log(getMimetype(hex) === "audio/wav", file.size <= sizeLimit);
+      if (getMimetype(hex) === "audio/wav" && file.size <= sizeLimit) {
+        console.log("upload enabled");
+        enableBtn();
+      } else {
+        console.log("upload disabled");
+        disableBtn();
+      }
     }
+
     console.timeEnd("FileOpen");
   };
 
   const blob = file.slice(0, 4);
   fileReader.readAsArrayBuffer(blob);
 
+  // This lot is Not necessary to validate
+  // it's just updating the GUI
   console.log(file.type === "audio/wav");
   fileSizeTag.innerHTML = Math.ceil(file.size / 1024, " KB");
   fileTypeTag.innerHTML = file.type;
@@ -532,6 +544,8 @@ const getMimetype = (signature) => {
   switch (signature) {
     case "52494646":
       return "audio/wav";
+    case "4F676753":
+      return "audio/ogg";
   }
 };
 
