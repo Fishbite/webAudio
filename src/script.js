@@ -505,9 +505,14 @@ function handleChange(e) {
         console.log("upload disabled");
         disableBtn();
       }
-    }
 
-    console.timeEnd("FileOpen");
+      // ****** Write to the GUI ****** \\
+      fileSizeTag.innerHTML = Math.ceil(file.size / 1024, " KB");
+      fileTypeTag.innerHTML = getMimetype(hex);
+
+      // End the timer
+      console.timeEnd("FileOpen");
+    }
   };
 
   const blob = file.slice(0, 4);
@@ -515,39 +520,40 @@ function handleChange(e) {
 
   // This lot is Not necessary to validate
   // it's just updating the GUI
-  console.log(file.type === "audio/wav");
-  fileSizeTag.innerHTML = Math.ceil(file.size / 1024, " KB");
-  fileTypeTag.innerHTML = file.type;
+  // console.log(file.type === "audio/wav");
+  // fileSizeTag.innerHTML = Math.ceil(file.size / 1024, " KB");
+  // fileTypeTag.innerHTML = file.type;
 
-  if (file.type !== "audio/wav") {
-    disableBtn();
+  // if (file.type !== "audio/wav") {
+  //   disableBtn();
 
-    console.log(
-      "Sorry Dude, only .wav file types allowed. Upload has been disabled :¬/"
-    );
-  } else if (file.type === "audio/wav" && file.size <= sizeLimit) {
-    enableBtn();
-  }
+  //   console.log(
+  //     "Sorry Dude, only .wav file types allowed. Upload has been disabled :¬/"
+  //   );
+  // } else if (file.type === "audio/wav" && file.size <= sizeLimit) {
+  //   enableBtn();
+  // }
 
-  if (file.size > sizeLimit) {
-    disableBtn();
+  // if (file.size > sizeLimit) {
+  //   disableBtn();
 
-    console.log(
-      "File size MUST BE LESS than 2Meg man! Upload has been disabled"
-    );
-  } else if (file.size <= sizeLimit && file.type === "audio/wav") {
-    enableBtn();
-  }
+  //   console.log(
+  //     "File size MUST BE LESS than 2Meg man! Upload has been disabled"
+  //   );
+  // } else if (file.size <= sizeLimit && file.type === "audio/wav") {
+  //   enableBtn();
+  // }
 }
 
-const getMimetype = (signature) => {
+// Define audio files for validation and info for GUI
+function getMimetype(signature) {
   switch (signature) {
     case "52494646":
       return "audio/wav";
     case "4F676753":
       return "audio/ogg";
   }
-};
+}
 
 console.log(getMimetype("52494646"));
 
