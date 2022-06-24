@@ -1,6 +1,12 @@
 console.log("Recorder connected.....YippeeAyYaaay!");
 
-/* ****** Code Below Provided By MDN web docs ****** 
+/* // ****** LICENSE NOTICE ****** \\
+    COPYRIGHT: 2022 Stuart Peel 
+    This PROGRAM is distributed under the terms of the:
+    AGPL-3.0-or-later
+*/
+
+/* ****** Code Below Provided By MDN web docs START ****** 
 
 https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createMediaStreamDestination
 
@@ -43,6 +49,8 @@ function init() {
     document.querySelector("audio").src = URL.createObjectURL(blob);
   };
 }
+
+/* ****** Code Above Provided By MDN web docs END ****** */
 
 function setup() {
   ac = new AudioContext();

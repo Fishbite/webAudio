@@ -1,3 +1,9 @@
+/* // ****** LICENSE NOTICE ****** \\
+    COPYRIGHT: 2022 Stuart Peel 
+    This PROGRAM is distributed under the terms of the:
+    AGPL-3.0-or-later
+*/
+
 console.log("test.js connected");
 
 const actx = new AudioContext();

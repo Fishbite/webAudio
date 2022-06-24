@@ -1,5 +1,11 @@
 console.log("Connected to the moon!");
 
+/* // ****** LICENSE NOTICE ****** \\
+      COPYRIGHT: 2022 Stuart Peel 
+      This PROGRAM is distributed under the terms of the:
+      AGPL-3.0-or-later
+*/
+
 /*
   This is the main file that sets up the recording facitliy to enable
   live recording of oscillators and pre-recorded music i.e. The user
@@ -31,14 +37,6 @@ console.log("Connected to the moon!");
   ****** The Global Audio Context & The Recording Chain ******
 
 */
-
-// Get the control stuff from the document
-const waveTypeValue = document.getElementById("waveTypeValue"); // wave form slider
-const waveTypeLabel = document.getElementById("waveTypeLabel");
-const decayTimeValue = document.getElementById("decayTimeValue"); // decay time slider
-const decayTimeLabel = document.getElementById("decayTimeLabel");
-const octaveValue = document.getElementById("octaveValue"); // octave value slider
-const octaveValueLabel = document.getElementById("octaveValueLabel");
 
 // create the context
 const actx = new AudioContext();
@@ -102,9 +100,14 @@ stopBtn.addEventListener("click", (e) => {
 
 // ************* Live Output Recording Setup END ************ \\
 
-// ************* Musical Note Generators START ************ \\
-// Set The Wave Type From User Input
-// For keys in general
+// ************* GUI Slider Controls START ************ \\
+// Get the slider control elements from the document
+const waveTypeValue = document.getElementById("waveTypeValue"); // wave form slider
+const waveTypeLabel = document.getElementById("waveTypeLabel");
+const decayTimeValue = document.getElementById("decayTimeValue"); // decay time slider
+const decayTimeLabel = document.getElementById("decayTimeLabel");
+const octaveValue = document.getElementById("octaveValue"); // octave value slider
+const octaveValueLabel = document.getElementById("octaveValueLabel");
 
 // For the range slider to select wave type
 waveTypeValue.addEventListener("change", updateWaveType);
@@ -139,10 +142,10 @@ function updateOctaveValue(e) {
 
   console.log("oct has been set:", oct);
   console.log(notes.y);
-
-  // return oct;
 }
+// ************* GUI Slider Controls END ************ \\
 
+// ************* Musical Note Generators START ************ \\
 // This function just sets default values for oscillator values
 // then runs the create oscillator function
 let decay = setDecay;
@@ -213,7 +216,7 @@ function createOsc(freq, type = "sine", decay) {
 
 // ************* Musical Note Generators END ************ \\
 
-// ************* The Musical Notes Bit! ************ \\
+// ************* The Musical Notes Bit! START ************ \\
 // Some musical note values:
 // let C4 = 261.63,
 //   D4 = 293.66,
@@ -272,6 +275,8 @@ function createOsc(freq, type = "sine", decay) {
                = -9/12 steps = 440 * ((2)^1/12)^-9 = 261.63...Hz
 
 */
+
+// Class to define an Octave template
 class Octave {
   constructor(a) {
     this.C = a * Math.pow(2, -9 / 12);
@@ -297,9 +302,10 @@ class Octave {
 // let octave = new Octave(440);
 // console.log(Octave.build);
 
-const A4 = 440;
-let scale = [];
+const A4 = 440; // frequency in Hz
+let scale = []; // Array to hold all octaves
 
+// Create each octave and push it to the `scale` array
 for (let i = -4; i < 4; i++) {
   let a = A4 * Math.pow(2, i);
   let octave = new Octave(a);
@@ -310,6 +316,9 @@ for (let i = -4; i < 4; i++) {
 // console.log(scale[4].C);
 console.log(scale);
 
+// ************* The Musical Notes Bit! END ************ \\
+
+// ************* Keyboard Keys That Play Notes: START ************ \\
 // map of keyboard keys to notes in array scale
 const notes = {
   // q: scale[oct].C,
@@ -400,9 +409,9 @@ const notes = {
   },
 };
 
-// ************* The Musical Notes Bit END ************ \\
+// ************* Keyboard Keys That Play Notes: END ************ \\
 
-// ************* Keyboard Controls START ************ \\
+// ************* Keyboard Event Listeners START ************ \\
 window.addEventListener("keydown", keyDownHandler, false);
 window, addEventListener("keyup", keyupHandler, false);
 
@@ -410,9 +419,9 @@ function keyDownHandler(event) {
   // let A = arrayOfAs;
   let key = event.key;
   let freq = notes[key];
-  // Start recording if the 'Space' key is pressed and the
+  // Start recording if the ALT+Z keys are pressed and the
   // recorder's state is not "recording"
-  // NOTE!!! Functionallity moved from 'Space' key to the 'Control' key to
+  // NOTE!!! Functionallity moved from 'Space' key to the 'ALT' key to
   // avoid problems with focus remaining on the stopBtn after being clicked.
   if (event.altKey && key === "z") {
     if (recorder.state !== "recording") {
@@ -423,7 +432,6 @@ function keyDownHandler(event) {
 
   if (freq && !runningOscs[freq]) {
     playNote(freq);
-    // console.log("`oct` value:", oct);
   }
 }
 
@@ -436,7 +444,7 @@ function keyupHandler(event) {
     delete runningOscs[freq];
   }
 }
-// ************* Keyboard Controls END ************ \\
+// ************* Keyboard Event Listeners START ************ \\
 
 /* ************* File Upload Handling START ************* */
 /*
@@ -454,7 +462,7 @@ const selectedFile = document.getElementById("fileupload"); // Input tag for fil
 
 const fileSizeTag = document.getElementById("fileSize"); // span to write size
 const fileTypeTag = document.getElementById("fileType"); // span to write type
-const hexTag = document.getElementById("hexTag"); // span to wrote magic numbers
+const hexTag = document.getElementById("hexTag"); // span to write magic numbers
 const uploadBtn = document.getElementById("uploadBtn"); // UPLOAD BUTTON!!!!!
 
 selectedFile.addEventListener("change", handleChange, false);
@@ -517,32 +525,6 @@ function handleChange(e) {
 
   const blob = file.slice(0, 4);
   fileReader.readAsArrayBuffer(blob);
-
-  // This lot is Not necessary to validate
-  // it's just updating the GUI
-  // console.log(file.type === "audio/wav");
-  // fileSizeTag.innerHTML = Math.ceil(file.size / 1024, " KB");
-  // fileTypeTag.innerHTML = file.type;
-
-  // if (file.type !== "audio/wav") {
-  //   disableBtn();
-
-  //   console.log(
-  //     "Sorry Dude, only .wav file types allowed. Upload has been disabled :¬/"
-  //   );
-  // } else if (file.type === "audio/wav" && file.size <= sizeLimit) {
-  //   enableBtn();
-  // }
-
-  // if (file.size > sizeLimit) {
-  //   disableBtn();
-
-  //   console.log(
-  //     "File size MUST BE LESS than 2Meg man! Upload has been disabled"
-  //   );
-  // } else if (file.size <= sizeLimit && file.type === "audio/wav") {
-  //   enableBtn();
-  // }
 }
 
 // Define audio files for validation and info for GUI

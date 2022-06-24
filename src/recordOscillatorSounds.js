@@ -1,5 +1,11 @@
 console.log("YeeeHaaa!");
 
+/* // ****** LICENSE NOTICE ****** \\
+    COPYRIGHT: 2022 Stuart Peel 
+    This PROGRAM is distributed under the terms of the:
+    AGPL-3.0-or-later
+*/
+
 /*
     This file is the first successful attempt to
     record oscillators with the MediaRecorder.
