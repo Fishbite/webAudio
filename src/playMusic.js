@@ -1,5 +1,11 @@
 console.log("yeah! Landed!");
 
+/* // ****** LICENSE NOTICE ****** \\
+    COPYRIGHT: 2022 Stuart Peel 
+    This PROGRAM is distributed under the terms of the:
+    AGPL-3.0-or-later
+*/
+
 // ****** NOTE: script.js MUST BE LOADED ****** {{
 // This commented out stuff is loaded via script.js
 
