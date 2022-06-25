@@ -219,7 +219,6 @@ h2 {
   padding: 0.25rem;
   margin-left: 0.5rem;
   color: var(--clr-silver-2);
-
   background-color: var(--clr-Blue-1-1);
 }
 
@@ -251,4 +250,8 @@ h2 {
   font-family: var(--ff-primary);
   font-weight: bold;
   line-height: 1.5;
+}
+
+.echoLegend {
+  margin-top: 0.45rem;
 }

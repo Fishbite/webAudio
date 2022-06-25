@@ -40,7 +40,7 @@ let panNode = actx.createStereoPanner();
 
 // Load the sound \\
 let xhr = new XMLHttpRequest();
-xhr.open("GET", "../audio/music.wav", true); // true: load asynchronously, create event
+xhr.open("GET", "../upload/music.wav", true); // true: load asynchronously, create event
 
 // load as a binary file with responsType `arraybuffer`
 xhr.responseType = "arraybuffer";
@@ -150,30 +150,42 @@ class Kick {
   }
 }
 
-// Lets see what our `soundEffect ` function can do?
+// Lets see what our `soundEffects` function can do?
 // Sounds more like a kettle drum because we have a
 // `linearRampToValue` not an `exponentialRampToValue`
+const echoValue = document.getElementById("echoValue"); // echo slider
+const echoValueLable = document.getElementById("echoValueLabel"); // echo slider label
+
+echoValue.addEventListener("change", updateEcho, false);
+
+function updateEcho(e) {
+  let val = parseFloat(echoValue.value);
+  echoValueLable.innerHTML = val;
+  setEcho = [val, val, 2000];
+}
+
+let setEcho = [0, 0, 2000];
 import { soundEffect } from "../lib/soundToRecorder.js";
-function kettle1() {
+function kettle1(echo = setEcho) {
   soundEffect(
     110, // 110 = A2
     0,
     0.5,
     "sine",
     0.5,
-    0,
+    -0.5,
     0,
     0,
     false,
     0,
     0,
-    undefined,
-    undefined,
+    echo, //echo array: [delay, feedback, filter],
+    undefined, //reverb array: [duration, decay, reverse?]
     mainVol
   );
 }
 
-function kettle2() {
+function kettle2(echo = setEcho) {
   soundEffect(
     82.41, // 82.41 = E2
     0,
@@ -186,27 +198,27 @@ function kettle2() {
     false,
     0,
     0,
-    undefined,
-    undefined,
+    echo, //echo array: [delay, feedback, filter],
+    undefined, //reverb array: [duration, decay, reverse?]
     mainVol
   );
 }
 
-function kettle3() {
+function kettle3(echo = setEcho) {
   soundEffect(
     61.74, // 61.74 = B1
     0,
     0.5,
     "sine",
     0.5,
-    0,
+    0.5,
     0,
     0,
     false,
     0,
     0,
-    undefined,
-    undefined,
+    echo, //echo array: [delay, feedback, filter],
+    undefined, //reverb array: [duration, decay, reverse?]
     mainVol
   );
 }
@@ -336,7 +348,7 @@ function setup() {
           soundNode.loop = true;
 
           let volumeNode = actx.createGain();
-          volumeNode.gain.value = 0.15;
+          volumeNode.gain.value = 2;
 
           // Connect to the recording chain
           if (mainVol) {
@@ -359,7 +371,7 @@ function setup() {
           soundNode.buffer = soundBuffer;
 
           let volumeNode = actx.createGain();
-          volumeNode.gain.value = 0.2;
+          volumeNode.gain.value = 2;
 
           panNode.pan.value = -1;
 
