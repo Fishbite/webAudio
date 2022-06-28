@@ -54,6 +54,7 @@ body {
 
 main {
   margin-top: 3rem;
+  margin-bottom: 1rem;
 }
 
 .headWrap {
@@ -255,3 +256,5 @@ h2 {
 .echoLegend {
   margin-top: 0.45rem;
 }
+
+/* Upload stuff */
