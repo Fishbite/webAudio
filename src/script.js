@@ -40,6 +40,7 @@ console.log("Connected to the moon!");
 
 // create the context
 const actx = new AudioContext();
+console.log(actx.state);
 
 // ************* Live Output Recording Setup START ************ \\
 // Create the things we need to reocord live output from
