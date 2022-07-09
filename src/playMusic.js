@@ -348,7 +348,7 @@ function setup() {
           soundNode.loop = true;
 
           let volumeNode = actx.createGain();
-          volumeNode.gain.value = 2;
+          volumeNode.gain.value = 0.125;
 
           // Connect to the recording chain
           if (mainVol) {
@@ -371,7 +371,7 @@ function setup() {
           soundNode.buffer = soundBuffer;
 
           let volumeNode = actx.createGain();
-          volumeNode.gain.value = 2;
+          volumeNode.gain.value = 0.125;
 
           panNode.pan.value = -1;
 

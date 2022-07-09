@@ -440,7 +440,7 @@ function keyupHandler(event) {
   const key = event.key;
   const freq = notes[key];
   if (freq && runningOscs[freq]) {
-    // console.log(runningOscs);
+    // console.log(runningOscs[freq]);
     runningOscs[freq].stop(actx.currentTime + decay + 2);
     delete runningOscs[freq];
   }
@@ -470,7 +470,7 @@ selectedFile.addEventListener("change", handleChange, false);
 
 function handleChange(e) {
   const file = selectedFile.files[0];
-  const sizeLimit = 1024 * 2000;
+  const sizeLimit = 1024 * 4000;
 
   const disableBtn = () => {
     uploadBtn.setAttribute("aria-disabled", "true");
