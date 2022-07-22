@@ -20,9 +20,9 @@ This could be the start of something great!
 
 ## The State of Play
 
-At the moment, the user has no direct way to upload the musical composition that they
-have created. However, the file can be saved as **music.wav** in the **audio folder.**
-That file can then be played back via the **Pre-Recorded Music** function of the UI.
+The user can now record music as they are playing, then down load it directly from the media player. The file then needs to be imported into editing software such as Audacity and then saved out as 'music.wav'
+
+music.wav can be uploaded to the server and then played back via the 'pre-recorded music' playback keys. The user can then record additional stuff on top of the music being played back.
 
 There's an awful lot more that we can do to build on this app, such as create more
 voices / instruments and indeed; give the user the abiliity to use musical compositions
@@ -39,5 +39,5 @@ to get involved just DM me, fork the repo', do some cool stuff, do a pull reques
 
 ## Open Source
 
-That's the question, do we make this an open source project, or, do we license it
-some other way? We are all ears on this topic!
+This project is open source licensed under the
+GNU AFFERO GENERAL PUBLIC LICENSE Version 3
