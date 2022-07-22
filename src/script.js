@@ -58,7 +58,8 @@ let mainVol = actx.createGain(),
   recordingStopped = false;
 
 // let's set the global volume
-mainVol.gain.value = 0.1;
+mainVol.gain.value = 1;
+
 // now connect the above
 // We just need to connect our audio graphs to the
 // mainVol node in our sound generators
@@ -181,7 +182,7 @@ function createOsc(freq, type = "sine", decay) {
 
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
-  vol.gain.value = 1;
+  vol.gain.value = 0.1;
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record

@@ -125,23 +125,23 @@ class Kick {
   }
   setup() {
     this.osc = this.actx.createOscillator();
-    this.gain = this.actx.createGain();
-    this.osc.connect(this.gain);
-    this.gain.connect(this.actx.destination);
+    this.vol = this.actx.createGain();
+    this.osc.connect(this.vol);
+    this.vol.connect(this.actx.destination);
 
     // *** Connect to the recording chain
-    this.gain.connect(this.mainVol);
+    this.vol.connect(this.mainVol);
   }
   play(time) {
     this.setup();
 
     this.osc.frequency.setValueAtTime(150, time);
-    this.gain.gain.setValueAtTime(0.25, time);
+    this.vol.gain.setValueAtTime(0.1, time);
 
     this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
-    this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+    this.vol.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
     // console.log("Playing");
-    this.gain.gain.linearRampToValueAtTime(0, time + 0.6);
+    this.vol.gain.linearRampToValueAtTime(0, time + 0.6);
 
     this.osc.start(time);
 
@@ -280,13 +280,13 @@ class Snare {
   play(time) {
     this.setup();
 
-    this.noiseEnvelope.gain.setValueAtTime(0.0525, time);
-    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+    this.noiseEnvelope.gain.setValueAtTime(0.02125, time);
+    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
     this.noise.start(time);
 
     this.osc.frequency.setValueAtTime(100, time);
     this.oscEnvelope.gain.setValueAtTime(0.1, time);
-    this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+    this.oscEnvelope.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
     this.osc.start(time);
 
     this.osc.stop(time + 0.2);
@@ -326,7 +326,7 @@ assets.load(["../audio/hihat2.wav"]).then(() => setup());
 // and hihat function
 function hihat() {
   let hihat = assets["../audio/hihat2.wav"];
-  hihat.volume = 2;
+  hihat.volume = 1;
   hihat.play();
 }
 
@@ -348,7 +348,7 @@ function setup() {
           soundNode.loop = true;
 
           let volumeNode = actx.createGain();
-          volumeNode.gain.value = 0.125;
+          volumeNode.gain.value = 0.5;
 
           // Connect to the recording chain
           if (mainVol) {
@@ -371,7 +371,7 @@ function setup() {
           soundNode.buffer = soundBuffer;
 
           let volumeNode = actx.createGain();
-          volumeNode.gain.value = 0.125;
+          volumeNode.gain.value = 0.5;
 
           panNode.pan.value = -1;
 

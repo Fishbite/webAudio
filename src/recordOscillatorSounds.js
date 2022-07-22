@@ -106,7 +106,7 @@ function playNote(freq, decay = 1, type = "sine") {
   osc.stop(actx.currentTime + decay);
 }
 
-function playNote2(freq, decay = 1, type = "square") {
+function playNote2(freq, decay = 1, type = "triangle") {
   let osc = actx.createOscillator();
   osc.frequency.value = freq;
   osc.type = type;
@@ -128,14 +128,14 @@ function keyDownHandler(e) {
   }
   if (e.key === "1") {
     console.log(e.key, "pressed");
-    playNote(50);
+    playNote(100);
   }
 
   if (e.key === "2") {
-    playNote(75);
+    playNote(125);
   }
 
   if (e.key === "3") {
-    playNote2(100);
+    playNote2(150);
   }
 }
