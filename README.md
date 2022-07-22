@@ -15,6 +15,7 @@ following:
 - Record as you play including the ability to record on top of pre-reorcded music that
   that you are playing along to.
 - Download the recording directly from the Audio Player for editing etc.
+- Upload the recording as music.wav so that it can be played back and added to
 
 This could be the start of something great!
 
