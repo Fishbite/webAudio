@@ -158,17 +158,28 @@
           </fieldset>
         </div>      
       </div>
-
-      <!-- HTML5 Input Form Elements For File Upload -->
-      <div class="uploadwrapper">
-        <input id="fileupload" class=".btn" type="file" name="fileupload" /><span>File Size: <span id="fileSize">0</span>KB</span>
-        <span>Type: </span><span id="fileType"></span>
-        <span id="hexTag"></span>
-        <button id="uploadBtn" class="btn" onclick="uploadFile()">Upload</button>
-      </div>
-    
-
     </main>
+    <hr>
+    <!-- HTML5 Input Form Elements For File Upload -->
+    <div class="uploadwrapper">
+      <h4>EXPERIMENTAL</h4>
+      
+      <input id="fileupload" class=".btn" type="file" name="fileupload" /><span>File Size: <span id="fileSize">0</span>KB</span>
+      <span>Type: </span><span id="fileType"></span>
+      <span id="hexTag"></span>
+      <button id="uploadBtn" class="btn" onclick="uploadFile()">Upload</button>
+      <br>
+      <p>file size limit 4MB</p>
+      <p>filename MUST BE <b>music.wav</b></p>
+      <p>filetype MUST BE WAV and not another filetype with the .wav extension</p>
+    </div>
+    
+    <footer>
+      <div class="footer">        
+      <p>An open source project started by Stuart Peel 2022</p>
+      <p>Source code available here: <a href="https://github.com/Fishbite/webAudio" target="_blank">GitHub WebAudio Repo</a></p>
+      </div>
+    </footer>
 
     <script src="./src/script.js"></script>
     <script type="module" src="./src/playMusic.js"></script>

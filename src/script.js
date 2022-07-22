@@ -57,6 +57,8 @@ let mainVol = actx.createGain(),
   stopBtn = document.getElementById("stopBtn"),
   recordingStopped = false;
 
+// let's set the global volume
+mainVol.gain.value = 0.1;
 // now connect the above
 // We just need to connect our audio graphs to the
 // mainVol node in our sound generators

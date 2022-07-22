@@ -258,3 +258,43 @@ h2 {
 }
 
 /* Upload stuff */
+.uploadwrapper {
+  margin: 0.5rem;
+}
+.uploadwrapper p {
+    padding:  0;
+    margin: 0;
+    background-color: var(--clr-Blue-2);
+    color: black;
+    font-family: var(--ff-primary);
+    font-weight: 500;
+    line-height: 1.25;
+    display: block;
+    letter-spacing: var(--spacing);
+    border: none; 
+    border-radius: 0;
+  }
+
+
+/* Footer */
+.footer {
+  height: 10vh;
+  background-color: var(--clr-grey-2);
+  padding: 0.5rem 0;
+}
+
+footer p{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display:block;
+  border: none;
+  border-radius: 0;
+  background-color: var(--clr-grey-2);
+  color: var(--clr-silver-2);
+  font-size: .75rem;
+}
+
+footer a:visited {
+  color: var(--clr-silver-2)
+}

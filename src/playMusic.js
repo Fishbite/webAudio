@@ -172,7 +172,7 @@ function kettle1(echo = setEcho) {
     0,
     0.5,
     "sine",
-    0.5,
+    0.1,
     -0.5,
     0,
     0,
@@ -191,7 +191,7 @@ function kettle2(echo = setEcho) {
     0,
     0.5,
     "sine",
-    0.5,
+    0.1,
     0,
     0,
     0,
@@ -210,7 +210,7 @@ function kettle3(echo = setEcho) {
     0,
     0.5,
     "sine",
-    0.5,
+    0.1,
     0.5,
     0,
     0,
@@ -285,7 +285,7 @@ class Snare {
     this.noise.start(time);
 
     this.osc.frequency.setValueAtTime(100, time);
-    this.oscEnvelope.gain.setValueAtTime(0.7, time);
+    this.oscEnvelope.gain.setValueAtTime(0.1, time);
     this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
     this.osc.start(time);
 
@@ -326,7 +326,7 @@ assets.load(["../audio/hihat2.wav"]).then(() => setup());
 // and hihat function
 function hihat() {
   let hihat = assets["../audio/hihat2.wav"];
-  hihat.volume = 0.5;
+  hihat.volume = 2;
   hihat.play();
 }
 
