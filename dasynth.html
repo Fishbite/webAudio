@@ -1,0 +1,192 @@
+<!-- /* // ****** LICENSE NOTICE ****** \\
+      COPYRIGHT: 2020 Stuart Peel 
+      This PROGRAM is distributed under the terms of the:
+      AGPL-3.0-or-later
+*/ -->
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Machine</title>
+    <link rel="stylesheet" href="./styles/styles.css" />
+  </head>
+
+  <body>
+    <div class="headWrap">
+      <header>
+          <h2>Da Synth Dude</h2>
+          <nav>
+            <a href="./index.html">Home</a>
+          </nav>
+      </header>
+    </div>
+
+    <kbInfo>
+        <div class="dropdown">
+          <button class="dropbtn">Keyboard Keys</button>
+          <div class="dropContent">
+          
+              <h2>Musical Keys:</h2>
+            </br>
+              <p><i>Keys q to p:</i> play C4 through E5</p>
+              <p><i>Keys 2, 3, 5, 6, 7, 9, 0:</i> play sharps/flats</p>
+
+              <h2>Pre-recorded Music:</h2>
+            </br>
+              <p><i>Key A:</i> play music normal</p>
+              <p><i>Key S:</i> play music panning.</p>
+              <p><i>Key D:</i> Stop Music</p>
+
+              <h2>Drum Sounds:</h2>
+            </br>
+              <p><i>Key Z:</i> Kick drum (synthesized)</p>
+              <p><i>Keys X, C, & V:</i> Kettle drums (synthesized)</p>
+
+              <p><i>Key M:</i> Snare drum (synthesized)</p>
+              <p><i>Key K:</i> Hihat (sampled)</p>
+          </div>
+        </div>
+    </kbInfo>
+      
+    <main>
+      <div class="mainWrap">
+        <div class="controls">
+          <fieldset class="fieldset">
+            <legend>Controls</legend>
+    
+                <div class="groupWrap">
+                  <div class="recorderWrap">
+
+                    <p><i>ALT+Z</i> Keys to Start Recording</p>
+    
+                    <p id="recordBtnDescription" role="description">
+                      Stop button active when recording
+                    </p>
+                    <div>
+                      <button
+                        type="button"
+                        aria-disabled="true"
+                        aria-describedby="recordBtnDescription"
+                        class="btn"
+                        id="stopBtn"
+                      >
+                        _READY_TO_RECORD_
+                      </button>
+                    </div>
+      
+                    <audio id="audioTag" controls="true"></audio>  
+                  </div>                
+                </div>
+    
+                
+              <fieldset class="fieldset">
+                <legend>Musical Key Effects</legend>
+                <div class="sliderCtrls">
+                  <div class="groupWrap">
+                    <div class="labelWrap">
+                      <p>
+                        Wave Form:
+                        <label class="label" id="waveTypeLabel" for="waveTypeValue"
+                          >sine</label
+                        >
+                      </p>
+                    </div>
+      
+                      <input
+                        class="slider"
+                        id="waveTypeValue"
+                        name="waveTypeValue"
+                        type="range"
+                        min="0"
+                        max="3"
+                        value="0"
+                        step="1"
+                      />
+                  </div>
+      
+                  <div class="groupWrap">
+                    <div class="labelWrap">            
+                      <p>
+                      Decay:
+                        <label class="label" id="decayTimeLabel" for="decayTimeValue"
+                        >2</label
+                      >
+                      </p>
+                    </div>
+      
+                      <input
+                      class="slider"
+                      id="decayTimeValue"
+                      name="decayTimeValue"
+                      type="range"
+                      min="0"
+                      max="10"
+                      value="2"
+                      step="0.5"
+                      />
+                  </div>
+      
+                  <div class="groupWrap">
+                    <div class="labelWrap">
+                        
+                          <p>
+                            Octave: <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
+                          </p>
+                        
+                    </div>
+      
+                      <input class="slider" id="octaveValue" type="range" min="0" max="7" value="4" step="1"/>
+                  </div>
+                </div>
+              </fieldset>
+          <!-- Kettle Drum Slider Controls -->
+          <fieldset class="fieldset">
+            <legend class="echoLegend">Kettle Drum Echo</legend>
+            <div class="groupWrap">
+              <div class="labelWrap">
+                  
+                    <p>
+                      Echo: <label class="label" id="echoValueLabel"for="echoValue">0</label>
+                    </p>
+                  
+              </div>
+
+                <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
+            </div>
+          </fieldset>
+
+          </fieldset>
+        </div>      
+      </div>
+    </main>
+    <hr>
+    <!-- HTML5 Input Form Elements For File Upload -->
+    <div class="uploadwrapper">
+      <h4>EXPERIMENTAL</h4>
+      
+      <input id="fileupload" class=".btn" type="file" name="fileupload" /><span>File Size: <span id="fileSize">0</span>KB</span>
+      <span>Type: </span><span id="fileType"></span>
+      <span id="hexTag"></span>
+      <button id="uploadBtn" class="btn" onclick="uploadFile()">Upload</button>
+      <br>
+      <p>file size limit 4MB</p>
+      <p>filename MUST BE <b>music.wav</b></p>
+      <p>filetype MUST BE WAV and not another filetype with the .wav extension</p>
+    </div>
+    
+    <footer>
+      <div class="footer">        
+      <p>An open source project started by Stuart Peel 2022</p>
+      <p>Source code available here: <a href="https://github.com/Fishbite/webAudio" target="_blank">GitHub WebAudio Repo</a></p>
+      </div>
+    </footer>
+
+    <script src="./src/script.js"></script>
+    <script type="module" src="./src/playMusic.js"></script>
+    <script src="./src/upload.js"></script>
+    <!-- <script src="./src/timed.js"></script> -->
+  </body>
+</html>
