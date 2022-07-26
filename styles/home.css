@@ -1,0 +1,158 @@
+/* // ****** LICENSE NOTICE ****** \\
+      COPYRIGHT: 2022 Stuart Peel 
+      This PROGRAM is distributed under the terms of the:
+      AGPL-3.0-or-later
+*/
+
+:root {
+  /* ****** TYPE SETTINGS ****** */
+  --ff-primary: Verdana, Geneva, Tahoma, sans-serif;
+
+  --spacing: 0.05rem;
+  /* ****** COLOURS ****** */
+
+  /* Reds */
+  --clr-red-1: #d41515;
+
+  /* Yellows */
+  --clr-pastel-y0: #ffba53;
+  --clr-pastel-y1: #fffabe;
+  --clr-pastel-y2: #fffcdd;
+
+  --clr-goldenrod-1: goldenrod;
+  --clr-goldenrod-2: rgb(253, 192, 37);
+
+  /* Greens */
+  --clr-green-1: #426b00;
+
+  /* Blues */
+  --clr-Blue-1: #000b6b;
+  --clr-Blue-1-1: #33375a;
+  --clr-Blue-2: #c3c9ff;
+
+  /* Greys */
+  --clr-grey-1: rgb(47, 45, 61);
+  --clr-grey-2: rgb(56, 54, 71);
+
+  --clr-silver-1: silver;
+  --clr-silver-2: rgb(231, 231, 231);
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--clr-Blue-2);
+  font-size: 16px;
+  position: relative;
+}
+
+main {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.headWrap {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  background-image: linear-gradient(
+    var(--clr-Blue-1-1) 5%,
+    var(--clr-goldenrod-1),
+    var(--clr-silver-2) 11%,
+    var(--clr-silver-2) 11%,
+    var(--clr-Blue-2) 15%,
+    var(--clr-Blue-2) 85%,
+    var(--clr-silver-2) 86%,
+    var(--clr-silver-2) 86%,
+    var(--clr-goldenrod-1) 90%,
+    var(--clr-Blue-1-1) 90%
+  );
+}
+
+header {
+  text-align: center;
+}
+
+main {
+  width: 90vw;
+  margin: 1rem 5vw 0;
+}
+
+.section-list {
+  margin: 1rem 0;
+}
+
+
+/* .dropContent *:hover {
+  background-color: #ddd;
+} */
+
+.dropdown:hover .dropContent {
+  /* display: inline-block; */
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: var(--clr-Blue-2);
+}
+/* 
+p {
+  padding: 2rem 4rem;
+  margin: 0.25rem 0;
+  background-color: var(--clr-pastel-y2);
+  color: var(--clr-grey-1);
+  font-family: var(--ff-primary);
+  font-weight: 500;
+  line-height: 1.25;
+  display:block;
+  letter-spacing: var(--spacing);
+  /* border: 2px solid var(--clr-silver-1);
+  border-radius: 4rem; */
+
+
+p i {
+  font-weight: 900;
+}
+
+h2 {
+  color: var(--clr-grey-2);
+  /* text-shadow: 0.5px 0.5px 0px rgb(107, 114, 131),
+    -1px -1px 0px rgb(163, 147, 103), -1px 1px 0px rgb(163, 147, 103); */
+  letter-spacing: var(--spacing);
+  font-size: 2rem;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+
+
+/* Footer */
+.footer {
+  height: 10vh;
+  background-color: var(--clr-grey-2);
+  padding: 0.5rem 0;
+}
+
+footer p{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display:block;
+  border: none;
+  border-radius: 0;
+  background-color: var(--clr-grey-2);
+  color: var(--clr-silver-2);
+  font-size: .75rem;
+}
+
+footer a:visited {
+  color: var(--clr-silver-2)
+}
