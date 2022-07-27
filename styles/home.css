@@ -154,6 +154,7 @@ footer p{
   background-color: var(--clr-grey-2);
   color: var(--clr-silver-2);
   font-size: .75rem;
+  font-style: italic;
 }
 
 footer a:visited {
