@@ -64,7 +64,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5rem;
+  height: 6rem;
   background-image: linear-gradient(
     var(--clr-Blue-1-1) 5%,
     var(--clr-goldenrod-1),
@@ -95,11 +95,11 @@ header {
 }
 .dropbtn {
   position: fixed;
-  top: 0.75rem;
+  top: 1.25rem;
   background-color: var(--clr-Blue-1-1);
   color: white;
-  padding: 16px;
-  font-size: 16px;
+  padding: 1rem;
+  font-size: 1rem;
   font-weight: bold;
   letter-spacing: var(--spacing);
   border: 1px solid var(--clr-silver-2);

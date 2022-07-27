@@ -64,7 +64,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5rem;
+  height: 6rem;
   background-image: linear-gradient(
     var(--clr-Blue-1-1) 5%,
     var(--clr-goldenrod-1),
