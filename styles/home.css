@@ -29,6 +29,7 @@
   --clr-Blue-1: #000b6b;
   --clr-Blue-1-1: #33375a;
   --clr-Blue-2: #c3c9ff;
+  --clr-Blue-3: #f0f2ff;
 
   /* Greys */
   --clr-grey-1: rgb(47, 45, 61);
@@ -47,7 +48,7 @@
 }
 
 body {
-  background-color: var(--clr-Blue-2);
+  background-color: var(--clr-Blue-3);
   font-size: 16px;
   position: relative;
 }
@@ -69,8 +70,8 @@ main {
     var(--clr-goldenrod-1),
     var(--clr-silver-2) 11%,
     var(--clr-silver-2) 11%,
-    var(--clr-Blue-2) 15%,
-    var(--clr-Blue-2) 85%,
+    var(--clr-Blue-3) 15%,
+    var(--clr-Blue-3) 85%,
     var(--clr-silver-2) 86%,
     var(--clr-silver-2) 86%,
     var(--clr-goldenrod-1) 90%,
@@ -135,8 +136,10 @@ h2 {
 
 
 /* Footer */
-.footer {
+footer {
+  width: 100vw;
   height: 10vh;
+  margin-top: 10vh;
   background-color: var(--clr-grey-2);
   padding: 0.5rem 0;
 }
