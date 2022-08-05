@@ -1,0 +1,76 @@
+/* // ****** LICENSE NOTICE ****** \\
+      COPYRIGHT: 2022 Stuart Peel 
+      This PROGRAM is distributed under the terms of the:
+      AGPL-3.0-or-later
+*/
+
+@font-face {
+    font-family: title;
+    src: url(../fonts/bather.ttf);
+}
+
+:root {
+    /* type settings */
+    --spacing-title: 0.5rem;
+    --font-size-title: min(max(2rem, 4vw), 4rem);
+    
+
+    /* colours */
+    --clr-body: #ecd556;
+    /* --clr-title:  rgb(175, 87, 36); */
+    --clr-title:  rgb(142, 130, 148);
+
+    /* pallet from title */
+    --clr-red-brown: #590219;
+    --clr-grey: #867B8C;
+    --clr-yellow-dusty: #F2D06B;
+    --clr-yellow-dusty-brown: #BFA454;
+    --clr-pink-dusty: #F2A477;
+
+}
+
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    font-size: 16px;
+    color: var(--);
+    background-color: var(--clr-yellow-dusty-brown);
+}
+
+header {
+    background-color: var(--clr-yellow-dusty);
+}
+
+.title {
+    font-family: title;
+    font-size: var(--font-size-title);
+    color:var(--clr-title);
+    letter-spacing: var(--spacing-title);
+    text-shadow: .1rem .1rem .1rem rgb(15, 4, 32)      ;
+}
+
+nav {
+    background-color: var(--clr-pink-dusty);
+}
+
+/* dropdown button showing info on keyboard keys i.e. what keys do! */
+.dropdown {
+    /*  */
+    
+}
+
+.dropbtn {
+    /*  */
+}
+
+.dropContent {
+    /*  */
+    display: none;
+}
