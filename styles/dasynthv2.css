@@ -18,12 +18,14 @@
     /* colours */
     --clr-body: #ecd556;
     /* --clr-title:  rgb(175, 87, 36); */
+    --clr-title-01:  hsl(280, 8%, 25%);
     --clr-title:  rgb(142, 130, 148);
 
     /* pallet from title */
     --clr-red-brown: #590219;
     --clr-grey: #867B8C;
     --clr-yellow-dusty: #F2D06B;
+    --clr-yellow-dusty-1: hsl(45, 84%, 85%);
     --clr-yellow-dusty-brown: #BFA454;
     --clr-pink-dusty: #F2A477;
 
@@ -41,7 +43,7 @@
 body {
     font-size: 16px;
     color: var(--);
-    background-color: var(--clr-yellow-dusty-brown);
+    background-color: var(--clr-title-01);
 }
 
 header {
@@ -51,13 +53,15 @@ header {
 .title {
     font-family: title;
     font-size: var(--font-size-title);
-    color:var(--clr-title);
+    color:var(--clr-title-01);
     letter-spacing: var(--spacing-title);
-    text-shadow: .1rem .1rem .1rem rgb(15, 4, 32)      ;
+    text-shadow: .1rem .1rem .1rem var(--clr-yellow-dusty-1), .125rem .2rem 0rem var(--clr-red-brown);
 }
 
 nav {
     background-color: var(--clr-pink-dusty);
+    border-top: 2px solid var(--clr-red-brown);
+    border-bottom: 4px solid var(--clr-red-brown)
 }
 
 /* dropdown button showing info on keyboard keys i.e. what keys do! */
@@ -73,4 +77,29 @@ nav {
 .dropContent {
     /*  */
     display: none;
+}
+
+.controls {
+    border: .25rem solid var(--clr-title-01);
+    border-radius: 0.5rem;
+    padding: .25rem;
+    background-color: var(--clr-yellow-dusty-brown);
+}
+
+.fieldset {
+    border-radius: .25rem;
+    padding: .5rem;
+    border-color: #590219;
+    color: var(--clr-red-brown);
+}
+
+legend {
+    text-transform: capitalize;
+}
+
+.uploadwrapper {
+    background-color: var(--clr-yellow-dusty-brown);
+    border: .25rem solid var(--clr-title-01);
+    border-radius: 0.5rem;
+    padding: 1rem;
 }

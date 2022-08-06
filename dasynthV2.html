@@ -61,8 +61,9 @@
     
                 <div class="groupWrap">
                   <div class="recorderWrap">
-
-                    <p><i>ALT+Z</i> Keys to Start Recording</p>
+                    <fieldset class="fieldset">
+                      <legend>Media Recorder</legend>
+                      <p><i>ALT+Z</i> Keys to Start Recording</p>
     
                     <p id="recordBtnDescription" role="description">
                       Stop button active when recording
@@ -80,6 +81,9 @@
                     </div>
       
                     <audio id="audioTag" controls="true"></audio>  
+                    </fieldset>
+
+                    
                   </div>                
                 </div>
     
@@ -164,10 +168,12 @@
         </div>      
       </div>
     </main>
-    <hr>
+    <!-- <hr> -->
     <!-- HTML5 Input Form Elements For File Upload -->
     <div class="uploadwrapper">
-      <h4>EXPERIMENTAL</h4>
+      <fieldset class="fieldset">
+        <legend>Upload</legend>
+        <h4>EXPERIMENTAL</h4>
       
       <input id="fileupload" class=".btn" type="file" name="fileupload" /><span>File Size: <span id="fileSize">0</span>KB</span>
       <span>Type: </span><span id="fileType"></span>
@@ -177,6 +183,8 @@
       <p>file size limit 4MB</p>
       <p>filename MUST BE <b>music.wav</b></p>
       <p>filetype MUST BE WAV and not another filetype with the .wav extension</p>
+      </fieldset>
+      
     </div>
     
     <footer>
