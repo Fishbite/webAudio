@@ -42,8 +42,15 @@
 
 body {
     font-size: 16px;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: .075rem;
     color: var(--);
     background-color: var(--clr-title-01);
+}
+
+body, p {
+    margin-bottom: .5rem;
 }
 
 header {
@@ -67,11 +74,13 @@ nav {
 /* dropdown button showing info on keyboard keys i.e. what keys do! */
 .dropdown {
     /*  */
+    color: black;
     
 }
 
 .dropbtn {
     /*  */
+    color: black;
 }
 
 .dropContent {
@@ -80,7 +89,7 @@ nav {
 }
 
 .controls {
-    border: .25rem solid var(--clr-title-01);
+    /* border: .25rem solid var(--clr-title-01); */
     border-radius: 0.5rem;
     padding: .25rem;
     background-color: var(--clr-yellow-dusty-brown);
@@ -88,18 +97,28 @@ nav {
 
 .fieldset {
     border-radius: .25rem;
-    padding: .5rem;
-    border-color: #590219;
+    padding: 0.5rem ;
+    border: .125rem solid var(--clr-red-brown);
     color: var(--clr-red-brown);
 }
 
-legend {
-    text-transform: capitalize;
+.spacer {
+    padding-top: 0.5rem;
 }
 
-.uploadwrapper {
-    background-color: var(--clr-yellow-dusty-brown);
-    border: .25rem solid var(--clr-title-01);
-    border-radius: 0.5rem;
-    padding: 1rem;
+legend {
+    padding: 0 0.125rem;
+    font-weight: bolder;
+}
+
+footer p {
+    color: white;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: small;
+    margin: .5rem 0 0;
+}
+
+footer a {
+    color: var(--clr-yellow-dusty);
 }
