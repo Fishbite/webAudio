@@ -63,6 +63,7 @@ body, p {
 }
 
 header {
+    text-align: center;
     background-color: var(--clr-yellow-dusty);
 }
 
@@ -81,21 +82,29 @@ nav {
 }
 
 /* dropdown button showing info on keyboard keys i.e. what keys do! */
-.dropdown {
-    /*  */
-    color: black;
-    
+.dropdown {    
+    color: var(--clr-red-brown);
+    display: inline-block;
 }
 
 .dropbtn {
-    /*  */
+    
     color: black;
 }
 
-.dropContent {
-    /*  */
+.dropContent {    
     display: none;
+    position:absolute;
+    background-color: var(--clr-yellow-dusty-brown);
+    border-radius: 0.5rem;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
+    z-index: 1;
 }
+
+.dropdown:hover .dropContent {
+    display:block;
+}
+
 
 .controls {
     /* border: .25rem solid var(--clr-title-01); */
