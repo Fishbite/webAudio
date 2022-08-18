@@ -95,16 +95,21 @@ nav {
 .dropContent {    
     display: none;
     position:absolute;
+    padding: 0.5rem;
     background-color: var(--clr-yellow-dusty-brown);
+    border: .125rem solid var(--clr-red-brown);
     border-radius: 0.5rem;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
     z-index: 1;
 }
 
+.dropContent h2 {
+    margin-bottom: -1rem;
+}
+
 .dropdown:hover .dropContent {
     display:block;
 }
-
 
 .controls {
     /* border: .25rem solid var(--clr-title-01); */
