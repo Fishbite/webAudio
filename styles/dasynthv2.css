@@ -7,39 +7,37 @@
 /*  poppins
     font-family: 'Poppins', sans-serif;
      */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @font-face {
-    font-family: bather;
-    src: url(../fonts/bather.ttf) format('truetype');
+  font-family: bather;
+  src: url(../fonts/bather.ttf) format("truetype");
 }
-
-
 
 :root {
-    /* type settings */
-    --font-title: bather;
-    --font-primary: 'poppins', sans-serif;
-    --font-spacing-title: 0.5rem;
-    --font-spacing-ltr: 0.05rem;
-    --font-size-title: min(max(2rem, 4vw), 4rem);
-    
+  /* type settings */
+  --font-title: bather;
+  --font-primary: "poppins", sans-serif;
+  --font-spacing-title: 0.5rem;
+  --font-spacing-ltr: 0.05rem;
+  --font-size-title: min(max(2rem, 4vw), 4rem);
 
-    /* colours */
-    --clr-body: #ecd556;
-    --clr-title-01:  hsl(280, 8%, 25%);
-    --clr-title:  rgb(142, 130, 148);
+  /* colours */
+  --clr-body: #ecd556;
+  --clr-title-01: hsl(280, 8%, 25%);
+  --clr-title: rgb(142, 130, 148);
 
-    /* pallet from title */
-    --clr-red-brown: #590219;
-    --clr-grey: #867B8C;
-    --clr-yellow-dusty: #F2D06B;
-    --clr-yellow-dusty-1: hsl(45, 84%, 85%);
-    --clr-yellow-dusty-brown: #BFA454;
-    --clr-pink-dusty: #F2A477;
-
+  /* pallet from title */
+  --clr-red-brown: #590219;
+  --clr-grey: #867b8c;
+  --clr-yellow-dusty: #f2d06b;
+  --clr-yellow-dusty-1: hsl(45, 84%, 85%);
+  --clr-yellow-dusty-brown-2: hsl(45, 46%, 74%);
+  --clr-yellow-dusty-brown: #bfa454;
+  --clr-pink-dusty: #f2a477;
 }
+
+/* ****** Global Start ****** */
 
 *,
 ::after,
@@ -50,102 +48,139 @@
 }
 
 body {
-    /* font-family: var(--font-primary); */
-    font-family: var(--font-primary);
-    font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: var(--font-spacing-ltr);
-    background-color: var(--clr-title-01);
+  /* font-family: var(--font-primary); */
+  font-family: var(--font-primary);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: var(--font-spacing-ltr);
+  background-color: var(--clr-title-01);
 }
 
-body, p {
-    margin-bottom: .5rem;
+body p {
+  margin-bottom: 0.5rem;
 }
+
+/* ****** Global End ****** */
 
 header {
-    text-align: center;
-    background-color: var(--clr-yellow-dusty);
+  text-align: center;
+  background-color: var(--clr-yellow-dusty);
+  border-start-start-radius: 4rem;
+  border-start-end-radius: 4rem;
+  border-top: 4px solid var(--clr-red-brown);
+  border-left: 4px solid var(--clr-red-brown);
+  border-right: 4px solid var(--clr-red-brown);
 }
 
 .title {
-    font-family: var(--font-title);
-    font-size: var(--font-size-title);
-    color:var(--clr-title-01);
-    letter-spacing: var(--font-spacing-title);
-    text-shadow: .1rem .1rem .1rem var(--clr-yellow-dusty-1), .125rem .2rem 0rem var(--clr-red-brown);
+  font-family: var(--font-title);
+  font-size: var(--font-size-title);
+  color: var(--clr-title-01);
+  letter-spacing: var(--font-spacing-title);
+  text-shadow: 0.1rem 0.1rem 0.1rem var(--clr-yellow-dusty-1),
+    0.125rem 0.2rem 0rem var(--clr-red-brown);
+  padding: 1rem 0.5rem;
 }
 
 nav {
-    background-color: var(--clr-pink-dusty);
-    border-top: 2px solid var(--clr-red-brown);
-    border-bottom: 4px solid var(--clr-red-brown)
+  background-color: var(--clr-pink-dusty);
+  border-top: 2px solid var(--clr-red-brown);
+  border-right: 4px solid var(--clr-red-brown);
+  border-bottom: 4px solid var(--clr-red-brown);
+  border-left: 4px solid var(--clr-red-brown);
+  padding: 0.5rem;
 }
 
-/* dropdown button showing info on keyboard keys i.e. what keys do! */
-.dropdown {    
-    color: var(--clr-red-brown);
-    display: inline-block;
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
-.dropbtn {
-    
-    color: black;
+nav .linkwrap {
+  width: 600px;
+  margin: auto;
 }
 
-.dropContent {    
-    display: none;
-    position:absolute;
-    padding: 0.5rem;
-    background-color: var(--clr-yellow-dusty-brown);
-    border: .125rem solid var(--clr-red-brown);
-    border-radius: 0.5rem;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
-    z-index: 1;
+nav a {
+  padding-right: 1rem;
+  color: var(--clr-red-brown);
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: var(--clr-yellow-dusty-1);
+}
+
+/* ****** KB Info Dropdown Start ****** */
+
+.dropdown {
+  color: var(--clr-red-brown);
+  display: inline-block;
+}
+
+.dropContent {
+  display: none;
+  position: absolute;
+  padding: 0.5rem;
+  background-color: var(--clr-yellow-dusty-brown-2);
+  border: 0.125rem solid var(--clr-red-brown);
+  border-radius: 0.5rem;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 .dropContent h2 {
-    margin-bottom: -1rem;
+  margin-bottom: -1.125rem;
 }
 
 .dropdown:hover .dropContent {
-    display:block;
+  display: block;
 }
 
+/* ****** KB Info Dropdown End ****** */
+
+/* ****** Controls Start ****** */
 .controls {
-    /* border: .25rem solid var(--clr-title-01); */
-    border-radius: 0.5rem;
-    padding: .25rem;
-    background-color: var(--clr-yellow-dusty-brown);
+  /* border: .25rem solid var(--clr-title-01); */
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  background-color: var(--clr-yellow-dusty-brown);
+  max-width: 600px;
+  margin: 0.5rem auto;
 }
 
 .fieldset {
-    border-radius: .25rem;
-    padding: 0.5rem ;
-    border: .125rem solid var(--clr-red-brown);
-    color: var(--clr-red-brown);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  border: 0.125rem solid var(--clr-red-brown);
+  color: var(--clr-red-brown);
 }
 
 .spacer {
-    padding-top: 0.5rem;
+  padding-top: 0.5rem;
 }
 
 legend {
-    padding: 0 0.125rem;
-    font-weight: 500;
+  padding: 0 0.125rem;
+  font-weight: 500;
 }
+
+/* ****** Controls End ****** */
 
 footer {
-    background-color: var(--clr-title-01);
+  background-color: var(--clr-title-01);
+  margin: 1rem 0;
 }
 
-footer p {    
-    color: white;
-    text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: .75rem;
-    margin: .5rem 0 0;
+footer p {
+  color: white;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 0.75rem;
+  margin: 0.5rem 0 0;
 }
 
 footer a {
-    color: var(--clr-yellow-dusty);
+  color: var(--clr-yellow-dusty);
 }

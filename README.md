@@ -7,9 +7,9 @@ oscillators, rather than though a microphone.
 The project is in its infancy, but we do have a machine that allows you to do the
 following:
 
-- Play musical notes from a range of twelve octaves:- 0 through 7 as on a full size
+- Play musical notes from a range of eight octaves:- 0 through 7 as on a full size
   keyboard
-- Change the octave, wave and decay of the notes to create different voices
+- Change the octave, waveform and decay of the notes to create different voices
 - Play a range of drums: Kick, Kettle, Snare, Hi-hat
 - Play pre-recorded music to play along side with
 - Record as you play including the ability to record on top of pre-reorcded music that
@@ -41,4 +41,4 @@ to get involved just DM me, fork the repo', do some cool stuff, do a pull reques
 ## Open Source
 
 This project is open source licensed under the
-GNU AFFERO GENERAL PUBLIC LICENSE Version 3
+GNU AFFERO GENERAL PUBLIC LICENSE Version 3 or later
