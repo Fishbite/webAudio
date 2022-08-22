@@ -73,7 +73,7 @@
                     <p id="recordBtnDescription" role="description">
                       Stop button active when recording
                     </p>
-                    <div>
+                    <div class="audioctrls">
                       <button
                         type="button"
                         aria-disabled="true"
@@ -83,9 +83,10 @@
                       >
                         _READY_TO_RECORD_
                       </button>
-                    </div>
+                    
       
-                    <audio id="audioTag" controls="true"></audio>  
+                      <audio id="audioTag" controls="true"></audio>
+                    </div>
                     </fieldset>                    
                   </div>                
                 </div>    
@@ -165,7 +166,6 @@
                   
               </div>
                 <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
-                <label class="label" id="echoValueLabel"for="echoValue">0</label>
             </div>
           </fieldset>
           <!-- HTML5 Input Form Elements For File Upload -->

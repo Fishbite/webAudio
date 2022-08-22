@@ -24,14 +24,14 @@
 
   /* colours */
   --clr-body: #ecd556;
-  --clr-title-01: hsl(280, 8%, 25%);
+  --clr-title-01: #413b45;
   --clr-title: rgb(142, 130, 148);
 
   /* pallet from title */
   --clr-red-brown: #590219;
   --clr-grey: #867b8c;
   --clr-yellow-dusty: #f2d06b;
-  --clr-yellow-dusty-1: hsl(45, 84%, 85%);
+  --clr-yellow-dusty-1: #f9e9b9;
   --clr-yellow-dusty-brown-2: hsl(45, 46%, 74%);
   --clr-yellow-dusty-brown: #bfa454;
   --clr-pink-dusty: #f2a477;
@@ -48,12 +48,13 @@
 }
 
 body {
-  /* font-family: var(--font-primary); */
   font-family: var(--font-primary);
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: var(--font-spacing-ltr);
   background-color: var(--clr-title-01);
+  background-image: url(../images/img-noise-50x50.png);
+  background-size: 25px;
 }
 
 body p {
@@ -70,6 +71,7 @@ header {
   border-top: 4px solid var(--clr-red-brown);
   border-left: 4px solid var(--clr-red-brown);
   border-right: 4px solid var(--clr-red-brown);
+  /* background-image: url(../images/img-noise-header-2.png); */
 }
 
 .title {
@@ -91,10 +93,10 @@ nav {
   padding: 0.5rem;
 }
 
-.sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 
 nav .linkwrap {
@@ -166,10 +168,49 @@ legend {
   font-weight: 500;
 }
 
+.label {
+  background-color: var(--clr-yellow-dusty-1);
+  width: 3rem;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--clr-red-brown);
+  border-radius: 0.125rem;
+}
+
+audio {
+  background-color: #590219;
+  padding: 0.25rem;
+  border-radius: 2rem;
+  width: 300px;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: #bfa454;
+}
+
+.audioctrls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn {
+  background-color: var(--clr-yellow-dusty-1);
+  border: 2px solid var(--clr-red-brown);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.125rem;
+}
+
+.btn:hover {
+  background-color: var(--clr-body);
+}
+
+#stopBtn {
+  margin: 0 0 0.25rem 0rem;
+}
 /* ****** Controls End ****** */
 
 footer {
-  background-color: var(--clr-title-01);
+  background-color: transparent;
   margin: 1rem 0;
 }
 
