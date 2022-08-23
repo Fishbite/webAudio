@@ -181,6 +181,11 @@ audio::-webkit-media-controls-panel {
   background-color: #bfa454;
 }
 
+/* .audioWrap {
+  display: flex;
+  align-items: center;
+} */
+
 .audioctrls {
   display: flex;
   flex-direction: column;
@@ -190,8 +195,8 @@ audio::-webkit-media-controls-panel {
 .btn {
   background-color: var(--clr-yellow-dusty-1);
   border: 2px solid var(--clr-red-brown);
-  border-radius: 0.25rem;
-  padding: 0.125rem 0.125rem;
+  border-radius: 1rem;
+  padding: 0.125rem 0.5rem;
 }
 
 .btn:hover {
@@ -200,6 +205,21 @@ audio::-webkit-media-controls-panel {
 
 #stopBtn {
   margin: 0 0 0.25rem 0rem;
+}
+
+.sliderCtrls {
+  display: flex;
+  flex-direction: column;
+}
+
+.ctrlWrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.kettleWrap {
+  display: flex;
+  justify-content: space-between;
 }
 /* ****** Controls End ****** */
 

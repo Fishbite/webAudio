@@ -64,94 +64,112 @@
           <fieldset class="fieldset">
             <legend>Controls</legend>
     
+                    <!-- Audio / Media Recorder controls START -->
                     <fieldset class="fieldset">
                       <legend>Media Recorder</legend>
-                      <p><i>ALT+Z</i> Keys to Start Recording</p>
-    
-                    <p id="recordBtnDescription" role="description">
-                      Stop button active when recording
-                    </p>
 
-                    <div class="audioctrls">
-                      <button
-                        type="button"
-                        aria-disabled="true"
-                        aria-describedby="recordBtnDescription"
-                        class="btn"
-                        id="stopBtn"
-                      >
-                        _READY_TO_RECORD_
-                      </button>
-                    
-                      <audio id="audioTag" controls="true"></audio>
-                    </div>
-                    </fieldset>                    
+                      <p><i>ALT+Z</i> Keys to Start Recording</p>
+                      <p id="recordBtnDescription" role="description">
+                        Stop button active when recording
+                      </p>
+
+                      <div class="audioWrap">
+                        <div class="audioctrls">
+                          <button
+                            type="button"
+                            aria-disabled="true"
+                            aria-describedby="recordBtnDescription"
+                            class="btn"
+                            id="stopBtn"
+                          >
+                            _READY_TO_RECORD_
+                          </button>
+                        
+                          <audio id="audioTag" controls="true"></audio>
+                        </div>
+                      </div>
+
+                    </fieldset>            
+                    <!-- Audio / Media Recorder controls END -->        
                   
               <div class="spacer"></div>
 
+              <!-- ****** Musical keys (piano/synth) settings START -->
               <fieldset class="fieldset">
                 
-                <!-- ****** Musical keys (piano/synth) settings START -->
                 <legend>Musical Key Settings</legend>
                 <div class="sliderCtrls">
 
                       <!-- Waveform slider controls -->
-                      <p>
-                        Wave Form:
-                        <label class="label" id="waveTypeLabel" for="waveTypeValue"
-                          >sine</label
-                        >
-                      </p>
-      
-                      <input
-                        class="slider"
-                        id="waveTypeValue"
-                        name="waveTypeValue"
-                        type="range"
-                        min="0"
-                        max="3"
-                        value="0"
-                        step="1"
-                      />
+                      <div class="ctrlWrap">
+                        <p>
+                          Wave Form:
+                          <label class="label" id="waveTypeLabel" for="waveTypeValue"
+                            >sine</label
+                          >
+                        </p>
+        
+                        <input
+                          class="slider"
+                          id="waveTypeValue"
+                          name="waveTypeValue"
+                          type="range"
+                          min="0"
+                          max="3"
+                          value="0"
+                          step="1"
+                        />
+                      </div>
+                      
                 
                       <!-- Decay slider Controls -->
-                      <p>
-                      Decay:
-                        <label class="label" id="decayTimeLabel" for="decayTimeValue"
-                        >2</label
-                      >
-                      </p>
-      
-                      <input
-                      class="slider"
-                      id="decayTimeValue"
-                      name="decayTimeValue"
-                      type="range"
-                      min="0"
-                      max="10"
-                      value="2"
-                      step="0.5"
-                      />
-                          <p>
-                            Octave: <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
+                      <div class="ctrlWrap">
+                        <p>
+                          Decay:
+                            <label class="label" id="decayTimeLabel" for="decayTimeValue"
+                            >2</label
+                          >
                           </p>
+          
+                          <input
+                          class="slider"
+                          id="decayTimeValue"
+                          name="decayTimeValue"
+                          type="range"
+                          min="0"
+                          max="10"
+                          value="2"
+                          step="0.5"
+                          />
+                      </div>                     
 
-                      <input class="slider" id="octaveValue" type="range" min="0" max="7" value="4" step="1"/>
+                      <!-- Decay slider controls -->
+                      <div class="ctrlWrap">
+                        <p>
+                          Octave: <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
+                        </p>
+  
+                        <input class="slider" id="octaveValue" type="range" min="0" max="7" value="4" step="1"/>
+                      </div>
+                      
                 </div>
               </fieldset>
               <!-- ****** Musical keys (piano/synth) settings END -->
+          
+              <div class="spacer"></div>
+              <!-- Kettle Drum Slider Controls -->
+              
+              <fieldset class="fieldset">
+                <legend class="echoLegend">Kettle Drum Echo</legend>
+                      <div class="kettleWrap">
+                        <p>
+                          Echo: <label class="label" id="echoValueLabel"for="echoValue">0</label>
+                        </p>
 
-          <!-- Kettle Drum Slider Controls -->
-          <div class="spacer"></div>
-          <fieldset class="fieldset">
-            <legend class="echoLegend">Kettle Drum Echo</legend>
-                  
-                    <p>
-                      Echo: <label class="label" id="echoValueLabel"for="echoValue">0</label>
-                    </p>
-
-                <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
-          </fieldset>
+                        <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
+                      </div>
+                        
+              </fieldset>
 
           <!-- HTML5 Input Form Elements For File Upload -->
           <div class="spacer"></div>
