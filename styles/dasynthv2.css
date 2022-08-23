@@ -215,6 +215,7 @@ audio::-webkit-media-controls-panel {
 .ctrlWrap {
   display: flex;
   justify-content: space-between;
+  margin: 0.5rem 0;
 }
 
 .kettleWrap {
