@@ -14,10 +14,16 @@
   src: url(../fonts/bather.ttf) format("truetype");
 }
 
+@font-face {
+  font-family: pointfree;
+  src: url(../fonts/pointfree.ttf);
+}
+
 :root {
   /* type settings */
   --font-title: bather;
   --font-primary: "poppins", sans-serif;
+  --font-label: "pointfree", monospace;
   --font-spacing-title: 0.5rem;
   --font-spacing-ltr: 0.05rem;
   --font-size-title: min(max(2rem, 4vw), 4rem);
@@ -164,11 +170,22 @@ legend {
 
 .label {
   background-color: var(--clr-yellow-dusty-1);
-  width: 3rem;
-  padding: 0.125rem 0.5rem;
+  font-family: var(--font-label);
+  font-weight: bold;
+  padding: 0 1rem;
   border: 1px solid var(--clr-red-brown);
-  border-radius: 0.125rem;
+  border-radius: 0.175rem;
+  flex-wrap: wrap;
+  align-self: center;
+  text-align: center;
+  width: 65px;
 }
+
+/* .labelContainer {
+  width: 150px;
+  border: 1px solid white;
+  justify-content: flex-end;
+} */
 
 audio {
   background-color: #590219;
@@ -180,11 +197,6 @@ audio {
 audio::-webkit-media-controls-panel {
   background-color: #bfa454;
 }
-
-/* .audioWrap {
-  display: flex;
-  align-items: center;
-} */
 
 .audioctrls {
   display: flex;
@@ -212,15 +224,27 @@ audio::-webkit-media-controls-panel {
   flex-direction: column;
 }
 
+.slider {
+  width: 33%;
+}
+
 .ctrlWrap {
   display: flex;
   justify-content: space-between;
   margin: 0.5rem 0;
 }
 
+.ctrlWrap p {
+  width: 102px;
+}
+
 .kettleWrap {
   display: flex;
   justify-content: space-between;
+}
+
+.kettleWrap p {
+  width: 102px;
 }
 /* ****** Controls End ****** */
 
@@ -240,3 +264,5 @@ footer p {
 footer a {
   color: var(--clr-yellow-dusty);
 }
+
+/* ****** breakpoints ****** */

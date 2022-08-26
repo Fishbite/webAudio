@@ -103,11 +103,14 @@
                       <!-- Waveform slider controls -->
                       <div class="ctrlWrap">
                         <p>
-                          Wave Form:
-                          <label class="label" id="waveTypeLabel" for="waveTypeValue"
-                            >sine</label
-                          >
+                          Wave Form:                          
                         </p>
+
+                        <div class="labelContainer">
+                          <label class="label" id="waveTypeLabel" for="waveTypeValue"
+                            >sin</label
+                          >
+                        </div>
         
                         <input
                           class="slider"
@@ -119,6 +122,7 @@
                           value="0"
                           step="1"
                         />
+
                       </div>
                       
                 
@@ -126,10 +130,12 @@
                       <div class="ctrlWrap">
                         <p>
                           Decay:
-                            <label class="label" id="decayTimeLabel" for="decayTimeValue"
+                            
+                          </p>
+
+                          <label class="label" id="decayTimeLabel" for="decayTimeValue"
                             >2</label
                           >
-                          </p>
           
                           <input
                           class="slider"
@@ -141,15 +147,20 @@
                           value="2"
                           step="0.5"
                           />
+                          
                       </div>                     
 
-                      <!-- Decay slider controls -->
+                      <!-- Octave slider controls -->
                       <div class="ctrlWrap">
                         <p>
-                          Octave: <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
+                          Octave: 
                         </p>
+
+                        <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
   
                         <input class="slider" id="octaveValue" type="range" min="0" max="7" value="4" step="1"/>
+
+                        
                       </div>
                       
                 </div>
@@ -163,10 +174,13 @@
                 <legend class="echoLegend">Kettle Drum Echo</legend>
                       <div class="kettleWrap">
                         <p>
-                          Echo: <label class="label" id="echoValueLabel"for="echoValue">0</label>
+                          Echo: 
                         </p>
 
+                        <label class="label" id="echoValueLabel"for="echoValue">0</label>
+
                         <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
+                        
                       </div>
                         
               </fieldset>
