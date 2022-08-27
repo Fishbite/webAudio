@@ -116,7 +116,7 @@ const octaveValueLabel = document.getElementById("octaveValueLabel");
 // For the range slider to select wave type
 waveTypeValue.addEventListener("change", updateWaveType);
 
-const waveType = ["sin", "tri", "squ", "saw"];
+const waveType = ["sine", "triangle", "square", "sawtooth"];
 decayTimeValue.addEventListener("change", updateDecay, false);
 
 octaveValue.addEventListener("change", updateOctaveValue, false);
@@ -127,7 +127,7 @@ let setWave,
 
 function updateWaveType(e) {
   setWave = waveType[waveTypeValue.value];
-  waveTypeLabel.innerHTML = setWave;
+  waveTypeLabel.innerHTML = setWave.slice(0, 3);
   return setWave;
 }
 

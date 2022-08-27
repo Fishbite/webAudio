@@ -4,9 +4,6 @@
       AGPL-3.0-or-later
 */
 
-/*  poppins
-    font-family: 'Poppins', sans-serif;
-     */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @font-face {
@@ -25,7 +22,7 @@
   --font-primary: "poppins", sans-serif;
   --font-label: "pointfree", monospace;
   --font-spacing-title: 0.5rem;
-  --font-spacing-ltr: 0.05rem;
+  --font-spacing-ltr: 0.075rem;
   --font-size-title: min(max(2rem, 4vw), 4rem);
 
   /* colours */
@@ -65,14 +62,20 @@
   box-sizing: border-box;
 }
 
+h3,
+h4 {
+  margin-bottom: 0.5rem;
+}
+
 body {
   font-family: var(--font-primary);
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.25;
   letter-spacing: var(--font-spacing-ltr);
   background-color: var(--clr-title-01);
   background-image: url(../images/img-noise-50x50.png);
   background-size: 25px;
+  color: var(--clr-yellow-dusty-1);
 }
 
 body p {
@@ -103,6 +106,8 @@ header {
 }
 
 nav {
+  position: sticky;
+  top: 0;
   background-color: var(--clr-pink-dusty);
   border-top: 2px solid var(--clr-red-brown);
   border-right: 4px solid var(--clr-red-brown);
@@ -112,7 +117,7 @@ nav {
 }
 
 nav .linkWrap {
-  width: 600px;
+  width: 663.5px;
   margin: auto;
 }
 
@@ -127,163 +132,61 @@ nav a:hover {
   color: var(--clr-yellow-dusty-1);
 }
 
-/* ****** KB Info Dropdown Start ****** */
-
-.dropdown {
-  color: var(--clr-red-brown);
-  display: inline-block;
+main {
+  width: 90vw;
+  margin: 0 auto;
+  line-height: 1.5;
 }
 
-.dropContent {
-  display: none;
-  position: absolute;
-  padding: 0.5rem;
-  background-color: var(--clr-yellow-dusty-brown-2);
-  border: 0.125rem solid var(--clr-red-brown);
-  border-radius: 0.5rem;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
-  z-index: 1;
+.mainWrap {
+  max-width: 66ch;
+  margin: 2.5rem auto;
 }
 
-.dropContent h2 {
-  margin-bottom: -1.125rem;
+.section-list,
+ul {
+  margin: 1rem 0;
+}
+
+ul {
+  list-style-position: inside;
+  margin-left: 1rem;
 }
 
 .dropdown:hover .dropContent {
+  /* display: inline-block; */
   display: block;
 }
 
-/* ****** KB Info Dropdown End ****** */
-
-/* ****** Controls Start ****** */
-.controls {
-  /* border: .25rem solid var(--clr-title-01); */
-  border-radius: 0.5rem;
-  padding: 0.25rem;
-  background-color: var(--clr-yellow-dusty-brown);
-  max-width: 600px;
-  margin: 0.5rem auto;
+.dropdown:hover .dropbtn {
+  background-color: var(--clr-Blue-2);
 }
 
-.fieldset {
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-  border: 0.125rem solid var(--clr-red-brown);
-  color: var(--clr-red-brown);
-}
-
-.spacer {
-  padding-top: 0.5rem;
-}
-
-legend {
-  padding: 0 0.125rem;
-  font-weight: 500;
-}
-
-.label {
-  background-color: var(--clr-yellow-dusty-1);
-  font-family: var(--font-label);
-  font-weight: bold;
-  padding: 0 1rem;
-  border: 1px solid var(--clr-red-brown);
-  border-radius: 0.175rem;
-  flex-wrap: wrap;
-  align-self: center;
-  text-align: center;
-  width: 65px;
-}
-
-/* .labelContainer {
-  width: 150px;
-  border: 1px solid white;
-  justify-content: flex-end;
-} */
-
-audio {
-  background-color: #590219;
-  padding: 0.25rem;
-  border-radius: 2rem;
-  width: 300px;
-}
-
-audio::-webkit-media-controls-panel {
-  background-color: #bfa454;
-}
-
-.audioctrls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+p i {
+  font-weight: 900;
 }
 
 .btn {
+  display: flex;
+  font-family: var(--font-primary);
+  font-weight: 600;
   background-color: var(--clr-yellow-dusty-1);
   border: 2px solid var(--clr-red-brown);
   border-radius: 1rem;
   padding: 0.125rem 0.5rem;
+  margin: 2.5rem auto 0;
 }
 
 .btn:hover {
   background-color: var(--clr-btn);
-}
-
-#stopBtn {
-  margin: 0 0 0.25rem 0rem;
-}
-
-.sliderCtrls {
-  display: flex;
-  flex-direction: column;
-}
-
-.slider {
-  width: 33%;
-}
-
-.ctrlWrap {
-  display: flex;
-  justify-content: space-between;
-  margin: 0.5rem 0;
-}
-
-.ctrlWrap p {
-  width: 102px;
-}
-
-.kettleWrap {
-  display: flex;
-  justify-content: space-between;
-}
-
-.kettleWrap p {
-  width: 102px;
-}
-/* ****** Controls End ****** */
-
-/* footer {
-  background-color: transparent;
-  margin: 1rem 0;
-}
-
-footer p {
   color: white;
-  text-align: center;
-  font-family: "Times New Roman", Times, serif;
-  font-size: 0.75rem;
-  margin: 0.5rem 0 0;
 }
-
-footer a {
-  color: var(--clr-yellow-dusty);
-} */
 
 /* Footer */
-
 footer {
   width: 100vw;
   height: 10vh;
-  margin-top: 10vh;
+  margin-top: 2.5rem;
   /* background-color: var(--clr-grey-2); */
   padding: 0.5rem 0;
 }
@@ -295,7 +198,6 @@ footer p {
   display: block;
   border: none;
   border-radius: 0;
-  /* background-color: var(--clr-grey-2); */
   color: var(--clr-pastel-y0);
   font-size: 0.75rem;
   font-style: italic;
@@ -304,4 +206,3 @@ footer p {
 footer a:visited {
   color: var(--clr-silver-2);
 }
-/* ****** breakpoints ****** */
