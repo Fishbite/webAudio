@@ -10,18 +10,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @font-face {
-  font-family: bather;
-  src: url(../fonts/bather.ttf) format("truetype");
+  font-family: "bather";
+  src: url(../fonts/Bather.ttf) format("truetype");
 }
 
 @font-face {
-  font-family: pointfree;
-  src: url(../fonts/pointfree.ttf);
+  font-family: "pointfree";
+  src: url(../fonts/pointfree.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "gilgongo";
+  src: url(../fonts/GILGON.ttf) format("truetype");
 }
 
 :root {
   /* type settings */
-  --font-title: bather;
+  --font-title: "gilgongo", poppins, sans-serif;
   --font-primary: "poppins", sans-serif;
   --font-label: "pointfree", monospace;
   --font-spacing-title: 0.5rem;
@@ -97,8 +102,11 @@ header {
   font-size: var(--font-size-title);
   color: var(--clr-title-01);
   letter-spacing: var(--font-spacing-title);
-  text-shadow: 0.1rem 0.1rem 0.1rem var(--clr-yellow-dusty-1),
-    0.125rem 0.2rem 0rem var(--clr-red-brown);
+  /* text-shadow: 0.1rem 0.1rem 0.1rem var(--clr-yellow-dusty-1),
+    0.125rem 0.2rem 0rem var(--clr-red-brown); */
+
+  text-shadow: 1px 1px 4px var(--clr-pastel-y2), -1px -1px 1px black;
+  padding: 1rem 0.5rem;
   padding: 1rem 0.5rem;
 }
 

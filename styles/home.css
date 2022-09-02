@@ -47,7 +47,8 @@
   box-sizing: border-box;
 }
 
-h3, h4 {
+h3,
+h4 {
   margin-bottom: 0.5rem;
 }
 
@@ -55,7 +56,7 @@ body {
   background-color: var(--clr-Blue-3);
   font-family: var(--ff-primary);
   font-size: 16px;
-  position: relative;  
+  position: relative;
   overflow-x: hidden;
 }
 
@@ -90,20 +91,20 @@ main {
   line-height: 1.5;
 }
 
-.mainWrap {  
+.mainWrap {
   max-width: 66ch;
   margin: 1.5rem auto;
 }
 
-.section-list, ul {
-  margin: 1rem 0;  
+.section-list,
+ul {
+  margin: 1rem 0;
 }
 
 ul {
   list-style-position: inside;
   margin-left: 1rem;
 }
-
 
 /* .dropContent *:hover {
   background-color: #ddd;
@@ -140,19 +141,19 @@ footer {
   padding: 0.5rem 0;
 }
 
-footer p{
+footer p {
   margin: 0;
   padding: 0;
   text-align: center;
-  display:block;
+  display: block;
   border: none;
   border-radius: 0;
   background-color: var(--clr-grey-2);
   color: var(--clr-pastel-y0);
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-style: italic;
 }
 
 footer a:visited {
-  color: var(--clr-silver-2)
+  color: var(--clr-silver-2);
 }
