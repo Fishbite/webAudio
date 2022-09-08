@@ -1,6 +1,6 @@
 // (function localFileVideoPlayer() {
 //   "use strict";
-//   var playSelectedFile = function (event) {
+//   var setAudioSource = function (event) {
 //     var file = this.files[0];
 //     var URL = window.URL || window.webkitURL;
 //     var fileURL = URL.createObjectURL(file);
@@ -8,12 +8,23 @@
 //     videoNode.src = fileURL;
 //   };
 //   var inputNode = document.querySelector("input");
-//   inputNode.addEventListener("change", playSelectedFile, false);
+//   inputNode.addEventListener("change", setAudioSource, false);
 // })();
 
+/* 
+************ File info & Intent ************ 
+
+This file is work in progress. The intention is to
+provide the user with the facility to select an
+audio file from their local hard drive in order to
+play it whilst they are recording additionanl tunes,
+beats etc. Currently, the user has to upload their
+recording to the server, which is far from ideal.
+
+*/
 const actx = new AudioContext();
 
-function playSelectedFile(event) {
+function setAudioSource(event) {
   console.log("event:", event, "this:", this);
 
   const file = this.files[0];
@@ -80,4 +91,4 @@ function playSelectedFile(event) {
 }
 
 const inputNode = document.getElementById("input");
-inputNode.addEventListener("change", playSelectedFile, false);
+inputNode.addEventListener("change", setAudioSource, false);
