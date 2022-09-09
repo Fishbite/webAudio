@@ -18,6 +18,13 @@ This file is work in progress. The intention is to
 provide the user with the facility to select an
 audio file from their local hard drive in order to
 record additionanl tunes, beats etc. on top of it.
+i.e. they can record a melody, play that back, add
+some rythm in another octave whilst recording and,
+then add some drum beats. Theoretically, they could
+put together a whole orchestral composition.
+
+Of course, we would need a range of instruments to
+accomplish the above..... But that's the easy part :-P
 
 Currently, the user has to upload their
 recording to the server, which is far from ideal.
@@ -34,6 +41,7 @@ function setAudioSource(event) {
   const file = this.files[0];
   // create a property on the window object
   const URL = window.URL;
+  console.log(URL);
 
   console.log("file", file);
 
@@ -53,7 +61,7 @@ function setAudioSource(event) {
   // set the audio source to our object URL
   audioNode.src = fileURL;
 
-  // ****** Pre-recorded Music Start ****** \\
+  // ****** START: Pre-recorded Music Buffer ****** \\
 
   // A variable to store our arrayBuffer
   let soundBuffer;
@@ -89,7 +97,9 @@ function setAudioSource(event) {
       );
     }
   }
-  // ****** Pre-recorded Music End ****** \\
+  // ****** END: Pre-recorded Music Buffer****** \\
+
+  // ****** START: play the buffered music file ****** \\
 
   window.addEventListener("keydown", function (e) {
     switch (e.key) {
