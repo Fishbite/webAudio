@@ -28,7 +28,8 @@ const actx = new AudioContext();
 function setAudioSource(event) {
   console.log("event:", event, "this:", this);
 
-  // get the file from the input event
+  // get the file from the input event fired when the
+  // user selects a file with the file selector
   // this referes to the input element from the document
   const file = this.files[0];
   // create a property on the window object
@@ -53,6 +54,7 @@ function setAudioSource(event) {
   audioNode.src = fileURL;
 
   // ****** Pre-recorded Music Start ****** \\
+
   // A variable to store our arrayBuffer
   let soundBuffer;
 
@@ -87,33 +89,45 @@ function setAudioSource(event) {
       );
     }
   }
-  // Set the initial `pan` value
-  let pan = "left";
-
-  // A panLoop that pans the sound from ear to ear
-  function panLoop() {
-    requestAnimationFrame(panLoop);
-
-    if (pan === "left" && panNode.pan.value < 1) {
-      panNode.pan.value += 0.0125;
-      // stop panning from the left to right
-      if (panNode.pan.value >= 1) pan = "right";
-    }
-
-    if (pan === "right" && panNode.pan.value >= -1) {
-      panNode.pan.value -= 0.0125;
-      // stop panning from the right to left
-      if (panNode.pan.value <= -1) pan = "left";
-    }
-  }
   // ****** Pre-recorded Music End ****** \\
+
+  window.addEventListener("keydown", function (e) {
+    switch (e.key) {
+      // Play music normally (without panning)
+      // If not recording, start the recorder
+      case "a":
+        // if (recorder.state !== "recording") {
+        //   startRecording();
+        // }
+        if (soundBuffer) {
+          let soundNode = actx.createBufferSource();
+          soundNode.buffer = soundBuffer;
+          soundNode.loop = true;
+
+          let volumeNode = actx.createGain();
+          volumeNode.gain.value = 0.5;
+
+          console.log("making connections");
+          soundNode.connect(volumeNode).connect(actx.destination);
+          console.log("starting soundNode");
+          soundNode.start(actx.currentTime);
+          console.log("soundNode started");
+
+          window.addEventListener("keydown", keyDownHandler, false);
+          function keyDownHandler(e) {
+            if (e.key === "d") soundNode.stop();
+          }
+        }
+        break;
+    }
+  });
 
   /* ****** REVOKE object URL ****** */
   // apparently best practice to revoke the object URL
   // when safe to do so, because a new one will be
   // created even if one already exists
   fileURL = URL.revokeObjectURL(file);
-  console.log("object URL revoked. fileURL is now:", fileURL);
+  console.log("object URL revoked. fileURL is now:", fileURL, false);
 }
 
 const inputNode = document.getElementById("input");

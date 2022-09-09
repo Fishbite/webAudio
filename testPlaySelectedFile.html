@@ -7,23 +7,23 @@
     <title>Play Selected File</title>
   </head>
   <body>
-    <h1>Play An Audio File</h1>
+    <h4><a href="./index.html">Home</a></h4>
+    <h3>Play An Audio File</h3>
     <input id="input" type="file" accept="audio/*" /><br />
     <audio id="audio" controls></audio>
-    <!-- <script type="text/javascript">
-      (function localFileVideoPlayer() {
-        "use strict";
-        var playSelectedFile = function (event) {
-          var file = this.files[0];
-          var URL = window.URL || window.webkitURL;
-          var fileURL = URL.createObjectURL(file);
-          var videoNode = document.querySelector("audio");
-          videoNode.src = fileURL;
-        };
-        var inputNode = document.querySelector("input");
-        inputNode.addEventListener("change", playSelectedFile, false);
-      })();
-    </script> -->
+
+    <p>Choose an appropriate piece of music for the occasion.</p>
+    <!-- <div class="hrh">
+      <h3>News Flash:</h3>
+      <h1 class="hrh headline">Her Majesty Queen Elizabeth II Has Died</h1>
+      <p>
+        This is a time of great sadness and today our household is sombre as we heared that our Queen died
+        today September 8 2022 at the age of 96 years.
+        <p>Our thoughts are with her family and the nations that mourn her passing.</p> 
+      </p>
+      <h2>Long Live The King</h2>
+      <p>King Charles III</p>
+    </div> -->
 
     <script src="./src/playSelectedFile.js"></script>
   </body>
