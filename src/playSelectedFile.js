@@ -28,8 +28,21 @@ accomplish the above..... But that's the easy part :-P
 
 Currently, the user has to upload their
 recording to the server, which is far from ideal.
-
 */
+
+// move this function to playSelectedFileV2.js
+const FILEURL = function (event) {
+  const file = this.files[0];
+  const URL = window.URL;
+  let fileURL;
+
+  if (file) {
+    fileURL = URL.createObjectURL(file);
+  }
+
+  return fileURL;
+};
+
 const actx = new AudioContext();
 
 function setAudioSource(event) {
@@ -37,7 +50,7 @@ function setAudioSource(event) {
 
   // get the file from the input event fired when the
   // user selects a file with the file selector
-  // this referes to the input element from the document
+  // 'this' referes to the input element from the document
   const file = this.files[0];
   // create a property on the window object
   const URL = window.URL;
@@ -65,9 +78,6 @@ function setAudioSource(event) {
 
   // A variable to store our arrayBuffer
   let soundBuffer;
-
-  // A stereo panner node
-  let panNode = actx.createStereoPanner();
 
   // CHECK: fileURL has a value then create an XHR request
   if (fileURL) {
@@ -104,11 +114,7 @@ function setAudioSource(event) {
   window.addEventListener("keydown", function (e) {
     switch (e.key) {
       // Play music normally (without panning)
-      // If not recording, start the recorder
       case "a":
-        // if (recorder.state !== "recording") {
-        //   startRecording();
-        // }
         if (soundBuffer) {
           let soundNode = actx.createBufferSource();
           soundNode.buffer = soundBuffer;
