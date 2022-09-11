@@ -30,19 +30,6 @@ Currently, the user has to upload their
 recording to the server, which is far from ideal.
 */
 
-// move this function to playSelectedFileV2.js
-const FILEURL = function (event) {
-  const file = this.files[0];
-  const URL = window.URL;
-  let fileURL;
-
-  if (file) {
-    fileURL = URL.createObjectURL(file);
-  }
-
-  return fileURL;
-};
-
 const actx = new AudioContext();
 
 function setAudioSource(event) {
