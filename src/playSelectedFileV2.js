@@ -60,6 +60,7 @@ class playAudio {
     this.actx = actx;
     this.soundBuffer = soundBuffer;
     this.soundNode = null;
+    this.volumeNode = null;
     this.startTime = 0;
 
     if (!soundBuffer) {
@@ -69,10 +70,10 @@ class playAudio {
       this.soundNode.buffer = soundBuffer;
       this.soundNode.loop = true;
 
-      const volumeNode = actx.createGain();
-      volumeNode.gain.value = 0.5;
+      this.volumeNode = actx.createGain();
+      this.volumeNode.gain.value = 0.5;
 
-      this.soundNode.connect(volumeNode).connect(actx.destination);
+      this.soundNode.connect(this.volumeNode).connect(actx.destination);
       this.soundNode.start(actx.currentTime);
     }
   }
