@@ -32,7 +32,7 @@ function makeURL(event) {
 
 // prep and decode the audio file
 function prepSound(fileURL) {
-  console.log("prepping!");
+  console.log("prepping!", fileURL);
 
   let xhr = new XMLHttpRequest();
   xhr.open("GET", fileURL, true);
@@ -55,33 +55,56 @@ function prepSound(fileURL) {
   }
 }
 
+class playAudio {
+  constructor(actx, soundBuffer) {
+    this.actx = actx;
+    this.soundBuffer = soundBuffer;
+    this.soundNode = null;
+    this.startTime = 0;
+
+    if (!soundBuffer) {
+      console.log("No sound buffer found");
+    } else {
+      this.soundNode = this.actx.createBufferSource();
+      this.soundNode.buffer = soundBuffer;
+      this.soundNode.loop = true;
+
+      const volumeNode = actx.createGain();
+      volumeNode.gain.value = 0.5;
+
+      this.soundNode.connect(volumeNode).connect(actx.destination);
+      this.soundNode.start(actx.currentTime);
+    }
+  }
+  stop() {
+    this.soundNode.stop(actx.currentTime);
+  }
+}
+
 // get the input element from the doc
 fileSelector = document.getElementById("file");
 fileSelector.addEventListener("input", makeURL, false);
 
 window.addEventListener("keydown", function (e) {
+  console.log("soundBuffer", soundBuffer);
   switch (e.key) {
     // Play music normally
     case "a":
-      if (soundBuffer) {
-        let soundNode = actx.createBufferSource();
-        soundNode.buffer = soundBuffer;
-        soundNode.loop = true;
+      //   if (soundBuffer) {
+      //     let soundNode = actx.createBufferSource();
+      //     soundNode.buffer = soundBuffer;
+      //     soundNode.loop = true;
 
-        let volumeNode = actx.createGain();
-        volumeNode.gain.value = 0.5;
+      //     let volumeNode = actx.createGain();
+      //     volumeNode.gain.value = 0.5;
 
-        console.log("making connections");
-        soundNode.connect(volumeNode).connect(actx.destination);
-        console.log("starting soundNode");
-        soundNode.start(actx.currentTime);
-        console.log("soundNode started");
+      //     soundNode.connect(volumeNode).connect(actx.destination);
+      //     soundNode.start(actx.currentTime);
+      let run = new playAudio(actx, soundBuffer);
 
-        window.addEventListener("keydown", keyDownHandler, false);
-        function keyDownHandler(e) {
-          if (e.key === "d") soundNode.stop();
-        }
+      window.addEventListener("keydown", keyDownHandler, false);
+      function keyDownHandler(e) {
+        if (e.key === "d") run.stop();
       }
-      break;
   }
 });
