@@ -16,11 +16,13 @@ let soundBuffer;
 // create a URL of the file object
 function makeURL(event) {
   const file = this.files[0];
-  const URL = window.URL;
+  //   const URL = window.URL;
 
   if (file) {
     console.log(file);
-    fileURL = URL.createObjectURL(file);
+
+    // this works, so we can lose the var URL
+    fileURL = window.URL.createObjectURL(file);
     console.log(fileURL);
   } else {
     // no file selected
