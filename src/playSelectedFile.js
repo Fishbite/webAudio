@@ -39,7 +39,7 @@ function setAudioSource(event) {
   // user selects a file with the file selector
   // 'this' referes to the input element from the document
   const file = this.files[0];
-  // create a property on the window object
+  // window.URL is a bit of a mystery at this moment
   const URL = window.URL;
   console.log(URL);
 

@@ -82,6 +82,13 @@ class playAudio {
   }
 }
 
+// implement a class wrapper so that we don't
+// have to modify our program code if we change
+// the playSudio class
+function playSelected(actx, soundBuffer) {
+  return new playAudio(actx, soundBuffer);
+}
+
 // get the input element from the doc
 fileSelector = document.getElementById("file");
 fileSelector.addEventListener("input", makeURL, false);
