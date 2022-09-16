@@ -217,6 +217,7 @@ audio {
   padding: 0.25rem;
   border-radius: 2rem;
   width: 300px;
+  margin-bottom: 0.75rem;
 }
 
 audio::-webkit-media-controls-panel {
