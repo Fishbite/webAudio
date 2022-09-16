@@ -189,6 +189,10 @@ legend {
   font-weight: 500;
 }
 
+.file {
+  display: block;
+}
+
 .label {
   background-color: var(--clr-yellow-dusty-1);
   font-family: var(--font-label);
