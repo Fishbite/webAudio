@@ -25,6 +25,9 @@ The user can now record music as they are playing, then down load it directly fr
 
 music.wav can be uploaded to the server and then played back via the 'pre-recorded music' playback keys. The user can then record additional stuff on top of the music being played back.
 
+**Update**
+Users can now select music files from their local hard drives, so, there is no need to upload a file with a specific name and file type / size restrictions. Upload to server function is still there for future use.
+
 There's an awful lot more that we can do to build on this app, such as create more
 voices / instruments and indeed; give the user the abiliity to use musical compositions
 they have created directly from the GUI. How we do this has yet to be decided, perhaps
