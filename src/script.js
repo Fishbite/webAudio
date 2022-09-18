@@ -155,11 +155,12 @@ function updateOctaveValue(e) {
 let decay = setDecay;
 function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   // Create a new oscillator and audio graph for each keypress
-  createOsc(freq, type, decay);
+  createOsc2(freq, type, decay);
 }
 
 // An object to hold running oscillators
 const runningOscs = {};
+const runningOscs2 = {};
 
 // This function creates soft sounding oscilators that use compressors and ramps
 // to take the volume down to zero in order to help eleminate those ugly "clicks"
@@ -218,6 +219,73 @@ function createOsc(freq, type = "sine", decay) {
   // osc.stop(actx.currentTime + decay + 0.03);
 }
 
+// attempting to create a different sound using 2 oscillators
+// just by offsetting the frequency of one oscillator has
+// quite a profound effect giving a much richer sound
+function createOsc2(freq, type = "sine", decay) {
+  console.log(freq, type, decay);
+
+  // create oscillator, gain and compressor nodes
+  let osc = actx.createOscillator();
+  let osc2 = actx.createOscillator();
+  let vol = actx.createGain();
+  let compressor = actx.createDynamicsCompressor();
+
+  // set the supplied values
+  osc.frequency.value = freq;
+  osc2.frequency.value = freq - 1;
+  osc.type = type;
+  osc2.type = type;
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+  runningOscs2[freq] = osc2;
+  // console.log(runningOscs[freq]);
+
+  // set the volume value so that we do not overload the destination
+  // when multiple voices are played simmultaneously
+  vol.gain.value = 0.1;
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our compressor node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq].connect(vol).connect(compressor).connect(mainVol);
+    runningOscs2[freq].connect(vol).connect(compressor).connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
+
+    runningOscs2[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
+  }
+
+  // Set the start point of the ramp down
+  // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
+  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
+
+  // ramp down to minimise the ugly click when the oscillator stops
+  vol.gain.exponentialRampToValueAtTime(
+    0.0001,
+    actx.currentTime + decay + 0.03
+  );
+
+  // Finally ramp down to zero to avoid any glitches because the volume
+  // never actually reaches zero with an exponential ramp down
+  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
+
+  runningOscs[freq].start();
+  runningOscs2[freq].start();
+  // osc.stop(actx.currentTime + decay + 0.03);
+}
 // ************* Musical Note Generators END ************ \\
 
 // ************* The Musical Notes Bit! START ************ \\
@@ -445,7 +513,9 @@ function keyupHandler(event) {
   if (freq && runningOscs[freq]) {
     // console.log(runningOscs[freq]);
     runningOscs[freq].stop(actx.currentTime + decay + 2);
+    runningOscs2[freq].stop(actx.currentTime + decay + 2);
     delete runningOscs[freq];
+    delete runningOscs2[freq];
   }
 }
 // ************* Keyboard Event Listeners START ************ \\
