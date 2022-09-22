@@ -149,11 +149,35 @@ function updateOctaveValue(e) {
 }
 // ************* GUI Slider Controls END ************ \\
 
+// ************* GUI Voice Picker START ************ \\
+let voice = "";
+let voicePicker = document.getElementById("voice");
+voicePicker.addEventListener("change", setVoice, false);
+
+function setVoice(e) {
+  console.log(voice);
+  console.log(e.target.value);
+  voice = e.target.value;
+  console.log(voice);
+}
+// ************* GUI Voice Picker END ************ \\
+
 // ************* Musical Note Generators START ************ \\
 // This function just sets default values for oscillator values
 // then runs the create oscillator function
 let decay = setDecay;
 function playNote(freq = 261.63, type = setWave, decay = setDecay) {
+  // Create a new oscillator and audio graph for each keypress
+  if (voice === "one") {
+    createOsc(freq, type, decay);
+  }
+
+  if (voice === "two") {
+    createOsc2(freq, type, decay);
+  }
+}
+
+function playNote2(freq = 261.63, type = setWave, decay = setDecay) {
   // Create a new oscillator and audio graph for each keypress
   createOsc2(freq, type, decay);
 }
@@ -502,7 +526,9 @@ function keyDownHandler(event) {
     }
   }
 
-  if (freq && !runningOscs[freq]) {
+  if (voice === "two" && freq && !runningOscs2[freq]) {
+    playNote2(freq);
+  } else if (freq && !runningOscs[freq]) {
     playNote(freq);
   }
 }
@@ -510,15 +536,18 @@ function keyDownHandler(event) {
 function keyupHandler(event) {
   const key = event.key;
   const freq = notes[key];
-  if (freq && runningOscs[freq]) {
+  if (freq && runningOscs2[freq]) {
     // console.log(runningOscs[freq]);
     runningOscs[freq].stop(actx.currentTime + decay + 2);
     runningOscs2[freq].stop(actx.currentTime + decay + 2);
     delete runningOscs[freq];
     delete runningOscs2[freq];
+  } else if (freq && runningOscs[freq]) {
+    runningOscs[freq].stop(actx.currentTime + decay + 2);
+    delete runningOscs[freq];
   }
 }
-// ************* Keyboard Event Listeners START ************ \\
+// ************* Keyboard Event Listeners END ************ \\
 
 /* ************* File Upload Handling START ************* */
 /*
