@@ -229,7 +229,7 @@ class Kick {
     this.setup();
 
     this.osc.frequency.setValueAtTime(150, time);
-    this.vol.gain.setValueAtTime(0.1, time);
+    this.vol.gain.setValueAtTime(0.5, time);
 
     this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
     this.vol.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
@@ -258,6 +258,7 @@ function updateEcho(e) {
 }
 
 let setEcho = [0, 0, 2000];
+// const reverb = [2, 5, false];
 import { soundEffect } from "../lib/soundToRecorder.js";
 function kettle1(echo = setEcho) {
   soundEffect(
@@ -265,7 +266,7 @@ function kettle1(echo = setEcho) {
     0,
     0.5,
     "sine",
-    0.1,
+    0.5, // volume value
     -0.5,
     0,
     0,
@@ -284,7 +285,7 @@ function kettle2(echo = setEcho) {
     0,
     0.5,
     "sine",
-    0.1,
+    0.5,
     0,
     0,
     0,
@@ -303,7 +304,7 @@ function kettle3(echo = setEcho) {
     0,
     0.5,
     "sine",
-    0.1,
+    0.5,
     0.5,
     0,
     0,

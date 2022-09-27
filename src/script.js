@@ -175,12 +175,16 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   if (voice === "two") {
     createOsc2(freq, type, decay);
   }
+
+  if (voice === "three") {
+    createOsc3(freq, type, decay);
+  }
 }
 
-function playNote2(freq = 261.63, type = setWave, decay = setDecay) {
-  // Create a new oscillator and audio graph for each keypress
-  createOsc2(freq, type, decay);
-}
+// function playNote2(freq = 261.63, type = setWave, decay = setDecay) {
+//   // Create a new oscillator and audio graph for each keypress
+//   createOsc2(freq, type, decay);
+// }
 
 // An object to hold running oscillators
 const runningOscs = {};
@@ -257,7 +261,7 @@ function createOsc2(freq, type = "sine", decay) {
 
   // set the supplied values
   osc.frequency.value = freq;
-  osc2.frequency.value = freq - 1;
+  osc2.frequency.value = freq - freq * 0.01;
   osc.type = type;
   osc2.type = type;
 
@@ -279,6 +283,110 @@ function createOsc2(freq, type = "sine", decay) {
     // Let's get connected!!!!
     runningOscs[freq].connect(vol).connect(compressor).connect(mainVol);
     runningOscs2[freq].connect(vol).connect(compressor).connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
+
+    runningOscs2[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
+  }
+
+  // Set the start point of the ramp down
+  // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
+  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
+
+  // ramp down to minimise the ugly click when the oscillator stops
+  vol.gain.exponentialRampToValueAtTime(
+    0.0001,
+    actx.currentTime + decay + 0.03
+  );
+
+  // Finally ramp down to zero to avoid any glitches because the volume
+  // never actually reaches zero with an exponential ramp down
+  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
+
+  runningOscs[freq].start();
+  runningOscs2[freq].start();
+  // osc.stop(actx.currentTime + decay + 0.03);
+}
+
+function impulseResponse(duration = 2, decay = 2, reverse = false) {
+  //The length of the buffer
+  //(The AudioContext's default sample rate is 44100)
+  let length = actx.sampleRate * duration;
+  //Create an audio buffer (an empty sound container) to store the reverb effect
+  let impulse = actx.createBuffer(2, length, actx.sampleRate);
+  //Use `getChannelData` to initialize empty arrays to store sound data for
+  //the left and right channels
+  let left = impulse.getChannelData(0),
+    right = impulse.getChannelData(1);
+  //Loop through each sample-frame and fill the channel
+  //data with random noise
+  for (let i = 0; i < length; i++) {
+    //Apply the reverse effect, if `reverse` is `true`
+    let n;
+    if (reverse) {
+      n = length - i;
+    } else {
+      n = i;
+    }
+    //Fill the left and right channels with random white noise that
+    //decays exponentially
+    left[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+    right[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+  }
+  //Return the `impulse`
+  return impulse;
+}
+function createOsc3(freq, type = "sine", decay) {
+  console.log(freq, type, decay);
+
+  // create oscillator, gain and compressor nodes
+  let osc = actx.createOscillator();
+  let osc2 = actx.createOscillator();
+  let vol = actx.createGain();
+  let convolver = actx.createConvolver();
+  let compressor = actx.createDynamicsCompressor();
+
+  // set the supplied values
+  osc.frequency.value = freq;
+  osc2.frequency.value = freq - 1;
+  osc.type = "sawtooth";
+  osc2.type = "triangle";
+  convolver.buffer = impulseResponse(2, 2, true);
+  console.log(convolver.buffer);
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+  runningOscs2[freq] = osc2;
+  // console.log(runningOscs[freq]);
+
+  // set the volume value so that we do not overload the destination
+  // when multiple voices are played simmultaneously
+  vol.gain.value = 0.5;
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our compressor node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq]
+      .connect(convolver)
+      .connect(vol)
+      .connect(compressor)
+      .connect(mainVol);
+    runningOscs2[freq]
+      .connect(convolver)
+      .connect(vol)
+      .connect(compressor)
+      .connect(mainVol);
   } else {
     //create the audio graph
     runningOscs[freq]
@@ -526,9 +634,7 @@ function keyDownHandler(event) {
     }
   }
 
-  if (voice === "two" && freq && !runningOscs2[freq]) {
-    playNote2(freq);
-  } else if (freq && !runningOscs[freq]) {
+  if (freq && !runningOscs[freq]) {
     playNote(freq);
   }
 }
