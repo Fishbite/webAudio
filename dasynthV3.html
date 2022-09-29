@@ -64,13 +64,143 @@
           <fieldset class="fieldset">
             <legend>Controls</legend>
 
+            <!-- ****** Musical keys (piano/synth) settings START -->
+            <fieldset class="fieldset">
+                
+              <legend>Musical Key Settings</legend>
+              <label for="voice">Select An Instrument</label>
+              <select name="voice" id="voice">
+                <option value="" selected>Select Voice</option>
+                <option value="one" >One Soft Oscillator</option>
+                <option value="two">Two Soft Oscillators</option>
+                <option value="three">Experimental</option>
+              </select>
+              <div class="sliderCtrls">
+
+                    <!-- Waveform slider controls -->
+                    <div class="ctrlWrap">
+                      <p>
+                        Wave Form:                          
+                      </p>
+
+                      
+                        <label class="label" id="waveTypeLabel" for="waveTypeValue"
+                          >sin</label
+                        >
+                      
+      
+                      <input
+                        class="slider"
+                        id="waveTypeValue"
+                        name="waveTypeValue"
+                        type="range"
+                        min="0"
+                        max="3"
+                        value="0"
+                        step="1"
+                      />
+
+                    </div>
+                    
+              
+                    <!-- Decay slider Controls -->
+                    <div class="ctrlWrap">
+                      <p>
+                        Decay:
+                          
+                        </p>
+
+                        <label class="label" id="decayTimeLabel" for="decayTimeValue"
+                          >2</label
+                        >
+        
+                        <input
+                        class="slider"
+                        id="decayTimeValue"
+                        name="decayTimeValue"
+                        type="range"
+                        min="0"
+                        max="10"
+                        value="2"
+                        step="0.5"
+                        />
+                        
+                    </div>                     
+
+                    <!-- Octave slider controls -->
+                    <div class="ctrlWrap">
+                      <p>
+                        Octave: 
+                      </p>
+
+                      <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
+
+                      <input class="slider" id="octaveValue" type="range" min="0" max="7" value="4" step="1"/>
+
+                      
+                    </div>
+                    
+              </div>
+            </fieldset>
+            <!-- ****** Musical keys (piano/synth) settings END -->
+        
+            <div class="spacer"></div>
+            <!-- Kettle Drum Slider Controls START -->
+            
+            <fieldset class="fieldset">
+              <legend class="echoLegend">Kettle Drum Echo</legend>
+                    <div class="kettleWrap">
+                      <p>
+                        Echo: 
+                      </p>
+
+                      <label class="label" id="echoValueLabel"for="echoValue">0</label>
+
+                      <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
+                      
+                    </div>
+                      
+            </fieldset>
+            <div class="spacer"></div>
+            <!-- Kettle Drum Slider Controls END -->
+
+            <!-- Audio / Media Recorder controls START -->
+            <fieldset class="fieldset">
+              <legend>Media Recorder</legend>
+
+              <p><b><i>ALT+Z</i></b> Keys to Start Recording</p>
+              <p id="recordBtnDescription" role="description">
+                Stop button active when recording
+              </p>
+
+              <div class="audioWrap">
+                <div class="audioctrls">
+                  <button
+                    type="button"
+                    aria-disabled="true"
+                    aria-describedby="recordBtnDescription"
+                    class="btn"
+                    id="stopBtn"
+                  >
+                    _READY_TO_RECORD_
+                  </button>
+                
+                  <audio id="audioTag" controls="true"></audio>
+                </div>
+                <p>Right click media player, select <b>"Save Audio As"</b> when finished recording</p>
+              </div>
+
+            </fieldset>            
+            <!-- Audio / Media Recorder controls END -->
+            <div class="spacer"></div>
+
             <!-- Select A Music Track START -->
 
             <fieldset class="fieldset">
               <legend class=""><b>NEW!!!</b> Select Music Track:</legend>
                     <div class="">
                       
-                      <p>Select any music a file from your hard drive!</p>
+                      <p>Select any music file from your hard drive!</p>
                       <p><a href="./audio/rhythmic-bass-base_39bpm_D_major.wav" rel="noopener noreferrer">a sample file</a> to get you going :-P</p>
                       <p>Select the music you have downloaded from the Media Recorder below.</p>
                       <p>Press keys <b>A</b> to play,and <b>D</b> to stop </p>
@@ -84,137 +214,14 @@
             <div class="spacer"></div>
             
     
-                    <!-- Audio / Media Recorder controls START -->
-                    <fieldset class="fieldset">
-                      <legend>Media Recorder</legend>
-
-                      <p><b><i>ALT+Z</i></b> Keys to Start Recording</p>
-                      <p id="recordBtnDescription" role="description">
-                        Stop button active when recording
-                      </p>
-
-                      <div class="audioWrap">
-                        <div class="audioctrls">
-                          <button
-                            type="button"
-                            aria-disabled="true"
-                            aria-describedby="recordBtnDescription"
-                            class="btn"
-                            id="stopBtn"
-                          >
-                            _READY_TO_RECORD_
-                          </button>
-                        
-                          <audio id="audioTag" controls="true"></audio>
-                        </div>
-                        <p>Right click media player, select <b>"Save Audio As"</b> when finished recording</p>
-                      </div>
-
-                    </fieldset>            
-                    <!-- Audio / Media Recorder controls END -->        
+                         
                   
-              <div class="spacer"></div>
-
-              <!-- ****** Musical keys (piano/synth) settings START -->
-              <fieldset class="fieldset">
-                
-                <legend>Musical Key Settings</legend>
-                <label for="voice">Select An Instrument</label>
-                <select name="voice" id="voice">
-                  <option value="" selected>Select Voice</option>
-                  <option value="one" >One Soft Oscillator</option>
-                  <option value="two">Two Soft Oscillators</option>
-                  <option value="three">Experimental</option>
-                </select>
-                <div class="sliderCtrls">
-
-                      <!-- Waveform slider controls -->
-                      <div class="ctrlWrap">
-                        <p>
-                          Wave Form:                          
-                        </p>
-
-                        
-                          <label class="label" id="waveTypeLabel" for="waveTypeValue"
-                            >sin</label
-                          >
-                        
-        
-                        <input
-                          class="slider"
-                          id="waveTypeValue"
-                          name="waveTypeValue"
-                          type="range"
-                          min="0"
-                          max="3"
-                          value="0"
-                          step="1"
-                        />
-
-                      </div>
-                      
-                
-                      <!-- Decay slider Controls -->
-                      <div class="ctrlWrap">
-                        <p>
-                          Decay:
-                            
-                          </p>
-
-                          <label class="label" id="decayTimeLabel" for="decayTimeValue"
-                            >2</label
-                          >
-          
-                          <input
-                          class="slider"
-                          id="decayTimeValue"
-                          name="decayTimeValue"
-                          type="range"
-                          min="0"
-                          max="10"
-                          value="2"
-                          step="0.5"
-                          />
-                          
-                      </div>                     
-
-                      <!-- Octave slider controls -->
-                      <div class="ctrlWrap">
-                        <p>
-                          Octave: 
-                        </p>
-
-                        <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
-  
-                        <input class="slider" id="octaveValue" type="range" min="0" max="7" value="4" step="1"/>
-
-                        
-                      </div>
-                      
-                </div>
-              </fieldset>
-              <!-- ****** Musical keys (piano/synth) settings END -->
-          
-              <div class="spacer"></div>
-              <!-- Kettle Drum Slider Controls -->
               
-              <fieldset class="fieldset">
-                <legend class="echoLegend">Kettle Drum Echo</legend>
-                      <div class="kettleWrap">
-                        <p>
-                          Echo: 
-                        </p>
 
-                        <label class="label" id="echoValueLabel"for="echoValue">0</label>
-
-                        <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
-                        
-                      </div>
-                        
-              </fieldset>
+              
 
           <!-- HTML5 Input Form Elements For File Upload -->
-          <div class="spacer"></div>
+          
             
               <fieldset class="fieldset">
                 <legend>Upload</legend>
