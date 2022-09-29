@@ -388,6 +388,7 @@ function createOsc3(freq, type = "sine", decay) {
       .connect(compressor)
       .connect(mainVol);
   } else {
+    // change `else` to `if (!mianVol) {}`
     //create the audio graph
     runningOscs[freq]
       .connect(vol)
