@@ -85,7 +85,7 @@ function setVoice(e) {
 // ************* Musical Note Generators START ************ \\
 // This function just sets default values for oscillator values
 // then runs the create oscillator function
-let decay = setDecay;
+
 function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   // Create a new oscillator and audio graph for each keypress
   if (voice === "one") {
@@ -230,7 +230,11 @@ function createOsc2(freq, type = "sine", decay) {
   // osc.stop(actx.currentTime + decay + 0.03);
 }
 
-function impulseResponse(duration = 2, decay = 2, reverse = false) {
+function impulseResponse(duration = 2, decay = 2, reverse = true) {
+  this.duration = duration;
+  this.decay = decay;
+  this.reverse = reverse;
+  console.log(this, this.duration);
   //The length of the buffer
   //(The AudioContext's default sample rate is 44100)
   let length = actx.sampleRate * duration;
@@ -258,7 +262,6 @@ function impulseResponse(duration = 2, decay = 2, reverse = false) {
   //Return the `impulse`
   return impulse;
 }
-
 function createOsc3(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -274,7 +277,7 @@ function createOsc3(freq, type = "sine", decay) {
   osc2.frequency.value = freq - 1;
   osc.type = "sawtooth";
   osc2.type = "triangle";
-  convolver.buffer = impulseResponse(2, 2, true);
+  convolver.buffer = impulseResponse();
   console.log(convolver.buffer);
 
   // copy the osc to the runningOscs object
@@ -284,7 +287,8 @@ function createOsc3(freq, type = "sine", decay) {
 
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
-  vol.gain.value = 0.5;
+  if (this.reverse === false) vol.gain.value = 0.1;
+  if (this.reverse === true) vol.gain.value = 10;
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
@@ -561,12 +565,12 @@ function keyupHandler(event) {
   const freq = notes[key];
   if (freq && runningOscs2[freq]) {
     // console.log(runningOscs[freq]);
-    runningOscs[freq].stop(actx.currentTime + decay + 2);
-    runningOscs2[freq].stop(actx.currentTime + decay + 2);
+    runningOscs[freq].stop(actx.currentTime + setDecay + 2);
+    runningOscs2[freq].stop(actx.currentTime + setDecay + 2);
     delete runningOscs[freq];
     delete runningOscs2[freq];
   } else if (freq && runningOscs[freq]) {
-    runningOscs[freq].stop(actx.currentTime + decay + 2);
+    runningOscs[freq].stop(actx.currentTime + setDecay + 2);
     delete runningOscs[freq];
   }
 }
