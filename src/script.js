@@ -7,19 +7,7 @@ console.log("Connected to the moon!");
 */
 
 /*
-  This is the main file that sets up the recording facitliy to enable
-  live recording of oscillators and pre-recorded music i.e. The user
-  can record music as they play it, play that music back and play
-  additional musical compsition on top of that, such as the addition
-  of drums, percusion, other voices etc.
-
-  The user can download the recording, edit it using some software to
-  trim the begining and end, for example...
-  
-  ...and then UPLOAD IT and RECORD ON TOP OF THAT! Yeah!!!
-  OK! That's a TODO, but we is working on it :¬/
-
-  The file also computes note frequencies and sets up the keyboard
+  The file computes note frequencies and sets up the keyboard
   to play musical notes as heard on electronic keyboard & pianos.
 
   Connection to the user interface is also established in here. That
@@ -31,6 +19,8 @@ console.log("Connected to the moon!");
 
     * Octave value - to give facilitate the full range of notes
       from octave 0 through to octave 7
+
+    * voicePicker - select voices from a dropdown list
 
 */
 
@@ -110,11 +100,6 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
     createOsc3(freq, type, decay);
   }
 }
-
-// function playNote2(freq = 261.63, type = setWave, decay = setDecay) {
-//   // Create a new oscillator and audio graph for each keypress
-//   createOsc2(freq, type, decay);
-// }
 
 // An object to hold running oscillators
 const runningOscs = {};
@@ -273,6 +258,7 @@ function impulseResponse(duration = 2, decay = 2, reverse = false) {
   //Return the `impulse`
   return impulse;
 }
+
 function createOsc3(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
