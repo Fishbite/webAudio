@@ -230,6 +230,8 @@ function createOsc2(freq, type = "sine", decay) {
   // osc.stop(actx.currentTime + decay + 0.03);
 }
 
+// Thanks to Rex van der Spur's book:
+// Advanced Game Design with HTML5 & JavaScript
 function impulseResponse(duration = 2, decay = 2, reverse = true) {
   this.duration = duration;
   this.decay = decay;
