@@ -97,7 +97,7 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "three") {
-    createOsc5(freq, type, decay);
+    createOsc6(freq, type, decay);
   }
 }
 
@@ -500,6 +500,74 @@ function createOsc5(freq, type = "sine", decay) {
   vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
 
   runningOscs[freq].start();
+  // osc.stop(actx.currentTime + decay + 0.03);
+}
+
+// with convolver.
+// this instrument attempts to get closer to that of
+// an actual stringed instrument, where the initial
+// strike of the string decays exopnentially and then
+// continues at a lower magnitude for a preiod of time
+function createOsc6(freq, type = "sine", decay) {
+  console.log(freq, type, decay);
+
+  // create oscillator, gain compressor and convolver nodes
+
+  let osc = actx.createOscillator();
+  let osc2 = actx.createOscillator();
+  let vol = actx.createGain();
+  let volOsc = actx.createGain();
+  let volOsc2 = actx.createGain();
+  osc.type = "sine";
+  osc2.type = "triangle";
+
+  osc.frequency.value = freq;
+  osc2.frequency.value = osc.frequency.value + 1;
+
+  // let compressor = actx.createDynamicsCompressor();
+
+  // set the supplied values
+  // osc.frequency.value = freq;
+  osc.type = type;
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+  runningOscs2[freq] = osc2;
+  // console.log(runningOscs[freq]);
+
+  // set the volume value so that we do not overload the destination
+  // when multiple voices are played simmultaneously
+  vol.gain.value = 2;
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our compressor node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq].connect(volOsc).connect(vol);
+    runningOscs2[freq].connect(volOsc2).connect(vol);
+    vol.connect(reverb).connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq].connect(volOsc).connect(vol);
+    runningOscs2[freq].connect(volOsc2).connect(vol);
+    vol.connect(reverb).connect(actx.destination);
+  }
+
+  // create the envelope
+  volOsc.gain.setValueAtTime(0.08, actx.currentTime);
+  volOsc.gain.exponentialRampToValueAtTime(0.008, actx.currentTime + decay / 4);
+
+  volOsc2.gain.setValueAtTime(0.2, actx.currentTime);
+  volOsc2.gain.exponentialRampToValueAtTime(0.02, actx.currentTime + decay / 4);
+
+  volOsc.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 2.5);
+  volOsc2.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 2.5);
+
+  runningOscs[freq].start();
+  runningOscs2[freq].start();
   // osc.stop(actx.currentTime + decay + 0.03);
 }
 // ************* Musical Note Generators END ************ \\
