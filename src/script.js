@@ -101,7 +101,7 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "four") {
-    createOsc4(freq, type, decay);
+    createOsc6(freq, type, decay);
   }
 }
 
@@ -347,84 +347,83 @@ function createOsc3(freq, type = "sine", decay) {
 }
 
 // https://stackoverflow.com/questions/22312841/waveshaper-node-in-webaudio-how-to-emulate-distortion
-let distortionNode = actx.createWaveShaper();
-distortionNode.curve = makeDistortionCurve();
+// let distortionNode = actx.createWaveShaper();
+// distortionNode.curve = makeDistortionCurve();
 
-function makeDistortionCurve(amount = 20) {
-  let n_samples = 256,
-    curve = new Float32Array(n_samples);
-  for (let i = 0; i < n_samples; ++i) {
-    let x = (i * 2) / n_samples - 1;
-    curve[i] = ((Math.PI + amount) * x) / (Math.PI + amount * Math.abs(x));
-  }
-  return curve;
-}
+// function makeDistortionCurve(amount = 20) {
+//   let n_samples = 256,
+//     curve = new Float32Array(n_samples);
+//   for (let i = 0; i < n_samples; ++i) {
+//     let x = (i * 2) / n_samples - 1;
+//     curve[i] = ((Math.PI + amount) * x) / (Math.PI + amount * Math.abs(x));
+//   }
+//   return curve;
+// }
 
-// with distortion curve above
-function createOsc4(freq, type = "sine", decay) {
-  console.log(freq, type, decay);
+// // with distortion curve above
+// function createOsc4(freq, type = "sine", decay) {
+//   console.log(freq, type, decay);
 
-  // create oscillator, gain and compressor nodes
-  let osc = actx.createOscillator();
-  let vol = actx.createGain();
-  let compressor = actx.createDynamicsCompressor();
-  // let distortionNode = actx.createWaveShaper();
-  // distortionNode.curve = makeDistortionCurve();
+//   // create oscillator, gain and compressor nodes
+//   let osc = actx.createOscillator();
+//   let vol = actx.createGain();
+//   let compressor = actx.createDynamicsCompressor();
+//   // let distortionNode = actx.createWaveShaper();
+//   // distortionNode.curve = makeDistortionCurve();
 
-  // set the supplied values
-  osc.frequency.value = freq;
-  osc.type = type;
+//   // set the supplied values
+//   osc.frequency.value = freq;
+//   osc.type = type;
 
-  // copy the osc to the runningOscs object
-  runningOscs[freq] = osc;
-  // console.log(runningOscs[freq]);
+//   // copy the osc to the runningOscs object
+//   runningOscs[freq] = osc;
+//   // console.log(runningOscs[freq]);
 
-  // set the volume value so that we do not overload the destination
-  // when multiple voices are played simmultaneously
-  vol.gain.value = 0.01;
+//   // set the volume value so that we do not overload the destination
+//   // when multiple voices are played simmultaneously
+//   vol.gain.value = 0.01;
 
-  // Now, do we have a recording facility set up for us in the global scope?
-  // If we do, let's connect our audio graph to it so that we can record
-  // our live music directly from the audio nodes, rather than a microphone :->
-  // All we need to do is connect our compressor node to the `mainVol` node
-  // defined in the global scope
-  if (mainVol) {
-    // Let's get connected!!!!
-    runningOscs[freq]
-      .connect(vol)
-      .connect(distortionNode)
-      .connect(compressor)
-      .connect(mainVol);
-  } else {
-    //create the audio graph
-    runningOscs[freq]
-      .connect(vol)
-      .connect(distortionNode)
-      .connect(compressor)
-      .connect(actx.destination);
-  }
+//   // Now, do we have a recording facility set up for us in the global scope?
+//   // If we do, let's connect our audio graph to it so that we can record
+//   // our live music directly from the audio nodes, rather than a microphone :->
+//   // All we need to do is connect our compressor node to the `mainVol` node
+//   // defined in the global scope
+//   if (mainVol) {
+//     // Let's get connected!!!!
+//     runningOscs[freq]
+//       .connect(vol)
+//       .connect(distortionNode)
+//       .connect(compressor)
+//       .connect(mainVol);
+//   } else {
+//     //create the audio graph
+//     runningOscs[freq]
+//       .connect(vol)
+//       .connect(distortionNode)
+//       .connect(compressor)
+//       .connect(actx.destination);
+//   }
 
-  // Set the start point of the ramp down
-  // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
-  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
+//   // Set the start point of the ramp down
+//   // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
+//   vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
 
-  // ramp down to minimise the ugly click when the oscillator stops
-  vol.gain.exponentialRampToValueAtTime(
-    0.0001,
-    actx.currentTime + decay + 0.03
-  );
+//   // ramp down to minimise the ugly click when the oscillator stops
+//   vol.gain.exponentialRampToValueAtTime(
+//     0.0001,
+//     actx.currentTime + decay + 0.03
+//   );
 
-  // Finally ramp down to zero to avoid any glitches because the volume
-  // never actually reaches zero with an exponential ramp down
-  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
+//   // Finally ramp down to zero to avoid any glitches because the volume
+//   // never actually reaches zero with an exponential ramp down
+//   vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
 
-  runningOscs[freq].start();
-  // osc.stop(actx.currentTime + decay + 0.03);
-}
+//   runningOscs[freq].start();
+//   // osc.stop(actx.currentTime + decay + 0.03);
+// }
 
 // apply impulse response recording to convolver node
 // https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode
-
 async function createReverb() {
   let convolver = actx.createConvolver();
 
@@ -506,6 +505,101 @@ function createOsc5(freq, type = "sine", decay) {
 
   volOsc.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 2.5);
   volOsc2.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 2.5);
+
+  runningOscs[freq].start();
+  runningOscs2[freq].start();
+  // osc.stop(actx.currentTime + decay + 0.03);
+}
+
+/*
+    https://alexanderleon.medium.com/web-audio-series-part-2-designing-distortion-using-javascript-and-the-web-audio-api-446301565541
+*/
+function makeDistortionCurve(amount) {
+  var k = amount,
+    n_samples = typeof sampleRate === "number" ? sampleRate : 44100,
+    curve = new Float32Array(n_samples),
+    deg = Math.PI / 180,
+    i = 0,
+    x;
+  for (; i < n_samples; ++i) {
+    x = (i * 2) / n_samples - 1;
+    curve[i] =
+      ((3 + k) * Math.atan(Math.sinh(x * 0.25) * 5)) /
+      (Math.PI + k * Math.abs(x));
+  }
+  return curve;
+}
+
+// as `createOsc5` with added distortion
+function createOsc6(freq, type = "sine", decay) {
+  console.log(freq, type, decay);
+
+  // create oscillator, gain compressor and convolver nodes
+
+  let osc = actx.createOscillator();
+  let osc2 = actx.createOscillator();
+  let vol = actx.createGain();
+  let volOsc = actx.createGain();
+  let volOsc2 = actx.createGain();
+  let distortionNode = actx.createWaveShaper();
+  let distortionVol = actx.createGain();
+  distortionNode.curve = makeDistortionCurve(400);
+
+  osc.type = "sine";
+  osc2.type = "triangle";
+
+  osc.frequency.value = freq;
+  osc2.frequency.value = osc.frequency.value + 1;
+
+  // let compressor = actx.createDynamicsCompressor();
+
+  // set the supplied values
+  // osc.frequency.value = freq;
+  osc.type = type;
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+  runningOscs2[freq] = osc2;
+  // console.log(runningOscs[freq]);
+
+  // set the volume value so that we do not overload the destination
+  // when multiple voices are played simmultaneously
+  vol.gain.value = 0.1;
+  distortionVol.gain.value = 0.01;
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our compressor node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq].connect(volOsc).connect(vol);
+    runningOscs2[freq].connect(volOsc2).connect(vol);
+    vol.connect(reverb).connect(distortionNode).connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq].connect(volOsc).connect(vol);
+    runningOscs2[freq].connect(volOsc2).connect(vol);
+    vol.connect(reverb).connect(distortionNode).connect(actx.destination);
+  }
+
+  // create the envelope
+  volOsc.gain.setValueAtTime(0.04, actx.currentTime);
+  volOsc.gain.exponentialRampToValueAtTime(0.004, actx.currentTime + decay / 4);
+
+  volOsc2.gain.setValueAtTime(0.1, actx.currentTime);
+  volOsc2.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + decay / 4);
+
+  distortionVol.gain.setValueAtTime(distortionVol.gain.value, actx.currentTime);
+  distortionVol.gain.exponentialRampToValueAtTime(
+    distortionVol.gain.value,
+    actx.currentTime + decay / 4
+  );
+
+  volOsc.gain.linearRampToValueAtTime(0, actx.currentTime + decay);
+  volOsc2.gain.linearRampToValueAtTime(0, actx.currentTime + decay);
+  distortionVol.gain.linearRampToValueAtTime(0, actx.currentTime + decay);
 
   runningOscs[freq].start();
   runningOscs2[freq].start();
