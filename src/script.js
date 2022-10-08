@@ -97,7 +97,11 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "three") {
-    createOsc6(freq, type, decay);
+    createOsc5(freq, type, decay);
+  }
+
+  if (voice === "four") {
+    createOsc4(freq, type, decay);
   }
 }
 
@@ -425,16 +429,13 @@ async function createReverb() {
   let convolver = actx.createConvolver();
 
   // load impulse response from file
-  let response = await fetch("../audio/IRwav.wav");
+  let response = await fetch("../audio/IRwav2.wav");
   let arraybuffer = await response.arrayBuffer();
   convolver.buffer = await actx.decodeAudioData(arraybuffer);
 
   return convolver;
 }
 
-// …
-
-// let reverb = createReverb();
 let reverb = await createReverb();
 // reverb;
 // console.log(reverb);
@@ -443,72 +444,12 @@ let reverb = await createReverb();
 // someOtherAudioNode.connect(reverb);
 // reverb.connect(audioCtx.destination);
 
-// with convolverNode
-function createOsc5(freq, type = "sine", decay) {
-  console.log(freq, type, decay);
-
-  // create oscillator, gain compressor and convolver nodes
-  let osc = actx.createOscillator();
-  let vol = actx.createGain();
-  let compressor = actx.createDynamicsCompressor();
-
-  // set the supplied values
-  osc.frequency.value = freq;
-  osc.type = type;
-
-  // copy the osc to the runningOscs object
-  runningOscs[freq] = osc;
-  // console.log(runningOscs[freq]);
-
-  // set the volume value so that we do not overload the destination
-  // when multiple voices are played simmultaneously
-  vol.gain.value = 0.1;
-
-  // Now, do we have a recording facility set up for us in the global scope?
-  // If we do, let's connect our audio graph to it so that we can record
-  // our live music directly from the audio nodes, rather than a microphone :->
-  // All we need to do is connect our compressor node to the `mainVol` node
-  // defined in the global scope
-  if (mainVol) {
-    // Let's get connected!!!!
-    runningOscs[freq]
-      .connect(vol)
-      .connect(compressor)
-      .connect(reverb)
-      .connect(mainVol);
-  } else {
-    //create the audio graph
-    runningOscs[freq]
-      .connect(vol)
-      .connect(compressor)
-      .connect(reverb)
-      .connect(actx.destination);
-  }
-
-  // Set the start point of the ramp down
-  // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
-  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
-
-  // ramp down to minimise the ugly click when the oscillator stops
-  vol.gain.exponentialRampToValueAtTime(
-    0.0001,
-    actx.currentTime + decay + 0.03
-  );
-
-  // Finally ramp down to zero to avoid any glitches because the volume
-  // never actually reaches zero with an exponential ramp down
-  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
-
-  runningOscs[freq].start();
-  // osc.stop(actx.currentTime + decay + 0.03);
-}
-
 // with convolver.
 // this instrument attempts to get closer to that of
 // an actual stringed instrument, where the initial
 // strike of the string decays exopnentially and then
 // continues at a lower magnitude for a preiod of time
-function createOsc6(freq, type = "sine", decay) {
+function createOsc5(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
   // create oscillator, gain compressor and convolver nodes
