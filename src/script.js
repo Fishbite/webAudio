@@ -534,15 +534,18 @@ function makeDistortionCurve(amount) {
 function createOsc6(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
-  // create oscillator, gain compressor and convolver nodes
+  // create the stuff we need for the audio graph
 
   let osc = actx.createOscillator();
   let osc2 = actx.createOscillator();
+  let distortionNode = actx.createWaveShaper();
+
   let vol = actx.createGain();
   let volOsc = actx.createGain();
   let volOsc2 = actx.createGain();
-  let distortionNode = actx.createWaveShaper();
   let distortionVol = actx.createGain();
+
+  // set some values for each node
   distortionNode.curve = makeDistortionCurve(400);
 
   osc.type = "sine";
@@ -565,7 +568,7 @@ function createOsc6(freq, type = "sine", decay) {
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
   vol.gain.value = 0.1;
-  distortionVol.gain.value = 0.01;
+  distortionVol.gain.value = 0.5;
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
@@ -576,12 +579,24 @@ function createOsc6(freq, type = "sine", decay) {
     // Let's get connected!!!!
     runningOscs[freq].connect(volOsc).connect(vol);
     runningOscs2[freq].connect(volOsc2).connect(vol);
-    vol.connect(reverb).connect(distortionNode).connect(mainVol);
+    // commented out to find cause of volume prolem with distortion
+    // vol.connect(reverb).connect(distortionNode).connect(mainVol);
+    vol
+      .connect(reverb)
+      .connect(distortionNode)
+      .connect(distortionVol)
+      .connect(mainVol);
   } else {
     //create the audio graph
     runningOscs[freq].connect(volOsc).connect(vol);
     runningOscs2[freq].connect(volOsc2).connect(vol);
-    vol.connect(reverb).connect(distortionNode).connect(actx.destination);
+    // commented out to find cause of volume prolem with distortion
+    // vol.connect(reverb).connect(distortionNode).connect(actx.destination);
+    vol
+      .connect(reverb)
+      .connect(distortionNode)
+      .connect(distortionVol)
+      .connect(actx.destination);
   }
 
   // create the envelope
