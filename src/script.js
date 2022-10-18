@@ -268,6 +268,7 @@ function impulseResponse(duration = 2, decay = 2, reverse = true) {
   //Return the `impulse`
   return impulse;
 }
+
 function createOsc3(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -424,18 +425,26 @@ function createOsc3(freq, type = "sine", decay) {
 
 // apply impulse response recording to convolver node
 // https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode
-async function createReverb() {
+async function createReverb(path) {
   let convolver = actx.createConvolver();
 
   // load impulse response from file
-  let response = await fetch("../audio/IRwav2.wav");
+  let response = await fetch(path);
+
+  // let response = await fetch("../audio/1st_baptist_nashville_far_wide.wav");
+
+  // let response = await fetch("../audio/1st_baptist_nashville_far_close.wav");
+
   let arraybuffer = await response.arrayBuffer();
   convolver.buffer = await actx.decodeAudioData(arraybuffer);
 
   return convolver;
 }
 
-let reverb = await createReverb();
+const reverb = await createReverb("../audio/IRwav2.wav");
+const reverb2 = await createReverb(
+  "../audio/1st_baptist_nashville_far_wide.wav"
+);
 // reverb;
 // console.log(reverb);
 
@@ -554,7 +563,7 @@ function createOsc6(freq, type = "sine", decay) {
   osc.frequency.value = freq;
   osc2.frequency.value = osc.frequency.value + 1;
 
-  // let compressor = actx.createDynamicsCompressor();
+  let compressor = actx.createDynamicsCompressor();
 
   // set the supplied values
   // osc.frequency.value = freq;
@@ -582,9 +591,10 @@ function createOsc6(freq, type = "sine", decay) {
     // commented out to find cause of volume prolem with distortion
     // vol.connect(reverb).connect(distortionNode).connect(mainVol);
     vol
-      .connect(reverb)
-      .connect(distortionNode)
-      .connect(distortionVol)
+      .connect(reverb2)
+      // .connect(distortionNode)
+      // .connect(distortionVol)
+      .connect(compressor)
       .connect(mainVol);
   } else {
     //create the audio graph
@@ -593,9 +603,10 @@ function createOsc6(freq, type = "sine", decay) {
     // commented out to find cause of volume prolem with distortion
     // vol.connect(reverb).connect(distortionNode).connect(actx.destination);
     vol
-      .connect(reverb)
-      .connect(distortionNode)
-      .connect(distortionVol)
+      .connect(reverb2)
+      // .connect(distortionNode)
+      // .connect(distortionVol)
+      .connect(compressor)
       .connect(actx.destination);
   }
 
