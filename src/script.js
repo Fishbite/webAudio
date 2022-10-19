@@ -43,7 +43,7 @@ octaveValue.addEventListener("change", updateOctaveValue, false);
 
 let setWave,
   setDecay = 2,
-  oct = 4;
+  octaveCurrent = 4;
 
 function updateWaveType(e) {
   setWave = waveType[waveTypeValue.value];
@@ -59,12 +59,12 @@ function updateDecay(e) {
 }
 
 function updateOctaveValue(e) {
-  oct = parseFloat(octaveValue.value);
+  octaveCurrent = parseFloat(octaveValue.value);
 
-  octaveValueLabel.innerHTML = oct;
-  console.log("`oct` value:", oct);
+  octaveValueLabel.innerHTML = octaveCurrent;
+  console.log("`octaveCurrent` value:", octaveCurrent);
 
-  console.log("oct has been set:", oct);
+  console.log("octaveCurrent has been set:", octaveCurrent);
   console.log(notes.y);
 }
 // ************* GUI Slider Controls END ************ \\
@@ -84,24 +84,24 @@ function setVoice(e) {
 
 // ************* Musical Note Generators START ************ \\
 // This function just sets default values for oscillator values
-// then runs the create oscillator function
+// then runs the create oscillator function for the current voice
 
 function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   // Create a new oscillator and audio graph for each keypress
   if (voice === "one") {
-    createOsc(freq, type, decay);
+    createOsc(freq, type, decay); // one soft osc
   }
 
   if (voice === "two") {
-    createOsc2(freq, type, decay);
+    createOsc2(freq, type, decay); // two soft osc's
   }
 
   if (voice === "three") {
-    createOsc5(freq, type, decay);
+    createOsc5(freq, type, decay); // plinky plonky reverb
   }
 
   if (voice === "four") {
-    createOsc6(freq, type, decay);
+    createOsc6(freq, type, decay); // experimental
   }
 }
 
@@ -112,6 +112,7 @@ const runningOscs2 = {};
 // This function creates soft sounding oscilators that use compressors and ramps
 // to take the volume down to zero in order to help eleminate those ugly "clicks"
 // We are recording these better sounds
+// **** voice =  one soft osc ****
 function createOsc(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -169,6 +170,7 @@ function createOsc(freq, type = "sine", decay) {
 // attempting to create a different sound using 2 oscillators
 // just by offsetting the frequency of one oscillator has
 // quite a profound effect giving a much richer sound
+// **** voice = two soft oscillators ****
 function createOsc2(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -269,6 +271,7 @@ function impulseResponse(duration = 2, decay = 2, reverse = true) {
   return impulse;
 }
 
+// **** this has problems ****
 function createOsc3(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -457,6 +460,7 @@ const reverb2 = await createReverb(
 // an actual stringed instrument, where the initial
 // strike of the string decays exopnentially and then
 // continues at a lower magnitude for a preiod of time
+// voice **** plinky plonky reverb ****
 function createOsc5(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -540,6 +544,7 @@ function makeDistortionCurve(amount) {
 }
 
 // as `createOsc5` with added distortion
+// **** voice = experimental ****
 function createOsc6(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -576,8 +581,8 @@ function createOsc6(freq, type = "sine", decay) {
 
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
-  vol.gain.value = 0.1;
-  distortionVol.gain.value = 0.5;
+  vol.gain.value = 0.01;
+  distortionVol.gain.value = 1;
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
@@ -589,13 +594,23 @@ function createOsc6(freq, type = "sine", decay) {
     runningOscs[freq].connect(volOsc).connect(vol);
     runningOscs2[freq].connect(volOsc2).connect(vol);
     // commented out to find cause of volume prolem with distortion
-    // vol.connect(reverb).connect(distortionNode).connect(mainVol);
+    // hooking up reverb to the chain cause sounds like an
+    // electrical connection problem
+    // vol
+    //   .connect(reverb2)
+    //   .connect(distortionNode)
+    //   .connect(distortionVol)
+    //   .connect(compressor)
+    //   .connect(mainVol);
+
+    // this seems to work ok - test more!
     vol
-      .connect(reverb2)
-      // .connect(distortionNode)
-      // .connect(distortionVol)
+      .connect(distortionNode)
+      .connect(distortionVol)
       .connect(compressor)
       .connect(mainVol);
+
+    // vol.connect(mainVol);
   } else {
     //create the audio graph
     runningOscs[freq].connect(volOsc).connect(vol);
@@ -604,8 +619,8 @@ function createOsc6(freq, type = "sine", decay) {
     // vol.connect(reverb).connect(distortionNode).connect(actx.destination);
     vol
       .connect(reverb2)
-      // .connect(distortionNode)
-      // .connect(distortionVol)
+      .connect(distortionNode)
+      .connect(distortionVol)
       .connect(compressor)
       .connect(actx.destination);
   }
@@ -738,91 +753,91 @@ console.log(scale);
 // ************* Keyboard Keys That Play Notes: START ************ \\
 // map of keyboard keys to notes in array scale
 const notes = {
-  // q: scale[oct].C,
+  // q: scale[octaveCurrent].C,
   // Use getter functions so that the
-  // current value of `oct` is read
+  // current value of `octaveCurrent` is read
   get q() {
-    console.log(`C${oct}`);
-    return scale[oct].C;
+    console.log(`C${octaveCurrent}`);
+    return scale[octaveCurrent].C;
   },
-  // 2: scale[oct].Cs,
+  // 2: scale[octaveCurrent].Cs,
   get 2() {
-    console.log(`C${oct}#`);
-    return scale[oct].Cs;
+    console.log(`C${octaveCurrent}#`);
+    return scale[octaveCurrent].Cs;
   },
-  // w: scale[oct].D,
+  // w: scale[octaveCurrent].D,
   get w() {
-    console.log(`D${oct}`);
-    return scale[oct].D;
+    console.log(`D${octaveCurrent}`);
+    return scale[octaveCurrent].D;
   },
-  // 3: scale[oct].Ds,
+  // 3: scale[octaveCurrent].Ds,
   get 3() {
-    console.log(`D${oct}#`);
-    return scale[oct].Ds;
+    console.log(`D${octaveCurrent}#`);
+    return scale[octaveCurrent].Ds;
   },
-  // e: scale[oct].E,
+  // e: scale[octaveCurrent].E,
   get e() {
-    console.log(`E${oct}`);
-    return scale[oct].E;
+    console.log(`E${octaveCurrent}`);
+    return scale[octaveCurrent].E;
   },
-  // r: scale[oct].F,
+  // r: scale[octaveCurrent].F,
   get r() {
-    console.log(`F${oct}`);
-    return scale[oct].F;
+    console.log(`F${octaveCurrent}`);
+    return scale[octaveCurrent].F;
   },
-  // 5: scale[oct].Fs,
+  // 5: scale[octaveCurrent].Fs,
   get 5() {
-    console.log(`F${oct}#`);
-    return scale[oct].Fs;
+    console.log(`F${octaveCurrent}#`);
+    return scale[octaveCurrent].Fs;
   },
-  // t: scale[oct].G,
+  // t: scale[octaveCurrent].G,
   get t() {
-    console.log(`G${oct}`);
-    return scale[oct].G;
+    console.log(`G${octaveCurrent}`);
+    return scale[octaveCurrent].G;
   },
-  // 6: scale[oct].Gs,
+  // 6: scale[octaveCurrent].Gs,
   get 6() {
-    console.log(`G${oct}#`);
-    return scale[oct].Gs;
+    console.log(`G${octaveCurrent}#`);
+    return scale[octaveCurrent].Gs;
   },
   get y() {
-    console.log(`A${oct}`);
-    return scale[oct].A;
+    console.log(`A${octaveCurrent}`);
+    return scale[octaveCurrent].A;
   },
-  // 7: scale[oct].As,
+  // 7: scale[octaveCurrent].As,
   get 7() {
-    console.log(`A${oct}#`);
-    return scale[oct].As;
+    console.log(`A${octaveCurrent}#`);
+    return scale[octaveCurrent].As;
   },
-  // u: scale[oct].B,
+  // u: scale[octaveCurrent].B,
   get u() {
-    console.log(`B${oct}`);
-    return scale[oct].B;
+    console.log(`B${octaveCurrent}`);
+    return scale[octaveCurrent].B;
   },
-  // i: scale[oct + 1].C,
+  // i: scale[octaveCurrent + 1].C,
   get i() {
-    console.log(`C${oct + 1}`);
-    if (scale[oct + 1]) return scale[oct + 1].C;
+    console.log(`C${octaveCurrent + 1}`);
+    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].C;
   },
-  // 9: scale[oct + 1].Cs,
+  // 9: scale[octaveCurrent + 1].Cs,
   get 9() {
-    console.log(`C${oct + 1}#`);
-    if (scale[oct + 1]) return scale[oct + 1].Cs;
+    console.log(`C${octaveCurrent + 1}#`);
+    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].Cs;
   },
-  // o: scale[oct + 1].D,
+  // o: scale[octaveCurrent + 1].D,
   get o() {
-    console.log(`D${oct + 1}`);
-    if (scale[oct + 1]) return scale[oct + 1].D;
+    console.log(`D${octaveCurrent + 1}`);
+    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].D;
   },
-  // 0: scale[oct + 1].Ds,
+  // 0: scale[octaveCurrent + 1].Ds,
   get 0() {
-    console.log(`D${oct + 1}#`);
-    if (scale[oct + 1]) return scale[oct + 1].Ds;
+    console.log(`D${octaveCurrent + 1}#`);
+    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].Ds;
   },
-  // p: scale[oct + 1].E,
+  // p: scale[octaveCurrent + 1].E,
   get p() {
-    console.log(`E${oct + 1}`);
-    if (scale[oct + 1]) return scale[oct + 1].E;
+    console.log(`E${octaveCurrent + 1}`);
+    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].E;
   },
 };
 
