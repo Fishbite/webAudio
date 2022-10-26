@@ -560,7 +560,7 @@ function createOsc6(freq, type = "sine", decay) {
   let distortionVol = actx.createGain();
 
   // set some values for each node
-  distortionNode.curve = makeDistortionCurve(400);
+  distortionNode.curve = makeDistortionCurve(700);
 
   osc.type = "sine";
   osc2.type = "triangle";
@@ -582,7 +582,7 @@ function createOsc6(freq, type = "sine", decay) {
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
   vol.gain.value = 0.01;
-  distortionVol.gain.value = 1;
+  distortionVol.gain.value = 2;
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
@@ -604,10 +604,15 @@ function createOsc6(freq, type = "sine", decay) {
     //   .connect(mainVol);
 
     // this seems to work ok - test more!
+    // hooking up the reverb (convolver) node as the last but one
+    // node in the chain seems to REDUCE those electrical
+    // connection problem sounds (crackling noises)
+    // plus the volume appears to remain stable and consistent
     vol
       .connect(distortionNode)
       .connect(distortionVol)
       .connect(compressor)
+      .connect(reverb2)
       .connect(mainVol);
 
     // vol.connect(mainVol);
@@ -618,10 +623,10 @@ function createOsc6(freq, type = "sine", decay) {
     // commented out to find cause of volume prolem with distortion
     // vol.connect(reverb).connect(distortionNode).connect(actx.destination);
     vol
-      .connect(reverb2)
       .connect(distortionNode)
       .connect(distortionVol)
       .connect(compressor)
+      .connect(reverb2)
       .connect(actx.destination);
   }
 
