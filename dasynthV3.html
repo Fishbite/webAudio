@@ -147,8 +147,9 @@
             <!-- ****** Musical keys (piano/synth) settings END -->
         
             <div class="spacer"></div>
-            <!-- Kettle Drum Slider Controls START -->
-            
+
+
+            <!-- Kettle Drum Slider Controls START -->            
             <fieldset class="fieldset">
               <legend class="echoLegend">Kettle Drum Echo</legend>
                     <div class="kettleWrap">
@@ -196,38 +197,30 @@
             <!-- Audio / Media Recorder controls END -->
             <div class="spacer"></div>
 
-            <!-- Select A Music Track START -->
 
+            <!-- Select A Music Track START -->
             <fieldset class="fieldset">
               <legend class=""><b>NEW!!!</b> Select Music Track:</legend>
                     <div class="">
+
+                      <p>Right click the Media Recorder, save the audio file, then browse for the music you have downloaded.</p>
+                      <p>Or, select any music file from your hard drive!</p>
+                      <div><input class="file" id="file" type="file" accept="audio/*" /></div>
+                      <p>If you haven't recorded anything yet, here's a <a href="./audio/rhythmic-bass-base_39bpm_D_major.wav" rel="noopener noreferrer">a sample file</a> to get you going :-P</p>
                       
-                      <p>Select any music file from your hard drive!</p>
-                      <p><a href="./audio/rhythmic-bass-base_39bpm_D_major.wav" rel="noopener noreferrer">a sample file</a> to get you going :-P</p>
-                      <p>Select the music you have downloaded from the Media Recorder.</p>
                       <p>Press keys <b>A</b> to play,and <b>D</b> to stop </p>
-                      
-                      
                     </div>
-                    <div><input class="file" id="file" type="file" accept="audio/*" /></div>
-                      
             </fieldset>
             <!-- Select A Music Track END -->
-            <div class="spacer"></div>
-            
-    
-                         
-                  
-              
 
-              
+            <div class="spacer"></div>
+
 
           <!-- HTML5 Input Form Elements For File Upload -->
-          
-            
               <fieldset class="fieldset">
-                <legend>Upload</legend>
-                  <h4>EXPERIMENTAL</h4>                
+                <legend >Upload</legend>
+                  <h4 class="upload">EXPERIMENTAL</h4>
+                  <p>Note: This utility uploads your recording to the server, however, you need a login accoutn to do so.</p>              
                   <input id="fileupload" class=".btn" type="file" name="fileupload" /><span>File Size: <span id="fileSize">0</span>KB</span>
                   <span>Type: </span><span id="fileType"></span>
                   <span id="hexTag"></span>

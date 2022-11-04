@@ -191,6 +191,7 @@ legend {
 
 .file {
   display: block;
+  padding-bottom: 0.75rem;
 }
 
 .label {
@@ -271,6 +272,10 @@ audio::-webkit-media-controls-panel {
 
 .kettleWrap p {
   width: 102px;
+}
+
+.upload {
+  padding-bottom: 0.5rem;
 }
 /* ****** Controls End ****** */
 

@@ -1,7 +1,9 @@
+// import { soundEffect } from "../lib/soundToRecorder";
+
 console.log("Connected to the moon!");
 
 /* // ****** LICENSE NOTICE ****** \\
-      COPYRIGHT: 2022 Stuart Peel 
+      COPYLEFT: 2022 Stuart Peel 
       This PROGRAM is distributed under the terms of the:
       AGPL-3.0-or-later
 */
@@ -23,6 +25,10 @@ console.log("Connected to the moon!");
     * voicePicker - select voices from a dropdown list
 
 */
+
+// ************* Sop Button START ************ \\
+const stopBtn = document.getElementById("stopBtn");
+// ************* Sop Button END ************ \\
 
 // ************* GUI Slider Controls START ************ \\
 // Get the slider control elements from the document
@@ -101,13 +107,18 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "four") {
-    createOsc6(freq, type, decay); // experimental
+    createOsc6(freq, type, decay); // distortion &  reverb in a church
+  }
+
+  if (voice === "five") {
+    createOsc7(freq, type, decay);
   }
 }
 
 // An object to hold running oscillators
 const runningOscs = {};
 const runningOscs2 = {};
+const runningOscs3 = {};
 
 // This function creates soft sounding oscilators that use compressors and ramps
 // to take the volume down to zero in order to help eleminate those ugly "clicks"
@@ -205,120 +216,6 @@ function createOsc2(freq, type = "sine", decay) {
     runningOscs[freq].connect(vol).connect(compressor).connect(mainVol);
     runningOscs2[freq].connect(vol).connect(compressor).connect(mainVol);
   } else {
-    //create the audio graph
-    runningOscs[freq]
-      .connect(vol)
-      .connect(compressor)
-      .connect(actx.destination);
-
-    runningOscs2[freq]
-      .connect(vol)
-      .connect(compressor)
-      .connect(actx.destination);
-  }
-
-  // Set the start point of the ramp down
-  // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
-  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
-
-  // ramp down to minimise the ugly click when the oscillator stops
-  vol.gain.exponentialRampToValueAtTime(
-    0.0001,
-    actx.currentTime + decay + 0.03
-  );
-
-  // Finally ramp down to zero to avoid any glitches because the volume
-  // never actually reaches zero with an exponential ramp down
-  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
-
-  runningOscs[freq].start();
-  runningOscs2[freq].start();
-  // osc.stop(actx.currentTime + decay + 0.03);
-}
-
-// Thanks to Rex van der Spur's book:
-// Advanced Game Design with HTML5 & JavaScript
-function impulseResponse(duration = 2, decay = 2, reverse = true) {
-  this.duration = duration;
-  this.decay = decay;
-  this.reverse = reverse;
-  console.log(this, this.duration);
-  //The length of the buffer
-  //(The AudioContext's default sample rate is 44100)
-  let length = actx.sampleRate * duration;
-  //Create an audio buffer (an empty sound container) to store the reverb effect
-  let impulse = actx.createBuffer(2, length, actx.sampleRate);
-  //Use `getChannelData` to initialize empty arrays to store sound data for
-  //the left and right channels
-  let left = impulse.getChannelData(0),
-    right = impulse.getChannelData(1);
-  //Loop through each sample-frame and fill the channel
-  //data with random noise
-  for (let i = 0; i < length; i++) {
-    //Apply the reverse effect, if `reverse` is `true`
-    let n;
-    if (reverse) {
-      n = length - i;
-    } else {
-      n = i;
-    }
-    //Fill the left and right channels with random white noise that
-    //decays exponentially
-    left[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
-    right[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
-  }
-  //Return the `impulse`
-  return impulse;
-}
-
-// **** this has problems ****
-function createOsc3(freq, type = "sine", decay) {
-  console.log(freq, type, decay);
-
-  // create oscillator, gain and compressor nodes
-  let osc = actx.createOscillator();
-  let osc2 = actx.createOscillator();
-  let vol = actx.createGain();
-  let convolver = actx.createConvolver();
-  let compressor = actx.createDynamicsCompressor();
-
-  // set the supplied values
-  osc.frequency.value = freq;
-  osc2.frequency.value = freq - 1;
-  osc.type = "sawtooth";
-  osc2.type = "triangle";
-  convolver.buffer = impulseResponse();
-  console.log(convolver.buffer);
-
-  // copy the osc to the runningOscs object
-  runningOscs[freq] = osc;
-  runningOscs2[freq] = osc2;
-  // console.log(runningOscs[freq]);
-
-  // set the volume value so that we do not overload the destination
-  // when multiple voices are played simmultaneously
-  if (this.reverse === false) vol.gain.value = 0.1;
-  if (this.reverse === true) vol.gain.value = 10;
-
-  // Now, do we have a recording facility set up for us in the global scope?
-  // If we do, let's connect our audio graph to it so that we can record
-  // our live music directly from the audio nodes, rather than a microphone :->
-  // All we need to do is connect our compressor node to the `mainVol` node
-  // defined in the global scope
-  if (mainVol) {
-    // Let's get connected!!!!
-    runningOscs[freq]
-      .connect(convolver)
-      .connect(vol)
-      .connect(compressor)
-      .connect(mainVol);
-    runningOscs2[freq]
-      .connect(convolver)
-      .connect(vol)
-      .connect(compressor)
-      .connect(mainVol);
-  } else {
-    // change `else` to `if (!mianVol) {}`
     //create the audio graph
     runningOscs[freq]
       .connect(vol)
@@ -544,7 +441,7 @@ function makeDistortionCurve(amount) {
 }
 
 // as `createOsc5` with added distortion
-// **** voice = experimental ****
+// **** voice = Distortion & Reverb in a Church ****
 function createOsc6(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
@@ -651,6 +548,103 @@ function createOsc6(freq, type = "sine", decay) {
   runningOscs2[freq].start();
   // osc.stop(actx.currentTime + decay + 0.03);
 }
+
+// experimental
+function createOsc7(freq, type = "sine", decay) {
+  console.log(freq, type, decay);
+
+  // create oscillator, gain and compressor nodes
+  let osc = actx.createOscillator();
+  let osc2 = actx.createOscillator();
+  let osc3 = actx.createOscillator();
+  let vol = actx.createGain();
+  let compressor = actx.createDynamicsCompressor();
+  let biquadFilter = actx.createBiquadFilter();
+
+  // set the supplied values
+  osc.frequency.value = freq;
+  osc2.frequency.value = freq - freq * 0.01;
+  osc3.frequency.value = freq + freq * 0.01;
+  osc.type = type;
+  osc2.type = type;
+  osc3.type = type;
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+  runningOscs2[freq] = osc2;
+  runningOscs3[freq] = osc3;
+  // console.log(runningOscs[freq]);
+
+  // set the volume value so that we do not overload the destination
+  // when multiple voices are played simmultaneously
+  vol.gain.value = 0.001;
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our compressor node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq]
+      .connect(biquadFilter)
+      .connect(vol)
+      .connect(compressor)
+      .connect(mainVol);
+    runningOscs2[freq]
+      .connect(biquadFilter)
+      .connect(vol)
+      .connect(compressor)
+      .connect(mainVol);
+    runningOscs3[freq]
+      .connect(biquadFilter)
+      .connect(vol)
+      .connect(compressor)
+      .connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
+
+    runningOscs2[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
+
+    runningOscs3[freq]
+      .connect(vol)
+      .connect(compressor)
+      .connect(actx.destination);
+  }
+
+  // Set the start point of the ramp down
+  // vol.gain.setValueAtTime(vol.gain.value, actx.currentTime + decay);
+  vol.gain.setValueAtTime(vol.gain.value, actx.currentTime);
+
+  // ramp down to minimise the ugly click when the oscillator stops
+  vol.gain.exponentialRampToValueAtTime(
+    0.0001,
+    actx.currentTime + decay + 0.03
+  );
+
+  // Finally ramp down to zero to avoid any glitches because the volume
+  // never actually reaches zero with an exponential ramp down
+  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
+
+  biquadFilter.type = "lowshelf";
+
+  biquadFilter.frequency.setValueAtTime(1000, actx.currentTime);
+  // biquadFilter.Q.setValueAtTime(10, actx.currentTime);
+  biquadFilter.gain.setValueAtTime(25, actx.currentTime);
+
+  runningOscs[freq].start();
+  runningOscs2[freq].start();
+  runningOscs3[freq].start();
+  // osc.stop(actx.currentTime + decay + 0.03);
+}
+
 // ************* Musical Note Generators END ************ \\
 
 // ************* The Musical Notes Bit! START ************ \\
@@ -850,7 +844,7 @@ const notes = {
 
 // ************* Keyboard Event Listeners START ************ \\
 window.addEventListener("keydown", keyDownHandler, false);
-window, addEventListener("keyup", keyupHandler, false);
+window.addEventListener("keyup", keyupHandler, false);
 
 function keyDownHandler(event) {
   // let A = arrayOfAs;
@@ -864,6 +858,8 @@ function keyDownHandler(event) {
     if (recorder.state !== "recording") {
       startRecording();
       console.log(recorder.state);
+
+      stopBtn.style.backgroundColor = "red";
     }
   }
 
@@ -875,7 +871,16 @@ function keyDownHandler(event) {
 function keyupHandler(event) {
   const key = event.key;
   const freq = notes[key];
-  if (freq && runningOscs2[freq]) {
+
+  if (freq && runningOscs3[freq]) {
+    // console.log(runningOscs[freq]);
+    runningOscs[freq].stop(actx.currentTime + setDecay + 2);
+    runningOscs2[freq].stop(actx.currentTime + setDecay + 2);
+    runningOscs3[freq].stop(actx.currentTime + setDecay + 2);
+    delete runningOscs[freq];
+    delete runningOscs2[freq];
+    delete runningOscs3[freq];
+  } else if (freq && runningOscs2[freq]) {
     // console.log(runningOscs[freq]);
     runningOscs[freq].stop(actx.currentTime + setDecay + 2);
     runningOscs2[freq].stop(actx.currentTime + setDecay + 2);
