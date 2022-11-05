@@ -549,11 +549,15 @@ function createOsc6(freq, type = "sine", decay) {
   // osc.stop(actx.currentTime + decay + 0.03);
 }
 
-// experimental
+// **** voice = experimental ****
+// here we use 3 slightly detuned oscillators
+// along with a `lowshelf` filter which together
+// produces a lovely rich phased sound, especially
+// at lower frequency octaves 2 & 3
 function createOsc7(freq, type = "sine", decay) {
   console.log(freq, type, decay);
 
-  // create oscillator, gain and compressor nodes
+  // create oscillator, gain, filter and compressor nodes
   let osc = actx.createOscillator();
   let osc2 = actx.createOscillator();
   let osc3 = actx.createOscillator();
@@ -577,7 +581,7 @@ function createOsc7(freq, type = "sine", decay) {
 
   // set the volume value so that we do not overload the destination
   // when multiple voices are played simmultaneously
-  vol.gain.value = 0.001;
+  vol.gain.value = 0.005;
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
@@ -631,12 +635,15 @@ function createOsc7(freq, type = "sine", decay) {
 
   // Finally ramp down to zero to avoid any glitches because the volume
   // never actually reaches zero with an exponential ramp down
-  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.03);
+  vol.gain.linearRampToValueAtTime(0, actx.currentTime + decay + 0.5);
 
   biquadFilter.type = "lowshelf";
-
   biquadFilter.frequency.setValueAtTime(1000, actx.currentTime);
+  // not used on the `lowshelf` filter type
   // biquadFilter.Q.setValueAtTime(10, actx.currentTime);
+
+  // set the gain value (in decibels) of the boosted
+  // frequencies
   biquadFilter.gain.setValueAtTime(25, actx.currentTime);
 
   runningOscs[freq].start();
