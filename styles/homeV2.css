@@ -95,6 +95,14 @@ body p {
   margin-bottom: 0.5rem;
 }
 
+a {
+  color: var(--clr-yellow-dusty-1);
+}
+
+a:hover {
+  color: var(--clr-pastel-y0);
+}
+
 /* ****** Global End ****** */
 
 header {
@@ -190,6 +198,11 @@ p i {
   border-radius: 1rem;
   padding: 0.125rem 0.5rem;
   margin: 2.5rem auto 0;
+  color: var(--clr-grey);
+}
+
+.btn a {
+  color: var(--clr-red-brown);
 }
 
 .btn:hover {

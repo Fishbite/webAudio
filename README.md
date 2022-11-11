@@ -4,9 +4,10 @@
 it allows the user to record the music they are creating directly from the running
 oscillators, rather than though a microphone.
 
-The project is in its infancy, but we do have a machine that allows you to do the
+The project is in its infancy (now just out of diapers!) but we do have a machine that allows you to do the
 following:
 
+- Select from a range of voices
 - Play musical notes from a range of eight octaves:- 0 through 7 as on a full size
   keyboard
 - Change the octave, waveform and decay of the notes to create different voices
@@ -14,27 +15,26 @@ following:
 - Play pre-recorded music to play along side with
 - Record as you play including the ability to record on top of pre-reorcded music that
   that you are playing along to.
-- Download the recording directly from the Audio Player for editing etc.
-- Upload the recording as music.wav so that it can be played back and added to
+- Save the recording to your computer directly from the Audio Player
+- Browse for the file you have saved from the Audio Player and play it back so you can record addition tunes & beats on top of that
+- Legacy (and pretty redundant at this point)Upload the recording as music.wav so that it can be played back and added to
 
-This could be the start of something great!
+This ~~could be~~ IS! the start of something great!
 
 ## The State of Play
 
-The user can now record music as they are playing, then down load it directly from the media player. The file then needs to be imported into editing software such as Audacity and then saved out as 'music.wav'
+The user can now record music as they are playing, then save it to their computer directly from the media player.
 
-music.wav can be uploaded to the server and then played back via the 'pre-recorded music' playback keys. The user can then record additional stuff on top of the music being played back.
+The user can browse for the saved file (or any other music file) play it back and record additional compositions, tunes, beats etc. on top of it
+
+To prep the file for upload to the server, the file needs to be imported into editing software such as Audacity and then saved out as 'music.wav'
+
+music.wav can be uploaded to the server and then played back via the 'pre-recorded music' playback keys. The user can then record additional stuff on top of the music being played back, as they can with the locally saved file.
 
 **Update**
 Users can now select music files from their local hard drives, so, there is no need to upload a file with a specific name and file type / size restrictions. Upload to server function is still there for future use.
 
-There's an awful lot more that we can do to build on this app, such as create more
-voices / instruments and indeed; give the user the abiliity to use musical compositions
-they have created directly from the GUI. How we do this has yet to be decided, perhaps
-we could use local storage, instead of uploading to the server. If we give the ability
-to upload to the server, then we must also provide a method of selecting the file to be
-played via the GUI, At present, the app only looks for one file **music.wav** and it is
-the only file that can be played, however, it can be overwritten as stated above.
+This app is growing, at a slower rate than I would like admittedly, but I am neither a sound engineer or accomplished musician! I used to take piano lessons and owned a piano, but that pretty much went out of the window when I bought my first ELECTRONIC GUITAR HA! HAA!! HAAA!!!
 
 ## Collaborators
 
