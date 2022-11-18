@@ -14,6 +14,7 @@ console.log("yeah! Landed!");
 // const actx = new AudioContext();
 
 // ****** Variables To Setup Recording Ability Start ****** \\
+//        ****** MOVED TO RECORDING CHAIN.JS ****** \\
 
 // let mainVol = actx.createGain(),
 //   // A mediaStreamDestination Node
@@ -23,54 +24,42 @@ console.log("yeah! Landed!");
 //   // Our Media Recorder
 //   recorder = new MediaRecorder(streamDest.stream);
 
-// // ****** Variables To Setup Recording Ability End ****** \\
-
-// // Connect the mainVol to the destination stream and the speakers
-// // All sound generators that we want to record must be connected
-// // to mainVol
-// mainVol.connect(streamDest); // connect to the stream
-// mainVol.connect(actx.destination); // Connect to the speakers
-
-// // ****** Pre-recorded Music Start ****** \\
-// // A variable to store our arrayBuffer
-// let soundBuffer;
-
-// // A stereo panner node
-// let panNode = actx.createStereoPanner();
-
-// // Load the sound \\
-// let xhr = new XMLHttpRequest();
-// xhr.open("GET", "../upload/music.wav", true); // true: load asynchronously, create event
-
-// // load as a binary file with responsType `arraybuffer`
-// xhr.responseType = "arraybuffer";
-
-// // load the sound
-// xhr.send();
-
-// xhr.addEventListener("load", onLoad, false);
-
-// function onLoad(event) {
-//   actx.decodeAudioData(
-//     xhr.response,
-//     (buffer) => {
-//       soundBuffer = buffer;
-//     },
-
-//     (error) => {
-//       throw new Error(`It no possibla decodie audioie ${error}`);
-//     }
-//   );
-// }
+// ****** Variables To Setup Recording Ability End ****** \\
 
 // ****** Pre-recorded Music Start ****** \\
-
-// A stereo panner node
-let panNode = actx.createStereoPanner();
 
 // global variables for our sound file
 let fileURL; // var to store our ObjectURL
 let soundBuffer; // A variable to store our arrayBuffer
+
+let playbackLabel = document.getElementById("playbackLabel"); // label to display value
+let playbackVol = document.getElementById("playbackVolValue"); // playback volume slider
+
+playbackVol.onchange = (e) => {
+  playbackLabel.innerText = playbackVol.value;
+  // console.log(playbackVol.value);
+  musicVol.gain.value = parseFloat(playbackVol.value);
+};
+
+/* Strangely, using this event listener causes serious
+   gain drop-outs when playig back recordings, whereas
+   the GlobalEventHandler.onchange does not!!???
+   playbackVol.addEventListener("change", volChange, false); */
+
+// unused because of the above glitch
+// function volChange(e) {
+//   playbackLabel.innerText = playbackVol.value;
+//  musicVol.gain.value = parseFloat(playbackVol.value);
+// }
+
+let musicVol = actx.createGain();
+
+// connect to the main recording chain
+musicVol.connect(mainVol);
+
+// get the input element from the doc
+const fileSelector = document.getElementById("file");
+fileSelector.addEventListener("input", makeURL, false);
 
 // create a URL of the file object
 function makeURL(event) {
@@ -119,6 +108,8 @@ function prepSound(fileURL) {
   }
 }
 
+// A stereo panner node
+let panNode = actx.createStereoPanner();
 // Set the initial `pan` value
 let pan = "left";
 
@@ -139,6 +130,7 @@ function panLoop() {
   }
 }
 
+// play pre-recorded music
 class playSoundBuffer {
   constructor(actx, soundBuffer) {
     this.actx = actx;
@@ -158,7 +150,7 @@ class playSoundBuffer {
       // audio graph that records live audio
 
       this.volumeNode = actx.createGain();
-      this.volumeNode.gain.value = 0.5;
+      this.volumeNode.gain.value = 0.1 + parseFloat(playbackVol.value); // set value from GUI
 
       if (typeof mainVol === "undefined" || typeof mainVol === null) {
         console.log("We DO NOT have a recording chain");
@@ -166,7 +158,10 @@ class playSoundBuffer {
         this.soundNode.start(actx.currentTime);
       } else {
         console.log("We have a recording chain");
-        this.soundNode.connect(this.volumeNode).connect(mainVol);
+        this.soundNode
+          .connect(this.volumeNode)
+          .connect(musicVol)
+          .connect(mainVol);
         this.soundNode.start(actx.currentTime);
       }
     }
@@ -246,6 +241,8 @@ class Kick {
 // Lets see what our `soundEffects` function can do?
 // Sounds more like a kettle drum because we have a
 // `linearRampToValue` not an `exponentialRampToValue`
+
+// GUI echo controls
 const echoValue = document.getElementById("echoValue"); // echo slider
 const echoValueLable = document.getElementById("echoValueLabel"); // echo slider label
 
@@ -259,7 +256,11 @@ function updateEcho(e) {
 
 let setEcho = [0, 0, 2000];
 // const reverb = [2, 5, false];
+
+// import the soundEffect function
 import { soundEffect } from "../lib/soundToRecorder.js";
+
+// program the soundEffect function!
 function kettle1(echo = setEcho) {
   soundEffect(
     110, // 110 = A2
@@ -423,10 +424,6 @@ function hihat() {
   hihat.volume = 1;
   hihat.play();
 }
-
-// get the input element from the doc
-const fileSelector = document.getElementById("file");
-fileSelector.addEventListener("input", makeURL, false);
 
 function setup() {
   window.addEventListener("keydown", playSample, false);

@@ -207,6 +207,11 @@ legend {
   width: 65px;
 }
 
+/* playbackLabel */
+.pb {
+  width: 80px;
+}
+
 /* .labelContainer {
   width: 150px;
   border: 1px solid white;
