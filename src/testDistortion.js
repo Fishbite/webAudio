@@ -7,9 +7,11 @@ var audioCtx = new AudioContext();
 
 var oscillatorNode = audioCtx.createOscillator();
 var oscillatorGainNode = audioCtx.createGain();
+oscillatorGainNode.gain.value = 0.001;
 var finish = audioCtx.destination;
 
 var distortionGainNode = audioCtx.createGain();
+distortionGainNode.gain.value = 1;
 var distortionNode = audioCtx.createWaveShaper();
 
 function makeDistortionCurve(amount) {
