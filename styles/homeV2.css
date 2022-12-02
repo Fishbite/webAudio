@@ -40,6 +40,9 @@
   --clr-pastel-y1: #fffabe;
   --clr-pastel-y2: #fffcdd;
 
+  /* Greens */
+  --clr-green-0: rgba(0, 100, 0, 1);
+
   /* Greys */
   --clr-grey-1: rgb(47, 45, 61);
   --clr-grey-2: rgb(56, 54, 71);
@@ -210,6 +213,28 @@ p i {
   color: white;
 }
 
+/* ****** How To page specific styles START ****** /
+/* howTo playback list styling */
+.pblist {
+  display: flex;
+  justify-content: space-between;
+  line-height: 3;
+}
+
+.playBtn {
+  font-size: 1.5rem;
+}
+
+.player {
+  width: 50px;
+  height: 2.65rem;
+  padding: 0 1.05rem;
+  color: var(--clr-yellow-dusty-1);
+  background-color: var(--clr-grey-1);
+  border: 1px solid var(--clr-silver-1);
+  border-radius: 4px;
+}
+/* ****** How To page specific styles END ****** /
 /* Footer */
 footer {
   width: 100vw;

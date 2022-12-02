@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Music Machine</title>
     <link rel="stylesheet" href="./styles/homeV2.css" />
+    <script src="https://kit.fontawesome.com/3d17bee77c.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -128,6 +129,29 @@
           it to your computer
         </p>
 
+        <h4>Example</h4>
+        
+        <ul >
+          <li class="pblist">first tune recorded <div class="player"><i id="playBtn00" class="fa fa-solid fa fa-play playBtn"></i></div><audio id="0" src="./audio/startRythm.wav" ></audio></i></li>
+
+            <li class="pblist">add a another tune <div class="player"><i id="playBtn01" class="fa fa-solid fa fa-play playBtn"></i></div><audio id="1" src="./audio/startAdd-1.wav" ></audio></li>
+
+            <li class="pblist">add a third tune! <div class="player"><i id="playBtn02" class="fa fa-solid fa fa-play playBtn"></i></div><audio id="2" src="./audio/startAdd-2.wav" ></audio></li>
+
+            <li class="pblist">add drums <div class="player"><i id="playBtn03" class="fa fa-solid fa fa-play playBtn"></i></div><audio id="3" src="./audio//startAdd-3-drums.wav" ></audio></li>
+
+            <li class="pblist">add some bass tune <div class="player"><i id="playBtn04" class="fa fa-solid fa fa-play playBtn"></i></div><audio id="4" src="./audio/startAdd-4-bassnotes.wav" ></audio></li>
+        </ul>
+
+        <h4>how did we do this?</h4>
+        <p>well, we just recorded some notes played on the keyboard, saved our recording to the computer, then played it back (the program automatically loops the tune continuously)</p>
+        <p>OK! CONFESSION! we trimmed the original recording in <a href="https://www.audacityteam.org/download/" target="_blank"
+          ><b>Audacity</b></a> so that it played back in a near-perfect loop</p>
+        <p>while the recording was playing back, we played the same tune / notes again, just slightly off time from the first (that's where the 'echoee' sound comes from, but, it's the same voice used for the first recording) then we hit <b>ALT+Z</b> to start recording and saved that to our computer</p>
+        <p>we then selected another voice from the drop down list and played some more notes along with our mix</p>
+        <p>this process was repeated adding drums and then some bass notes (all of two!) yep! the bass notes were created using another voice from the list</p>
+        <p></p>
+
         <button class="btn">
           <a href="./dasynthV3.html">Enter Da Synth Dude App</a>
         </button>
@@ -147,5 +171,8 @@
         </p>
       </div>
     </footer>
+
+    <script src="./src/howto.js"></script>
+
   </body>
 </html>
