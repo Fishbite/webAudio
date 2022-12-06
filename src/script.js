@@ -32,27 +32,28 @@ const stopBtn = document.getElementById("stopBtn");
 
 // ************* GUI Slider Controls START ************ \\
 // Get the slider control elements from the document
-const waveTypeValue = document.getElementById("waveTypeValue"); // wave form slider
+const waveTypeValue = document.getElementById("waveTypeValue"); // INPUT wave form slider
 const waveTypeLabel = document.getElementById("waveTypeLabel");
-const decayTimeValue = document.getElementById("decayTimeValue"); // decay time slider
+const decayTimeValue = document.getElementById("decayTimeValue"); // INPUT decay time slider
 const decayTimeLabel = document.getElementById("decayTimeLabel");
-const octaveValue = document.getElementById("octaveValue"); // octave value slider
+const octaveValue = document.getElementById("octaveValue"); // INPUT octave value slider
 const octaveValueLabel = document.getElementById("octaveValueLabel");
 
 // For the range slider to select wave type
 waveTypeValue.addEventListener("change", updateWaveType);
 
-const waveType = ["sine", "triangle", "square", "sawtooth"];
+const waveTypes = ["sine", "triangle", "square", "sawtooth"];
 decayTimeValue.addEventListener("change", updateDecay, false);
 
 octaveValue.addEventListener("change", updateOctaveValue, false);
 
+// `vars` read by `function playNote()`
 let setWave,
   setDecay = 2,
   octaveCurrent = 4;
 
 function updateWaveType(e) {
-  setWave = waveType[waveTypeValue.value];
+  setWave = waveTypes[waveTypeValue.value];
   waveTypeLabel.innerHTML = setWave.slice(0, 3);
   return setWave;
 }
@@ -64,13 +65,13 @@ function updateDecay(e) {
   return setDecay;
 }
 
+// event listener callback functions update `vars` for `playNote()` & the GUI lables
 function updateOctaveValue(e) {
   octaveCurrent = parseFloat(octaveValue.value);
 
   octaveValueLabel.innerHTML = octaveCurrent;
   console.log("`octaveCurrent` value:", octaveCurrent);
 
-  console.log("octaveCurrent has been set:", octaveCurrent);
   console.log(notes.y);
 }
 // ************* GUI Slider Controls END ************ \\
