@@ -399,6 +399,7 @@ function createOsc5(freq, type = "sine", decay) {
     // Let's get connected!!!!
     runningOscs[freq].connect(volOsc).connect(vol);
     runningOscs2[freq].connect(volOsc2).connect(vol);
+    // connect `vol` to the convolver held in var `reverb`
     vol.connect(reverb).connect(mainVol);
   } else {
     //create the audio graph
