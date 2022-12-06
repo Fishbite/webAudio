@@ -89,7 +89,13 @@ function setVoice(e) {
 }
 // ************* GUI Voice Picker END ************ \\
 
-// ************* Musical Note Generators START ************ \\
+// ************* Voice Generators START ************ \\
+
+// objects to hold running oscillators
+const runningOscs = {};
+const runningOscs2 = {};
+const runningOscs3 = {};
+
 // This function just sets default values for oscillator values
 // then runs the create oscillator function for the current voice
 
@@ -115,11 +121,6 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
     createOsc7(freq, type, decay);
   }
 }
-
-// An object to hold running oscillators
-const runningOscs = {};
-const runningOscs2 = {};
-const runningOscs3 = {};
 
 // This function creates soft sounding oscilators that use compressors and ramps
 // to take the volume down to zero in order to help eleminate those ugly "clicks"
@@ -654,7 +655,7 @@ function createOsc7(freq, type = "sine", decay) {
   // osc.stop(actx.currentTime + decay + 0.03);
 }
 
-// ************* Musical Note Generators END ************ \\
+// ************* Voice Generators END ************ \\
 
 // ************* The Musical Notes Bit! START ************ \\
 // Some musical note values:
