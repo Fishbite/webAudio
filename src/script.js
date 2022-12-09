@@ -733,15 +733,7 @@ class Octave {
     this.As = a * Math.pow(2, 1 / 12);
     this.B = a * Math.pow(2, 2 / 12);
   }
-  // build() {
-  //   for (let note in this) {
-  //     console.log("Note:", note, this[note]);
-  //   }
-  // }
 }
-
-// let octave = new Octave(440);
-// console.log(Octave.build);
 
 const A4 = 440; // frequency in Hz
 let scale = []; // Array to hold all octaves
