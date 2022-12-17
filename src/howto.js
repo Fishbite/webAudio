@@ -11,34 +11,54 @@ console.log(playBtns);
 // can't iterate over an html collection with `.foreach`
 // as we can with a node list, but we can use a `for loop`
 for (let i = 0; i < playBtns.length; i++) {
-  // playBtns[btn].addEventListener("click", handleClick, false);
+  // add a click event listener to each play button
+  playBtns[i].addEventListener("click", btnClicked, false);
+  // playBtns[i].addEventListener("mouseover", mouseOver, false);
+  // playBtns[i].addEventListener("mouseout", mouseOut, false);
 
-  // add an event listener to each play button
-  playBtns[i].addEventListener("click", handleClick, false);
-
-  // add event listener to each associated audio track
-  tracks[i].addEventListener("ended", handleEnded, false);
+  // add an event listener to each associated audio track
+  tracks[i].addEventListener("ended", trackEnded, false);
   console.log(playBtns[i], tracks[i]);
 }
 
-function handleEnded(e) {
+function mouseOver(e) {
+  // change the colour of the button
+  console.log("moused over!");
+}
+
+function mouseOut(e) {
+  // change the colour of the button
+  console.log("moused out!!!");
+}
+
+function trackEnded(e) {
+  console.log(e.target);
   console.log(parseInt(e.target.id));
-  let btnNum = parseInt(e.target.id);
-  return (playBtns[btnNum].style.color = "var(--clr-yellow-dusty-1)");
+  let btn = parseInt(e.target.id);
+  tracks[btn].currentTime = 0;
+  console.log(tracks[btn].currentTime);
+  playBtns[btn].setAttribute("class", "fa solid fa-play playBtn");
 }
 
-// toggles the play / pause state and button colour
+// toggles the play / pause state and button's icon
 function togglePlay(audioTrack, btn) {
-  return audioTrack.paused
-    ? audioTrack.play((playBtns[btn].style.color = "var(--clr-btn)"))
-    : audioTrack.pause((playBtns[btn].style.color = "var(--clr-green-0"));
+  return audioTrack.paused // is the track paused?
+    ? // if track paused, play it
+      audioTrack.play(
+        // set the class attribute on the button
+        playBtns[btn].setAttribute("class", "fa solid fa-pause playBtn")
+      )
+    : // else if track not paused, play it!
+      audioTrack.pause(
+        // set the class attribute on the button
+        playBtns[btn].setAttribute("class", "fa solid fa-play playBtn")
+      );
+
+  // audioTrack.play((playBtns[btn].style.color = "var(--clr-btn)"))
+  // audioTrack.pause((playBtns[btn].style.color = "var(--clr-green-0"));
 }
 
-// tracks[0].onplaying = action();
-// playBtns[0].style.color = "var(--clr-yellow-dusty-1)";
-//playBtns[0].style.color = "var(--clr-btn)";
-
-function handleClick(e) {
+function btnClicked(e) {
   console.log("button id:", e.target.id);
   let btn = e.target.id;
 
@@ -49,6 +69,26 @@ function handleClick(e) {
   if (btn === "playBtn04") togglePlay(tracks[4], btn);
 }
 
-// const playBtn00 = document.getElementById("playBtn00");
-// // .addEventListener("click", handleClick, false);
-// playBtn00.addEventListener("click", handleClick, false);
+/* button states
+
+    up - button is up / not playing / not paused
+        - action = none
+        - colour = "var(--clr-yellow-dusty-1)"
+        - state = 0
+
+    over - mouse is over the button
+         - action = none
+         - colour = "yellow"
+         - state = 1
+
+    down1 - button has been clicked
+          - action = play
+          - clour = "var(--clr-btn)"
+          - state = 2
+
+    down2 - button clicked for second time
+          - action = pause
+          - colour = "green"
+          - state = 3
+
+*/
