@@ -31,6 +31,11 @@ To prep the file for upload to the server, the file needs to be imported into ed
 
 music.wav can be uploaded to the server and then played back via the 'pre-recorded music' playback keys. The user can then record additional stuff on top of the music being played back, as they can with the locally saved file.
 
+What needs doing:
+
+-- invent proper names for the voices!
+-- create additional voices like strings, woodwind, chorous
+
 **Update**
 Users can now select music files from their local hard drives, so, there is no need to upload a file with a specific name and file type / size restrictions. Upload to server function is still there for future use.
 
@@ -47,6 +52,7 @@ Folks who would be really cool to have on board:
 -- Musicians, to test the pants out of the app
 -- Web Audio API folks who can contibute anything to this project
 -- and of course, JavaScript programmers in general are always welcome
+-- general public for feedback on the app
 
 ## Open Source
 
