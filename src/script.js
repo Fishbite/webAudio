@@ -552,7 +552,7 @@ function createOsc6(freq, type = "sine", decay) {
   // osc.stop(actx.currentTime + decay + 0.03);
 }
 
-// **** voice = experimental ****
+// **** voice = Nice Bass in Octave 2 ****
 // here we use 3 slightly detuned oscillators
 // along with a `lowshelf` filter which together
 // produces a lovely rich phased sound, especially
