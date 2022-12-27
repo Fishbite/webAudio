@@ -17,7 +17,7 @@ following:
   that you are playing along to.
 - Save the recording to your computer directly from the Audio Player
 - Browse for the file you have saved from the Audio Player and play it back so you can record addition tunes & beats on top of that
-- Legacy (and pretty redundant at this point)Upload the recording as music.wav so that it can be played back and added to
+- Legacy (and pretty redundant at this point) Upload the recording (to the server) as music.wav so that it can be played back and added to
 
 This ~~could be~~ IS! the start of something great!
 
@@ -40,6 +40,13 @@ This app is growing, at a slower rate than I would like admittedly, but I am nei
 
 We'd love to have anyone interested in music contribute to this project. If you'd like
 to get involved just DM me, fork the repo', do some cool stuff, do a pull request :¬)
+
+Folks who would be really cool to have on board:
+
+-- Sound engineers, to formulate audio graphs that are beyond my comprehension
+-- Musicians, to test the pants out of the app
+-- Web Audio API folks who can contibute anything to this project
+-- and of course, JavaScript programmers in general are always welcome
 
 ## Open Source
 
