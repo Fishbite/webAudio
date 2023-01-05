@@ -35,11 +35,18 @@ What needs doing:
 
 -- invent proper names for the voices!
 -- create additional voices like strings, woodwind, chorous
+-- study music theory!
 
 **Update**
 Users can now select music files from their local hard drives, so, there is no need to upload a file with a specific name and file type / size restrictions. Upload to server function is still there for future use.
 
 This app is growing, at a slower rate than I would like admittedly, but I am neither a sound engineer or accomplished musician! I used to take piano lessons and owned a piano, but that pretty much went out of the window when I bought my first ELECTRONIC GUITAR HA! HAA!! HAAA!!!
+
+**We are doing some music theory study!** To date, we have been experimenting: with what happens when I do that? e.g Adding additionaal oscillators of equal or different frequencies and or wave forms. What we have learned is that we can achieve some similar modifications of the original sound, all the way to awsomely wild and different sounds to the original single oscillator.
+
+Hopefully, if we can get a sound (excuse the pun) understanding of the theory and science of music, we will be able to produce more controlled and predictable results, but imortantly, it will give us the langauge and vocabulary to be able to articulate our objectives and outcomes in a way that noraml human beings can understand:
+
+    Quote: "most musicians don't do JavaScript" fishbite 2023
 
 ## Collaborators
 
