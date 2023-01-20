@@ -319,19 +319,20 @@ function kettle3(echo = setEcho) {
   );
 }
 
-function kettle4(echo = setEcho) {
+// WARNING!!! This is not a Kettle Drum!!!
+function triangle(echo = setEcho, dissonance = 2500) {
   soundEffect(
-    61.74, // 61.74 = B1
+    7500, // 61.74 = B1
     0,
     0.5,
-    "sine",
-    0.5,
-    0.5,
+    "sawtooth",
+    0.0125,
+    1,
     0,
     0,
     false,
     0,
-    1,
+    dissonance,
     echo, //echo array: [delay, feedback, filter],
     undefined, //reverb array: [duration, decay, reverse?]
     mainVol
@@ -550,8 +551,8 @@ function setup() {
         kettle3();
         break;
 
-      case "b":
-        kettle4();
+      case "l":
+        triangle();
         break;
     }
   }
