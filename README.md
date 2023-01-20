@@ -7,11 +7,11 @@ oscillators, rather than though a microphone.
 The project is in its infancy (now just out of diapers!) but we do have a machine that allows you to do the
 following:
 
-- Select from a range of voices
+- Select from a range of voices; currently six, but the choice is growing. see(i)
 - Play musical notes from a range of eight octaves:- 0 through 7 as on a full size
   keyboard
 - Change the octave, waveform and decay of the notes to create different voices
-- Play a range of drums: Kick, Kettle, Snare, Hi-hat
+- Play a range of drums: Kick, Kettle, Snare, Hi-hat & NEW! Triangle!
 - Play pre-recorded music to play along side with
 - Record as you play including the ability to record on top of pre-reorcded music that
   that you are playing along to.
@@ -20,6 +20,8 @@ following:
 - Legacy (and pretty redundant at this point) Upload the recording (to the server) as music.wav so that it can be played back and added to
 
 This ~~could be~~ IS! the start of something great!
+
+(i) Now, here is a quandary. The thing is, we have a selection of six voices to choose from the dropdown, however, if we start changing the octave, waveform and decay settings, we can create completely new voices that are so different from the default settings, it makes you wonder whether we should create voices that are tied to specific settings.
 
 ## The State of Play
 
