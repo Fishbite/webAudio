@@ -654,6 +654,14 @@ function createOsc7(freq, type = "sine", decay) {
   runningOscs3[freq].start();
   // osc.stop(actx.currentTime + decay + 0.03);
 }
+let osc;
+function createOsc8(freq, type, decay) {
+  partialAmplitudes = [1];
+  for (let i = 0; i < 3; i++) {
+    osc[i] = actx.createOscillator();
+    console.log(osc);
+  }
+}
 
 // ************* Voice Generators END ************ \\
 

@@ -52,12 +52,13 @@ playbackVol.onchange = (e) => {
 //  musicVol.gain.value = parseFloat(playbackVol.value);
 // }
 
+// create a gain node to create the music volume
 let musicVol = actx.createGain();
 
 // connect to the main recording chain
 musicVol.connect(mainVol);
 
-// get the input element from the doc
+// get the input element (file picker) from the doc
 const fileSelector = document.getElementById("file");
 fileSelector.addEventListener("input", makeURL, false);
 
@@ -318,6 +319,25 @@ function kettle3(echo = setEcho) {
   );
 }
 
+function kettle4(echo = setEcho) {
+  soundEffect(
+    61.74, // 61.74 = B1
+    0,
+    0.5,
+    "sine",
+    0.5,
+    0.5,
+    0,
+    0,
+    false,
+    0,
+    1,
+    echo, //echo array: [delay, feedback, filter],
+    undefined, //reverb array: [duration, decay, reverse?]
+    mainVol
+  );
+}
+
 // ****** A Snare Drum ******
 // ...... from scratch! ......
 class Snare {
@@ -528,6 +548,10 @@ function setup() {
 
       case "v":
         kettle3();
+        break;
+
+      case "b":
+        kettle4();
         break;
     }
   }
