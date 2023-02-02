@@ -82,7 +82,7 @@ stopBtn.addEventListener("click", (e) => {
 
   if (recorder.state === "recording") {
     stopRecording();
-    console.log(recorder.state);
+    console.log("media recorder is: ", recorder.state);
   }
 });
 

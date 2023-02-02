@@ -857,8 +857,10 @@ window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyupHandler, false);
 
 function keyDownHandler(event) {
+  console.log(event);
   // let A = arrayOfAs;
   let key = event.key;
+  console.log(key);
   let freq = notes[key];
   // Start recording if the ALT+Z keys are pressed and the
   // recorder's state is not "recording"
@@ -867,7 +869,7 @@ function keyDownHandler(event) {
   if (event.altKey && key === "z") {
     if (recorder.state !== "recording") {
       startRecording();
-      console.log(recorder.state);
+      console.log("media recorder is: ", recorder.state);
 
       stopBtn.style.backgroundColor = "red";
     }
