@@ -866,7 +866,7 @@ function keyDownHandler(event) {
   // recorder's state is not "recording"
   // NOTE!!! Functionallity moved from 'Space' key to the 'ALT' key to
   // avoid problems with focus remaining on the stopBtn after being clicked.
-  if (event.altKey && key === "z") {
+  if ((event.altKey && key === "z") || (event.altKey && key === "Ω")) {
     if (recorder.state !== "recording") {
       startRecording();
       console.log("media recorder is: ", recorder.state);
