@@ -866,6 +866,8 @@ function keyDownHandler(event) {
   // recorder's state is not "recording"
   // NOTE!!! Functionallity moved from 'Space' key to the 'ALT' key to
   // avoid problems with focus remaining on the stopBtn after being clicked.
+  // event.altKey && key === "Ω" is a fix for
+  // Apple Mac OS ALT+Z quirk
   if ((event.altKey && key === "z") || (event.altKey && key === "Ω")) {
     if (recorder.state !== "recording") {
       startRecording();
