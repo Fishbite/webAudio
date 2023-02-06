@@ -1,6 +1,17 @@
 console.log("Awsome!");
 
+/*       START - OK HunnyBun!
+    We need to do a bit of a re-write to pre-load our audio files
+    Of course this was going to happen when you just bang things
+    out without thinking things through. Duh!
+ */
+
+// get our assets loader so we can pre-load our sound files
+import { assets } from "../lib/assets.js";
+// console.log(assets);
+
 // path list to audio tracks
+// these are going to be our `load params`
 const audioPath = [
   "./audio/startRythm.wav",
   "./audio/startAdd-1.wav",
@@ -9,8 +20,17 @@ const audioPath = [
   "./audio/startAdd-4-bassnotes.wav",
 ];
 
-// get our assets loader so we can pre-load our sound files
-import { assets } from "../lib/assets.js";
+function loadTunes() {
+  // call the load method of the assets object
+  assets.load(audioPath);
+}
+
+function loadingThingy() {
+  // do a "we are loading thingy"
+}
+
+/*      END - OK HunnyBun!
+ */
 
 // create an html node list of our tracks
 const tracks = document.querySelectorAll("audio");
