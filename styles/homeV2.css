@@ -221,6 +221,14 @@ p i {
   line-height: 3;
 }
 
+.fa-download {
+  font-size: 2.5rem;
+}
+
+.fa-download:hover {
+  color: yellow;
+}
+
 .playBtn {
   font-size: 2rem;
 }
