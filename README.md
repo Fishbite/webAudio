@@ -29,12 +29,13 @@ The user can now record music as they are playing, then save it to their compute
 
 The user can browse for the saved file (or any other music file) play it back and record additional compositions, tunes, beats etc. on top of it
 
-**\*\*\** Upload To Server (lagacy) **\*\***
+**\*\*\** Upload To Server (legacy) **\*\***
+
 To prep the file for upload to the server, the file needs to be imported into editing software such as Audacity and then saved out as 'music.wav'
 
 music.wav can be uploaded to the server and then played back via the 'pre-recorded music' playback keys. The user can then record additional stuff on top of the music being played back, as they can with the locally saved file.
 
-**\*\*\*** Upload To Server (lagacy) **\*\***
+**\*\*\*** Upload To Server (legacy) **\*\***
 
 What needs doing:
 
