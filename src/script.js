@@ -880,6 +880,7 @@ function keyDownHandler(event) {
 
   if (freq && !runningOscs[freq]) {
     playNote(freq);
+    console.log(runningOscs);
   }
 }
 
