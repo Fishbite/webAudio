@@ -868,6 +868,7 @@ function keyDownHandler(event) {
   // avoid problems with focus remaining on the stopBtn after being clicked.
   // event.altKey && key === "Ω" is a fix for
   // Apple Mac OS ALT+Z quirk
+  // **** Note startRecording() is defined in recordingChain.js
   if ((event.altKey && key === "z") || (event.altKey && key === "Ω")) {
     if (recorder.state !== "recording") {
       startRecording();

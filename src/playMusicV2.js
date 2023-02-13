@@ -381,7 +381,7 @@ class Snare {
 
     // Add a short snap to the front of the sound
     this.osc = this.actx.createOscillator();
-    this.osc.type = "trianlge";
+    this.osc.type = "triangle";
 
     this.oscEnvelope = this.actx.createGain();
     this.osc.connect(this.oscEnvelope);
