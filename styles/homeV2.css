@@ -227,6 +227,7 @@ p i {
 
 .fa-download:hover {
   color: yellow;
+  cursor: pointer;
 }
 
 .playBtn {
@@ -234,6 +235,7 @@ p i {
 }
 .playBtn:hover {
   color: yellow;
+  cursor: pointer;
 }
 
 .player {
