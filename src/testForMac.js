@@ -59,6 +59,7 @@ function keyDownHandler(e) {
 }
 
 function keyupHandler(e) {
+  console.log("key is up man!");
   if (freq && runningOscs[freq]) {
     runningOscs[freq].stop();
     delete runningOscs[freq];
