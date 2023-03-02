@@ -34,7 +34,7 @@ function makeURL(event) {
     console.log("No file selected");
   }
 
-  prepSound(fileURL);
+  return prepSound(fileURL);
 }
 
 // prep and decode the audio file
