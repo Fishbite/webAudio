@@ -52,6 +52,7 @@ window.addEventListener("keyup", keyupHandler, false);
 
 // key handlers
 function keyDownHandler(e) {
+  if (e.repeat) return; // is key being held down? test for Mac OS
   if (freq && !runningOscs[freq]) {
     playNote(freq);
     console.log(runningOscs);
