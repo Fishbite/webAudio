@@ -19,6 +19,21 @@ console.log("Yo! There! crappy Mac O'");
 // `playNote()` is a function that plays a note! LOL! it also copies the freq
 // and oscillator to the `runningOscs` object
 
+/*
+ ****** Work Around For Keyboard Event Problems ******
+ ****** On Apple Mac Computers START 1 ******
+ */
+
+let keyupTimer; // an ID returned by setTimeout
+// Experiment with to following timeout. It should be as small as possible,
+// but still great enough to resolve the problem on the specific device.
+const keyupDelay = 50; // time between keyup event and actual stop of sound
+
+/*
+ ****** Work Around For Keyboard Event Problems ******
+ ****** On Apple Mac Computers END 1 ******
+ */
+
 // instantiate the audio context
 const audioCTX = new AudioContext();
 
@@ -51,9 +66,30 @@ window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyupHandler, false);
 
 // key handlers
+// function keyDownHandler(e) {
+//   console.log(e.repeat);
+//   if (e.repeat) return; // is key being held down? test for Mac OS
+//   if (freq && !runningOscs[freq]) {
+//     playNote(freq);
+//     console.log(runningOscs);
+//   }
+// }
+
+// function keyupHandler(e) {
+//   console.log("key is up man!");
+//   if (freq && runningOscs[freq]) {
+//     runningOscs[freq].stop();
+//     delete runningOscs[freq];
+//   }
+// }
+
+/*
+ ****** Work Around For Keyboard Event Problems ******
+ ****** On Apple Mac Computers START 2 ******
+ */
 function keyDownHandler(e) {
   console.log(e.repeat);
-  if (e.repeat) return; // is key being held down? test for Mac OS
+  clearTimeout(keyupTimer); // abort the effect of a keyup that was triggered just before this event
   if (freq && !runningOscs[freq]) {
     playNote(freq);
     console.log(runningOscs);
@@ -61,9 +97,17 @@ function keyDownHandler(e) {
 }
 
 function keyupHandler(e) {
-  console.log("key is up man!");
-  if (freq && runningOscs[freq]) {
-    runningOscs[freq].stop();
-    delete runningOscs[freq];
-  }
+  clearTimeout(keyupTimer); // abort the effect of a previous keyup that was triggered just before this event
+  // Delay the stop, so to allow a quick keydown event to cancel this from happening
+  keyupTimer = setTimeout(() => {
+    if (freq && runningOscs[freq]) {
+      runningOscs[freq].stop();
+      delete runningOscs[freq];
+    }
+  }, keyupDelay);
 }
+
+/*
+ ****** Work Around For Keyboard Event Problems ******
+ ****** On Apple Mac Computers END 2 ******
+ */
