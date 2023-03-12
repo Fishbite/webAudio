@@ -27,7 +27,7 @@ console.log("Yo! There! crappy Mac O'");
 let keyupTimer; // an ID returned by setTimeout
 // Experiment with to following timeout. It should be as small as possible,
 // but still great enough to resolve the problem on the specific device.
-const keyupDelay = 50; // time between keyup event and actual stop of sound
+const keyupDelay = 100; // time between keyup event and actual stop of sound
 
 /*
  ****** Work Around For Keyboard Event Problems ******
@@ -88,8 +88,8 @@ window.addEventListener("keyup", keyupHandler, false);
  ****** On Apple Mac Computers START 2 ******
  */
 function keyDownHandler(e) {
-  console.log(e.repeat);
   clearTimeout(keyupTimer); // abort the effect of a keyup that was triggered just before this event
+  console.log("is key being held down?", e.repeat); // is the key being held down?
   if (freq && !runningOscs[freq]) {
     playNote(freq);
     console.log(runningOscs);
