@@ -98,7 +98,7 @@ function keyDownHandler(e) {
 
 function keyupHandler(e) {
   clearTimeout(keyupTimer); // abort the effect of a previous keyup that was triggered just before this event
-  console.log("event: ", e);
+  console.log("keyup event happened");
   // Delay the stop, so to allow a quick keydown event to cancel this from happening
   keyupTimer = setTimeout(() => {
     if (freq && runningOscs[freq]) {
