@@ -1,5 +1,9 @@
 # Da Synth Dude
 
+**NOTE:**
+
+March 18th 2023
+Gone for operation on eyes. Hopefully will be back in action ASAP :-)
 **Da Synth Dude** has been built using the Web Audio API and is unique in as much as
 it allows the user to record the music they are creating directly from the running
 oscillators, rather than though a microphone.
@@ -29,7 +33,7 @@ The user can now record music as they are playing, then save it to their compute
 
 The user can browse for the saved file (or any other music file) play it back and record additional compositions, tunes, beats etc. on top of it
 
-**\*\*\** Upload To Server (legacy) **\*\***
+**\*\*\*\* Upload To Server (legacy) **\*\*\*\*
 
 To prep the file for upload to the server, the file needs to be imported into editing software such as Audacity and then saved out as 'music.wav'
 
