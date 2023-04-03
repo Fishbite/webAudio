@@ -1,14 +1,5 @@
 # Da Synth Dude
 
-**NOTE:**
-
-March 18th 2023
-Gone for operation on eyes. Hopefully will be back in action ASAP :-)
-
-Cancled LOL! Now in Acute Admissions Unit due to heart failure! Ho! Hum!
-
-Be back soon :-)
-
 **Da Synth Dude** has been built using the Web Audio API and is unique in as much as
 it allows the user to record the music they are creating directly from the running
 oscillators, rather than though a microphone.
