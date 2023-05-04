@@ -1,0 +1,501 @@
+<!-- /* // ****** LICENSE NOTICE ****** \\
+      COPYRIGHT: 2020 Stuart Peel 
+      This PROGRAM is distributed under the terms of the:
+      AGPL-3.0-or-later
+
+      What does this  mean? Well, basically it free!
+      Do what you want with it:
+
+        Use it
+        Modify it
+        Give it away as a freebee!
+        Sell it
+        Distribute it
+      
+      If you modify it, please make it available to everyone, 
+      it's part of the license T's & C's
+
+      // ****** LICENSE NOTICE ****** \\
+*/ -->
+
+<!-- NOTE: v3.0.1 interface revamp -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Machine</title>
+    <link rel="stylesheet" href="./styles/dasynthv3.css">
+  </head>
+
+  <body>
+
+
+
+
+
+
+
+
+
+    <!-- ************ Header START ************* -->
+
+    <div class="headWrap">
+      <header>
+          <h2 class="title">Digital Audio Synth</h2>
+      </header>
+    
+    <!-- ************ Header END ************* -->
+
+
+
+
+
+
+
+
+
+      <!-- ************ Navigation Start ************ -->
+
+      <nav >
+        <div class="linkWrap">
+          <a href="./index.html">Home</a>
+          
+
+
+
+
+
+
+
+
+          <!-- ************ Keyboard Manual START ************ -->
+
+          <kbInfo>
+            <div class="dropdown">
+              <a class="dropbtn" href="#" rel="noopener noreferrer">Keyboard Info</a>
+              
+              <div class="dropContent">
+              
+                  <h2>Musical Keys:</h2>
+                </br>
+                  <p><i>Keys q to p:</i> play C4 through E5</p>
+                  <p><i>Keys 2, 3, 5, 6, 7, 9, 0:</i> play sharps/flats</p>
+
+                  <h2>Pre-recorded Music:</h2>
+                </br>
+                  <p><i>Key A:</i> play music normal</p>
+                  <p><i>Key S:</i> play music panning.</p>
+                  <p><i>Key D:</i> Stop Music</p>
+
+                  <h2>Drum Sounds:</h2>
+                </br>
+                  <p><i>Key Z:</i> Kick drum (synthesized)</p>
+                  <p><i>Keys X, C, & V:</i> Kettle drums (synthesized)</p>
+
+                  <p><i>Key M:</i> Snare drum (synthesized)</p>
+                  <p><i>Key K:</i> Hihat (sampled)</p>
+                  <p><i>Key L:</i> Triangle (synthesized)</p>
+              </div>
+            </div>
+          </kbInfo>
+
+          <!-- ************ Keyboard Manual END ************ -->
+
+
+
+
+
+
+
+
+
+          <!-- ************ User manual START ************ -->
+        
+          <a href="./howto.html" target="_blank">How To ???</a>
+        </div>
+      
+        <!-- ************ User manual END ************ -->
+        
+
+
+
+
+
+
+
+
+      </nav>
+    </div>
+
+    <!-- ************ Navigation END ************* -->
+
+
+
+
+
+
+
+
+    <!-- ************ Controls START ************* -->
+
+    <main>
+      <div class="mainWrap">
+        <div class="controls">
+          <fieldset class="fieldset">
+            <legend>Controls</legend>
+            
+
+
+
+
+
+
+
+            <!-- ************* Synth settings START ************* -->
+
+            <fieldset class="fieldset">
+                
+              <legend>Musical Key Settings</legend>
+              <label for="voice">Select An Instrument</label>
+              <select name="voice" id="voice">
+                <option value="" selected>Select Voice</option>
+                <option value="one" >One Soft Oscillator</option>
+                <option value="two">Two Soft Oscillators</option>
+                <option value="three">Plinky Plonky Reverb</option>
+                <option value="four">Distortion & Reverb in a Church</option>
+                <option value="five">Nice Bass in Octave 2</option>
+                <option value="six">Experimental</option>
+              </select>
+              
+
+
+
+
+
+
+
+              <!-- ************* Waveform slider controls START ************* -->
+
+              <div class="sliderCtrls">                    
+                    <div class="ctrlWrap">
+                      <p>
+                        Wave Form:                          
+                      </p>
+
+                      
+                        <label class="label" id="waveTypeLabel" for="waveTypeValue"
+                          >sin</label
+                        >
+                      
+      
+                      <input
+                        class="slider"
+                        id="waveTypeValue"
+                        name="waveTypeValue"
+                        type="range"
+                        min="0"
+                        max="3"
+                        value="0"
+                        step="1"
+                        list="ticks"
+                      />
+
+                      <datalist id="ticks" class="ticks">
+                        <option value="0"></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                      </datalist>
+
+
+
+                    </div>
+
+                    <!-- ************* Waveform slider controls END ************* -->
+                    
+
+
+
+
+
+
+
+
+                    <!-- ************* Decay slider Controls START ************* -->
+
+                    <div class="ctrlWrap">
+                      <p>
+                        Decay:
+                          
+                        </p>
+
+                        <label class="label" id="decayTimeLabel" for="decayTimeValue"
+                          >2</label
+                        >
+        
+                        <input
+                        class="slider"
+                        id="decayTimeValue"
+                        name="decayTimeValue"
+                        type="range"
+                        min="0"
+                        max="10"
+                        value="2"
+                        step="0.5"
+                        />
+                        
+                    </div>                   
+
+                    <!-- ************* Decay slider Controls END ************* -->  
+
+
+
+
+
+
+
+
+
+                    <!-- ************* Octave slider controls START ************* -->
+
+                    <div class="ctrlWrap">
+                      <p>
+                        Octave: 
+                      </p>
+
+                      <label class="label" id="octaveValueLabel"for="octaveValue">4</label>
+
+                      <input class="slider" id="octaveValue" type="range" min="0" max="7" value="4" step="1"/>
+
+                      
+                    </div>
+
+                    <!-- ************* Octave slider controls END ************* -->
+                    
+              </div>
+            </fieldset>
+
+
+
+
+
+
+
+
+
+            <!-- ************* Synth settings END ************* -->
+        
+            <div class="spacer"></div>
+            
+
+
+
+
+
+
+
+
+            <!-- ************* Kettle Drum Slider Controls START ************* -->          
+                
+            <fieldset class="fieldset">
+              <legend class="echoLegend">Kettle Drum Echo</legend>
+                    <div class="kettleWrap">
+                      <p>
+                        Echo: 
+                      </p>
+
+                      <label class="label" id="echoValueLabel"for="echoValue">0</label>
+
+                      <input class="slider" id="echoValue" type="range" min="0" max="1" value="0" step="0.05"/>
+                      
+                    </div>
+                      
+            </fieldset>
+            <div class="spacer"></div>
+                
+            <!-- ************* Kettle Drum Slider Controls END *************-->
+            
+
+
+
+
+
+
+
+            <!-- ************* Audio / Media Recorder controls START ************* -->
+                
+            <fieldset class="fieldset">
+              <legend>Media Recorder</legend>
+
+              <p><b><i>ALT+Z</i></b> Keys to Start Recording</p>
+              <p id="recordBtnDescription" role="description">
+                Stop button active when recording
+              </p>
+
+              <div class="audioWrap">
+                <div class="audioctrls">
+                  <button
+                    type="button"
+                    aria-disabled="true"
+                    aria-describedby="recordBtnDescription"
+                    class="btn"
+                    id="stopBtn"
+                  >
+                    _READY_TO_RECORD_
+                  </button>
+                
+                  <audio id="audioTag" controls="true"></audio>
+                </div>
+                <p>Right click media player, select <b>"Save Audio As"</b> when finished recording</p>
+              </div>
+
+            </fieldset>            
+
+            <!-- ************* Audio / Media Recorder controls END ************* -->
+
+            <div class="spacer"></div>
+             
+
+
+
+
+
+
+
+
+
+            <!-- ************* Select A Music Track START ************* -->
+
+            <fieldset class="fieldset">
+              <legend class=""><b>NEW!!!</b> Select Music Track:</legend>
+                    <div class="">
+
+                      <p>Right click the Media Recorder, save the audio file, then browse for the music you have downloaded.</p>
+                      <p>Or, select any music file from your hard drive!</p>
+                      <div><input class="file" id="file" type="file" accept="audio/*" /></div>
+                      <p>If you haven't recorded anything yet, here's a <a href="./audio/rhythmic-bass-base_39bpm_D_major.wav" rel="noopener noreferrer">a sample file</a> to get you going :-P</p>
+                      
+                      <p>Press keys <b>A</b> to play,and <b>D</b> to stop </p>
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- ************* Music Playback Volume Slider Controls START ************* -->
+
+                    <div class="ctrlWrap">
+                      <p>
+                        Volume:                  
+                        </p>
+
+                        <label class="label pb" id="playbackLabel" for="playbackVolValue"
+                          >1</label
+                        >
+
+                        <input
+                        class="slider"
+                        id="playbackVolValue"
+                        name="playbackVolValue"
+                        type="range"
+                        min="0"
+                        max="5"
+                        value="1"
+                        step="0.1"
+                        />
+                        
+                    </div>
+                  
+                    <!-- ************* Music Playback Volume Slider Controls END ************* -->   
+            </fieldset>
+
+            <!-- ************* Select A Music Track END ************* -->
+
+            <div class="spacer"></div>
+
+
+
+
+
+
+
+
+          <!-- ************* HTML5 Input Form Elements For File Upload START ************* -->
+
+              <fieldset class="fieldset">
+                <legend >Upload</legend>
+                  <h4 class="upload">EXPERIMENTAL</h4>
+                  <p>Note: This utility uploads your recording to the server, however, you need a login account to do so.</p>              
+                  <input id="fileupload" class=".btn" type="file" name="fileupload" /><span>File Size: <span id="fileSize">0</span>KB</span>
+                  <span>Type: </span><span id="fileType"></span>
+                  <span id="hexTag"></span>
+                  <button id="uploadBtn" class="btn" onclick="uploadFile()">Upload</button>
+                  <br>
+                  <p>file size limit 4MB</p>
+                  <p>filename MUST be <b>music.wav</b></p>
+                  <p>filetype MUST be WAV and not another filetype with the .wav extension</p>
+              </fieldset>      
+
+          <!-- ************* HTML5 Input Form Elements For File Upload END ************* -->
+
+
+
+
+
+
+
+
+          </fieldset>
+        </div>      
+      </div>
+    </main>
+
+    <!-- ************ Controls END ************* -->
+
+
+
+
+
+
+
+
+    <!-- ************ Footer START ************* -->
+
+    <footer>
+      <div class="footer">
+        <p>an open source project maintained by: fishbite 2022</p>
+        <p>
+          source code available here:
+          <a href="https://github.com/Fishbite/webAudio" target="_blank"
+            >GitHub WebAudio Repo</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <!-- ************ Footer END ************* -->
+
+
+
+
+
+
+
+
+    <!-- ************ Scripts START ************* -->
+    <!-- recordingChain.js must be loaded first -->
+    <script src="./src/recordingChain.js"></script>
+    <script type="module" src="./src/script.js"></script>
+    <script type="module" src="./src/playMusicV2.js"></script>
+    <script src="./src/upload.js"></script>
+
+    <!-- ************ Scripts END ************* -->
+  </body>
+</html>
