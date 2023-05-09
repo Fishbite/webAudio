@@ -132,7 +132,7 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "five") {
-    createOsc7(freq, type, decay);
+    createOsc7(freq, type, decay); // nice bass in octave 2
   }
 }
 
@@ -668,6 +668,8 @@ function createOsc7(freq, type = "sine", decay) {
   runningOscs3[freq].start();
   // osc.stop(actx.currentTime + decay + 0.03);
 }
+
+/* Not sure what we were doing here
 let osc;
 function createOsc8(freq, type, decay) {
   partialAmplitudes = [1];
@@ -675,6 +677,41 @@ function createOsc8(freq, type, decay) {
     osc[i] = actx.createOscillator();
     console.log(osc);
   }
+}
+*/
+
+// ****** The Voice of chatGPT ******
+function createOsc8(freq, type = "triangle", decay) {
+  // chatGPT content of `triggerNote()` function goes here
+  //why `note` - 21?
+  /* The line `const i = note - 21;` is part of a function that converts a MIDI note number to a frequency in hertz. The reason for subtracting 21 from the MIDI note number is to account for the fact that the lowest note on a standard 88-key piano is A0, which has a MIDI note number of 21.
+
+By subtracting 21 from the MIDI note number, we shift the range of MIDI note numbers down so that A0 maps to an index of 0 in the `frequencies` array. This is necessary because the `frequencies` array contains the frequencies of all the notes on a piano from A0 to C8, and we want to be able to look up the frequency of any note in that range using its MIDI note number as an index into the array.
+  */
+  const i = note - 21;
+  const vel = 1.0; // loudness
+  modalGain[i].gain.cancelScheduledValues(0);
+  modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
+  modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05);
+  modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0);
+  modalExciters[i].gain.cancelScheduledValues(0);
+  modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
+  modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);
+  modalExciters[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0);
+
+  // why `note` -49? lol! should be 69! chatGPT has flaws!
+  // const frequency = 27.5 * Math.pow(2, (note - 49) / 12);
+  // calculate the frequency of the midi note number
+  // NOTE: A4 is midi note 69 and is the reference point
+  // of all other notes
+  const frequency = 27.5 * Math.pow(2, (note - 69) / 12);
+  const osc = actx.createOscillator();
+  osc.frequency.setValueAtTime(frequency, actx.currentTime);
+  osc.type = "triangle";
+  osc.start();
+  osc.stop(actx.currentTime + 1.0);
+
+  osc.connect(modalFilters[i]);
 }
 
 // ************* Voice Generators END ************ \\
@@ -838,6 +875,9 @@ const notes = {
     return scale[octaveCurrent].B;
   },
   // i: scale[octaveCurrent + 1].C,
+  // Note: current octave selected via GUI is keys "q" to "u"
+  // & key "i" is the first note of the next octave up
+  // so we add 1 to `octaveCurrent` respectively
   get i() {
     console.log(`C${octaveCurrent + 1}`);
     if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].C;
