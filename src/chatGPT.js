@@ -1,6 +1,6 @@
 console.log("chatter, chatter, chatter... :-)");
 /*  ****** The Voice of chatGPT ******
-    The following code has been put created
+    The following code has been created
     using the infamous chatGPT AI entity!
 */
 
@@ -9,20 +9,23 @@ console.log("chatter, chatter, chatter... :-)");
     This implementation creates a bank of bandpass filters that simulate the resonances of a piano string. The filters are excited using gain nodes that simulate the hammer hitting the string. When a note is triggered, the gain and excitation nodes for the corresponding filter are ramped up and then down over a period of 1 second to simulate the decay of the sound.
 */
 
+//  [[[[ ****WE HAVE CHANGED THIS FILE**** ]]]]
+
 // create audio context
-const actx = new AudioContext();
+const actx = new AudioContext(); // not needed
 
 // create nodes
 const input = actx.createGain();
 const output = actx.createGain();
-const speakers = actx.destination;
+const speakers = actx.destination; // connect to mainVol recording node
 const modalFilters = [];
 const modalGain = [];
 const modalExciters = [];
 
 // create modal filter bank
 for (let i = 0; i < 88; i++) {
-  const f0 = 27.5 * Math.pow(2, (i - 21) / 12);
+  // const f0 = 27.5 * Math.pow(2, (i - 21) / 12);
+  const f0 = 27.5 * Math.pow(2, (i - 21) / 12); // dump midi-note ref (-21)
   console.log("f0:", f0);
   const modalFilter = actx.createBiquadFilter();
   modalFilter.type = "bandpass";
