@@ -890,9 +890,9 @@ By subtracting 21 from the MIDI note number, we shift the range of MIDI note num
   // NOTE: A4 is midi note 69 and is the reference point
   // of all other notes
   // const frequency = 27.5 * Math.pow(2, (note - 69) / 12);
-  const frequency = freq;
+  // const frequency = freq;
   const osc = actx.createOscillator();
-  osc.frequency.setValueAtTime(frequency, actx.currentTime);
+  osc.frequency.setValueAtTime(freq, actx.currentTime);
   osc.type = type;
   osc.start();
   // osc.stop(actx.currentTime + 1.0);
