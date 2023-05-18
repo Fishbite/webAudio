@@ -684,7 +684,9 @@ function createOsc8(freq, type, decay) {
 }
 */
 
-// ****** The Voice of chatGPT ******
+// ********************************************************** \\
+// ****************** The Voice of chatGPT ****************** \\
+// ********************************************************** \\
 // create nodes
 const input = actx.createGain();
 const output = actx.createGain();
@@ -726,14 +728,18 @@ for (let i = 0; i < 88; i++) {
   modalExciters[i].connect(modalFilters[i]);
   modalFilters[i].connect(modalGain[i]);
   modalGain[i].connect(output);
-  output.connect(speakers);
+  if (mainVol) {
+    output.connect(mainVol);
+  } else {
+    output.connect(speakers);
+  }
 }
 
 // set parameters
 for (let i = 0; i < 88; i++) {
   const q = 20; // how fast the osc vibration is dampend
   // lower number = faster damping
-  const f0 = 27.5 * Math.pow(2, (i - 21) / 12); // why is this here?
+  // const f0 = 27.5 * Math.pow(2, (i - 21) / 12); // why is this here?
   modalFilters[i].Q.value = q;
   modalExciters[i].gain.value = 1.0;
 }
@@ -887,7 +893,7 @@ By subtracting 21 from the MIDI note number, we shift the range of MIDI note num
   const frequency = freq;
   const osc = actx.createOscillator();
   osc.frequency.setValueAtTime(frequency, actx.currentTime);
-  osc.type = "sawtooth";
+  osc.type = type;
   osc.start();
   // osc.stop(actx.currentTime + 1.0);
 
