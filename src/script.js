@@ -742,8 +742,6 @@ function createOsc8(freq, type, decay) {
 //   // const f0 = 27.5 * Math.pow(2, (i - 21) / 12); // why is this here?
 //   modalFilters[i].Q.value = q;
 //   modalExciters[i].gain.value = 1.0;
-// }
-// function createOsc8Old(freq = 440, type = "triangle", decay = 1) {
 //   console.log("createOsc8 running");
 //   // chatGPT content of `triggerNote()` function goes here
 //   //why `note` - 21?
