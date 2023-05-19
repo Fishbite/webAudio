@@ -113,6 +113,7 @@ By subtracting 21 from the MIDI note number, we shift the range of MIDI note num
   modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
   modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05);
   modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0);
+
   modalExciters[i].gain.cancelScheduledValues(0);
   modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
   modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);

@@ -688,219 +688,293 @@ function createOsc8(freq, type, decay) {
 // ****************** The Voice of chatGPT ****************** \\
 // ********************************************************** \\
 // create nodes
-const input = actx.createGain();
-const output = actx.createGain();
-const speakers = actx.destination; // connect to mainVol recording node
-const modalFilters = [];
-const modalGain = [];
-const modalExciters = [];
+// const input = actx.createGain();
+// const output = actx.createGain();
+// const speakers = actx.destination; // connect to mainVol recording node if available
+// const modalFilters = [];
+// const modalGain = [];
+// const modalExciters = [];
 
-// create modal filter bank
-for (let i = 0; i < 88; i++) {
-  // const f0 = 27.5 * Math.pow(2, (i - 21) / 12);
-  const f0 = 27.5 * Math.pow(2, i / 12); // dump midi-note ref (-21)
-  console.log("idx:", i, "f0:", f0);
-  const modalFilter = actx.createBiquadFilter();
-  modalFilter.type = "bandpass";
-  modalFilter.frequency.value = f0;
-  modalFilters.push(modalFilter);
+// // create modal filter bank
+// for (let i = 0; i < 88; i++) {
+//   // const f0 = 27.5 * Math.pow(2, (i - 21) / 12);
+//   const f0 = 27.5 * Math.pow(2, i / 12); // dump midi-note ref (-21)
+//   console.log("idx:", i, "f0:", f0);
+//   const modalFilter = actx.createBiquadFilter();
+//   modalFilter.type = "bandpass";
+//   modalFilter.frequency.value = f0;
+//   modalFilters.push(modalFilter);
 
-  // console.log("modalFilters", modalFilters);
-}
+//   // console.log("modalFilters", modalFilters);
+// }
 
-// create modal gain nodes
-for (let i = 0; i < 88; i++) {
-  const modalGainNode = actx.createGain();
-  modalGainNode.gain.value = 0.0;
-  modalGain.push(modalGainNode);
-}
+// // create modal gain nodes
+// for (let i = 0; i < 88; i++) {
+//   const modalGainNode = actx.createGain();
+//   modalGainNode.gain.value = 0.0;
+//   modalGain.push(modalGainNode);
+// }
 
-// create modal exciter nodes
-for (let i = 0; i < 88; i++) {
-  const modalExciter = actx.createGain();
-  modalExciter.gain.value = 0.0;
-  modalExciters.push(modalExciter);
-}
+// // create modal exciter nodes
+// for (let i = 0; i < 88; i++) {
+//   const modalExciter = actx.createGain();
+//   modalExciter.gain.value = 0.0;
+//   modalExciters.push(modalExciter);
+// }
 
-// connect nodes
-input.connect(modalExciters[0]);
-for (let i = 0; i < 88; i++) {
-  modalExciters[i].connect(modalFilters[i]);
-  modalFilters[i].connect(modalGain[i]);
-  modalGain[i].connect(output);
-  if (mainVol) {
-    output.connect(mainVol);
-  } else {
-    output.connect(speakers);
-  }
-}
+// // connect nodes
+// // input.connect(modalExciters[0]); // WHY???
+// for (let i = 0; i < 88; i++) {
+//   modalExciters[i].connect(modalFilters[i]);
+//   modalFilters[i].connect(modalGain[i]);
+//   modalGain[i].connect(output);
+//   if (mainVol) {
+//     output.connect(mainVol);
+//   } else {
+//     output.connect(speakers);
+//   }
+// }
 
-// set parameters
-for (let i = 0; i < 88; i++) {
-  const q = 20; // how fast the osc vibration is dampend
-  // lower number = faster damping
-  // const f0 = 27.5 * Math.pow(2, (i - 21) / 12); // why is this here?
-  modalFilters[i].Q.value = q;
-  modalExciters[i].gain.value = 1.0;
-}
-function createOsc8Old(freq = 440, type = "triangle", decay = 1) {
-  console.log("createOsc8 running");
-  // chatGPT content of `triggerNote()` function goes here
-  //why `note` - 21?
-  /* The line `const i = note - 21;` is part of a function that converts a MIDI note number to a frequency in hertz. The reason for subtracting 21 from the MIDI note number is to account for the fact that the lowest note on a standard 88-key piano is A0, which has a MIDI note number of 21.
+// // set parameters
+// for (let i = 0; i < 88; i++) {
+//   const q = 20; // how fast the osc vibration is dampend
+//   // lower number = faster damping
+//   // const f0 = 27.5 * Math.pow(2, (i - 21) / 12); // why is this here?
+//   modalFilters[i].Q.value = q;
+//   modalExciters[i].gain.value = 1.0;
+// }
+// function createOsc8Old(freq = 440, type = "triangle", decay = 1) {
+//   console.log("createOsc8 running");
+//   // chatGPT content of `triggerNote()` function goes here
+//   //why `note` - 21?
+//   /* The line `const i = note - 21;` is part of a function that converts a MIDI note number to a frequency in hertz. The reason for subtracting 21 from the MIDI note number is to account for the fact that the lowest note on a standard 88-key piano is A0, which has a MIDI note number of 21.
 
-By subtracting 21 from the MIDI note number, we shift the range of MIDI note numbers down so that A0 maps to an index of 0 in the `frequencies` array. This is necessary because the `frequencies` array contains the frequencies of all the notes on a piano from A0 to C8, and we want to be able to look up the frequency of any note in that range using its MIDI note number as an index into the array.
-  */
+// By subtracting 21 from the MIDI note number, we shift the range of MIDI note numbers down so that A0 maps to an index of 0 in the `frequencies` array. This is necessary because the `frequencies` array contains the frequencies of all the notes on a piano from A0 to C8, and we want to be able to look up the frequency of any note in that range using its MIDI note number as an index into the array.
+//   */
 
-  // need to remove all references to midi note number and
-  // pass in the actual frequency instead
-  // in `triggerNote(note)` the midi-note number is passed
-  // in to the function which is then mapped to the index No.
-  // of the relevant arrays.
-  // So, what do we want to do?
-  // well A0 should be mapped to index No. 0 and C8 to idx No. 87
-  // A0 = freq 27.5 mapped to idx No. 0
-  // i.e. freq maps to the indexOf freq in the `modalFilters` array
+//   // need to remove all references to midi note number and
+//   // pass in the actual frequency instead
+//   // in `triggerNote(note)` the midi-note number is passed
+//   // in to the function which is then mapped to the index No.
+//   // of the relevant arrays.
+//   // So, what do we want to do?
+//   // well A0 should be mapped to index No. 0 and C8 to idx No. 87
+//   // A0 = freq 27.5 mapped to idx No. 0
+//   // i.e. freq maps to the indexOf freq in the `modalFilters` array
 
-  // Note: we need to find the index No. of the incoming `freq`
-  // that is; its index in the `modalFliters` array. The problem
-  // is that the incoming frequency value is only similar to the
-  // its equivalent frequency value in the modalFilters array.
-  // e.g:
-  // 261.6255653005986 // freq-in originating in `scale` array (made by me)
-  // 261.6255798339844 // freq-in originating from `modalFilters` array (made by chatGPT)
+//   // Note: we need to find the index No. of the incoming `freq`
+//   // that is; its index in the `modalFliters` array. The problem
+//   // is that the incoming frequency value is only similar to the
+//   // its equivalent frequency value in the modalFilters array.
+//   // e.g:
+//   // 261.6255653005986 // freq-in originating in `scale` array (made by me)
+//   // 261.6255798339844 // freq-in originating from `modalFilters` array (made by chatGPT)
 
-  // So! We are just going to compare the integer parts of the values.
-  // Get the integer part of the incoming frequency so that
-  // we can compare it to the integer part of the frequency
-  // held in the `modalFilters` array
+//   // So! We are just going to compare the integer parts of the values.
+//   // Get the integer part of the incoming frequency so that
+//   // we can compare it to the integer part of the frequency
+//   // held in the `modalFilters` array
 
-  // using a bitwise operation.
-  const intOfFreq = freq | 0; // returns integer part of a number
-  // const intOfFreq = 123.456 | 0; // returns 123
+//   // using a bitwise operation.
+//   const intOfFreq = freq | 0; // returns integer part of a number
+//   // const intOfFreq = 123.456 | 0; // returns 123
 
-  // modalFilters.indexOf(
-  //   modalFilters.find((o) => o.frequency.value === freq)
-  // );
+//   // modalFilters.indexOf(
+//   //   modalFilters.find((o) => o.frequency.value === freq)
+//   // );
 
-  // We could transform the number to a string in order to
-  // get the integer part:
-  // let fString = freq.toString();
-  // console.log(i, freq, fString.split("."));
+//   // We could transform the number to a string in order to
+//   // get the integer part:
+//   // let fString = freq.toString();
+//   // console.log(i, freq, fString.split("."));
 
-  // BUT! There is a quicker way:
-  // console.log("integer part of `freq`", freq | 0 )
+//   // BUT! There is a quicker way:
+//   // console.log("integer part of `freq`", freq | 0 )
 
-  // array to hold our frequency integers
-  const arrayOfFreqIntegers = [];
+//   // array to hold our frequency integers
+//   const arrayOfFreqIntegers = [];
 
-  // all this because we (chatGPT) were only passing in the midi-note number
-  // not the frequency value
-  // const i = note - 21; // eliminate this
-  let i; // var to hold the idx of the frequency
+//   // all this because we (chatGPT) were only passing in the midi-note number
+//   // not the frequency value
+//   // const i = note - 21; // eliminate this
+//   let i; // var to hold the idx of the frequency
 
-  // push the integers into the array
-  for (let j = 0; j < 88; j++) {
-    arrayOfFreqIntegers.push(modalFilters[j].frequency.value | 0);
+//   // push the integers into the array
+//   for (let j = 0; j < 88; j++) {
+//     arrayOfFreqIntegers.push(modalFilters[j].frequency.value | 0);
 
-    // we have to ush the int values to a new array because we
-    // can't compare the result of the bitwise operation
-    // like we would like to below
-    // if (modalFilters[j].frequency.value | 0 === intOfFreq) i = j;
-    if (modalFilters[j])
-      if (arrayOfFreqIntegers[j] === intOfFreq) {
-        i = j;
-        console.log("idx of freq:", i);
-        console.log("arrayOfFreqIntegers:", arrayOfFreqIntegers);
-      }
-  }
+//     // we have to ush the int values to a new array because we
+//     // can't compare the result of the bitwise operation
+//     // like we would like to below
+//     // if (modalFilters[j].frequency.value | 0 === intOfFreq) i = j;
+//     if (modalFilters[j])
+//       if (arrayOfFreqIntegers[j] === intOfFreq) {
+//         i = j;
+//         console.log("idx of freq:", i);
+//         console.log("arrayOfFreqIntegers:", arrayOfFreqIntegers);
+//       }
+//   }
 
-  const vel = 1.0; // loudness
-  modalGain[i].gain.cancelScheduledValues(0);
-  modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
-  modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // need to change this?
-  modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0); // change currrent time to decay
-  modalExciters[i].gain.cancelScheduledValues(0);
-  modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
-  modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);
-  modalExciters[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0); // change currrent time to decay
+//   const vel = 1.0; // loudness
+//   modalGain[i].gain.cancelScheduledValues(0);
+//   modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // need to change this?
+//   modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0); // change currrent time to decay
+//   modalExciters[i].gain.cancelScheduledValues(0);
+//   modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);
+//   modalExciters[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0); // change currrent time to decay
 
-  // why `note` -49? lol! should be 69! chatGPT has flaws!
-  // const frequency = 27.5 * Math.pow(2, (note - 49) / 12);
-  // calculate the frequency of the midi note number
-  // NOTE: A4 is midi note 69 and is the reference point
-  // of all other notes
-  // const frequency = 27.5 * Math.pow(2, (note - 69) / 12); // not needed
+//   // why `note` -49? lol! should be 69! chatGPT has flaws!
+//   // const frequency = 27.5 * Math.pow(2, (note - 49) / 12);
+//   // calculate the frequency of the midi note number
+//   // NOTE: A4 is midi note 69 and is the reference point
+//   // of all other notes
+//   // const frequency = 27.5 * Math.pow(2, (note - 69) / 12); // not needed
+//   const osc = actx.createOscillator();
+//   osc.frequency.setValueAtTime(freq, actx.currentTime);
+//   osc.frequency.value = freq;
+//   osc.type = type;
+//   osc.start();
+//   osc.stop(actx.currentTime + 1.0); // handle with keyup listener
+
+//   // osc.connect(modalFilters[i]); // remove
+//   // copy the osc to the runningOscs object
+//   runningOscs[freq] = osc;
+//   runningOscs[freq].connect(modalFilters[i]);
+// }
+
+// function createOsc8_HOLD(freq = 440, type, decay) {
+//   //why `note` - 21?
+//   /* The line `const i = note - 21;` is part of a function that converts a MIDI note number to a frequency in hertz. The reason for subtracting 21 from the MIDI note number is to account for the fact that the lowest note on a standard 88-key piano is A0, which has a MIDI note number of 21.
+
+// By subtracting 21 from the MIDI note number, we shift the range of MIDI note numbers down so that A0 maps to an index of 0 in the `frequencies` array. This is necessary because the `frequencies` array contains the frequencies of all the notes on a piano from A0 to C8, and we want to be able to look up the frequency of any note in that range using its MIDI note number as an index into the array.
+//   */
+//   const intOfFreq = freq | 0; // returns integer part of a number
+//   // array to hold our frequency integers
+//   const arrayOfFreqIntegers = [];
+
+//   // const i = note - 21; // remove this midi-note ref
+//   let i;
+
+//   // push the integers into the array
+//   for (let j = 0; j < 88; j++) {
+//     arrayOfFreqIntegers.push(modalFilters[j].frequency.value | 0);
+
+//     // we have to ush the int values to a new array because we
+//     // can't compare the result of the bitwise operation
+//     // like we would like to below
+//     // if (modalFilters[j].frequency.value | 0 === intOfFreq) i = j;
+
+//     if (arrayOfFreqIntegers[j] === intOfFreq) {
+//       i = j;
+//       //   console.log("idx of freq:", i);
+//       //   console.log("arrayOfFreqIntegers:", arrayOfFreqIntegers);
+//       // return;
+//     }
+//   }
+
+//   const vel = 1.0; // loudness
+//   modalGain[i].gain.cancelScheduledValues(0);
+//   modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05);
+//   modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + decay);
+//   modalExciters[i].gain.cancelScheduledValues(0);
+//   modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);
+//   modalExciters[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + decay);
+
+//   // why `note` -49? lol! should be 69! chatGPT has flaws!
+//   // const frequency = 27.5 * Math.pow(2, (note - 49) / 12);
+//   // calculate the frequency of the midi note number
+//   // NOTE: A4 is midi note 69 and is the reference point
+//   // of all other notes
+//   // const frequency = 27.5 * Math.pow(2, (note - 69) / 12);
+//   // const frequency = freq;
+//   const osc = actx.createOscillator();
+//   osc.frequency.setValueAtTime(freq, actx.currentTime);
+//   osc.type = type;
+//   osc.start();
+//   // osc.stop(actx.currentTime + 1.0);
+
+//   // osc.connect(modalFilters[i]); // remove
+//   // copy the osc to the runningOscs object
+//   runningOscs[freq] = osc;
+//   runningOscs[freq].connect(modalFilters[i]);
+// }
+
+// This function creates soft sounding oscilators that use compressors and ramps
+// to take the volume down to zero in order to help eleminate those ugly "clicks"
+// Implementing chatGPT into a known working
+// "click-free" voice
+
+// The Voice of chatGPT
+function createOsc8(freq, type, decay) {
+  console.log(freq, type, decay);
+
+  // create oscillator node
   const osc = actx.createOscillator();
-  osc.frequency.setValueAtTime(freq, actx.currentTime);
+
+  // default destination
+  const speakers = actx.destination;
+
+  // create the nodes used by chatGPT
+  const modalGain = actx.createGain();
+  const modalFilter = actx.createBiquadFilter();
+  const modalExciter = actx.createGain();
+
+  // and set the parameters
+  modalFilter.Q.value = 20; // how fast the osc vibration is dampend
+  // lower value = faster damping
+
+  modalExciter.gain.value = 1.0;
+
+  modalGain.gain.value = 0.0;
+
+  // set the supplied values for the osc
   osc.frequency.value = freq;
   osc.type = type;
-  osc.start();
-  osc.stop(actx.currentTime + 1.0); // handle with keyup listener
 
-  // osc.connect(modalFilters[i]); // remove
   // copy the osc to the runningOscs object
   runningOscs[freq] = osc;
-  runningOscs[freq].connect(modalFilters[i]);
-}
 
-function createOsc8(freq = 440, type, decay) {
-  //why `note` - 21?
-  /* The line `const i = note - 21;` is part of a function that converts a MIDI note number to a frequency in hertz. The reason for subtracting 21 from the MIDI note number is to account for the fact that the lowest note on a standard 88-key piano is A0, which has a MIDI note number of 21.
-
-By subtracting 21 from the MIDI note number, we shift the range of MIDI note numbers down so that A0 maps to an index of 0 in the `frequencies` array. This is necessary because the `frequencies` array contains the frequencies of all the notes on a piano from A0 to C8, and we want to be able to look up the frequency of any note in that range using its MIDI note number as an index into the array.
-  */
-  const intOfFreq = freq | 0; // returns integer part of a number
-  // array to hold our frequency integers
-  const arrayOfFreqIntegers = [];
-
-  // const i = note - 21; // remove this midi-note ref
-  let i;
-
-  // push the integers into the array
-  for (let j = 0; j < 88; j++) {
-    arrayOfFreqIntegers.push(modalFilters[j].frequency.value | 0);
-
-    // we have to ush the int values to a new array because we
-    // can't compare the result of the bitwise operation
-    // like we would like to below
-    // if (modalFilters[j].frequency.value | 0 === intOfFreq) i = j;
-
-    if (arrayOfFreqIntegers[j] === intOfFreq) {
-      i = j;
-      //   console.log("idx of freq:", i);
-      //   console.log("arrayOfFreqIntegers:", arrayOfFreqIntegers);
-      // return;
-    }
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our last node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(speakers);
   }
 
-  const vel = 1.0; // loudness
-  modalGain[i].gain.cancelScheduledValues(0);
-  modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
-  modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05);
-  modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + decay);
-  modalExciters[i].gain.cancelScheduledValues(0);
-  modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
-  modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);
-  modalExciters[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + decay);
+  let vel = 0.5; // loudness
 
-  // why `note` -49? lol! should be 69! chatGPT has flaws!
-  // const frequency = 27.5 * Math.pow(2, (note - 49) / 12);
-  // calculate the frequency of the midi note number
-  // NOTE: A4 is midi note 69 and is the reference point
-  // of all other notes
-  // const frequency = 27.5 * Math.pow(2, (note - 69) / 12);
-  // const frequency = freq;
-  const osc = actx.createOscillator();
-  osc.frequency.setValueAtTime(freq, actx.currentTime);
-  osc.type = type;
-  osc.start();
-  // osc.stop(actx.currentTime + 1.0);
+  modalGain.gain.cancelScheduledValues(0);
+  modalGain.gain.setValueAtTime(0.0, actx.currentTime);
+  modalGain.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // attack
 
-  // osc.connect(modalFilters[i]); // remove
-  // copy the osc to the runningOscs object
-  runningOscs[freq] = osc;
-  runningOscs[freq].connect(modalFilters[i]);
+  // Finally ramp down to zero
+  modalGain.gain.linearRampToValueAtTime(0, actx.currentTime + decay); // decay
+
+  modalExciter.gain.cancelScheduledValues(0);
+  modalExciter.gain.setValueAtTime(0.0, actx.currentTime);
+  modalExciter.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001); // attck
+  modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
+
+  runningOscs[freq].start();
+  // osc.stop() handled by `keyup` event listener
 }
 
 // ************* Voice Generators END ************ \\
