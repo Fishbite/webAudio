@@ -696,6 +696,9 @@ function createOsc8(freq, type, decay) {
 // ********************************************************** \\
 // ****************** The Voice of chatGPT ****************** \\
 // ********************************************************** \\
+
+// The commented out section below contains the original (but modified)
+// output from the chatGPT AI program
 // create nodes
 // const input = actx.createGain();
 // const output = actx.createGain();
@@ -910,11 +913,8 @@ function createOsc8(freq, type, decay) {
 //   runningOscs[freq].connect(modalFilters[i]);
 // }
 
-// This function creates soft sounding oscilators that use compressors and ramps
-// to take the volume down to zero in order to help eleminate those ugly "clicks"
-// Implementing chatGPT into a known working
-// "click-free" voice
-
+// Implementing chatGPT output into a known working
+// "click-free" voice:
 // The Voice of chatGPT
 function createOsc8(freq, type = "sine", decay) {
   console.log(freq, type, decay);
