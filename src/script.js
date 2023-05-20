@@ -26,11 +26,9 @@ console.log("Connected to the moon!");
 */
 
 /*
-  The file computes note frequencies and sets up the keyboard
-  to play musical notes as heard on electronic keyboard & pianos.
+  This file:
 
-  Connection to the user interface is also established in here. That
-  gives the user the ability to change some attributes of the notes:
+  Connects to the user interface to give the user the ability to change some attributes of the notes:
 
     * Decay - the duration of the note/s to be played
 
@@ -40,6 +38,8 @@ console.log("Connected to the moon!");
       from octave 0 through to octave 7
 
     * voicePicker - select voices from a dropdown list
+
+    * Creates the synth' voices
 
 */
 
