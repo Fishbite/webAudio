@@ -1,6 +1,6 @@
 // import { soundEffect } from "../lib/soundToRecorder";
 
-// import code to generate musical notes & keyboard map
+// import `notes` array which maps keyboard to musical frequencies
 import { notes } from "./notes.js";
 
 console.log("Connected to the moon!");
