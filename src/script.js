@@ -68,6 +68,7 @@ octaveValue.addEventListener("change", updateOctaveValue, false);
 let setWave,
   setDecay = 2;
 
+// exported so that it is available for `notes.js`
 export let octaveCurrent = 4;
 
 function updateWaveType(e) {
