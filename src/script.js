@@ -145,7 +145,9 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "seven") {
+    console.log("should be playing createOsc9");
     // Slot for 'Experimental stuff
+    createOsc9(freq, type, decay); // Experimental add soundboard
   }
 }
 
@@ -981,6 +983,92 @@ function createOsc8(freq, type = "sine", decay) {
   modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
 
   runningOscs[freq].start();
+  // osc.stop() handled by `keyup` event listener
+}
+
+// here we are going to attempt to create a 'sound-board'
+// to add an additional level of richness to the sound
+function createOsc9(freq, type = "sine", decay) {
+  console.log("createOsc9 called", freq, type, decay);
+
+  // create oscillator node
+  const osc = actx.createOscillator();
+
+  // default destination
+  const speakers = actx.destination;
+
+  // create the nodes used by chatGPT
+  const modalGain = actx.createGain();
+  const modalFilter = actx.createBiquadFilter();
+  const modalExciter = actx.createGain();
+
+  // and set the parameters
+  modalFilter.Q.value = 20; // how fast the osc vibration is dampend
+  // lower value = faster damping
+
+  modalExciter.gain.value = 1.0;
+
+  modalGain.gain.value = 0.0;
+
+  // set the supplied values for the osc
+  osc.frequency.value = freq;
+  osc.type = type;
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+
+  // Add a soundboard to add richness to the sound
+  // setup the soundboard resonance effect
+  const soundboardGain = actx.createGain();
+  const soundboardFilter = actx.createBiquadFilter();
+  soundboardFilter.type = "lowpass";
+  soundboardFilter.frequency.value = freq;
+  soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness original val = 10 // increasing the value lengthens the duration of the note
+  soundboardGain.gain.value = 1.0;
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our last node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(soundboardFilter)
+      .connect(soundboardGain)
+      // .connect(modalFilter) // connect back to modalFilter to create feedback loop
+      .connect(mainVol);
+    runningOscs[freq].start();
+  } else {
+    //create the audio graph
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(soundboardFilter)
+      .connect(soundboardGain)
+      // .connect(modalFilter) // connect back to modalFilter to create feedback loop
+      .connect(speakers);
+    runningOscs[freq].start();
+  }
+
+  let vel = 0.5; // loudness
+
+  modalGain.gain.cancelScheduledValues(0);
+  modalGain.gain.setValueAtTime(0.0, actx.currentTime);
+  modalGain.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // attack
+
+  // Finally ramp down to zero
+  modalGain.gain.linearRampToValueAtTime(0, actx.currentTime + decay); // decay
+
+  modalExciter.gain.cancelScheduledValues(0);
+  modalExciter.gain.setValueAtTime(0.0, actx.currentTime);
+  modalExciter.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001); // attck
+  modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
+
   // osc.stop() handled by `keyup` event listener
 }
 
