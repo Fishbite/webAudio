@@ -138,6 +138,10 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   if (voice === "six") {
     createOsc8(freq, type, decay); // chatGPT
   }
+
+  if (voice === "seven") {
+    // Slot for 'Experimental stuff
+  }
 }
 
 // This function creates soft sounding oscilators that use compressors and ramps
