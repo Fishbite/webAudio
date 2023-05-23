@@ -1019,11 +1019,41 @@ function createOsc9(freq, type = "sine", decay) {
 
   // Add a soundboard to add richness to the sound
   // setup the soundboard resonance effect
+
+  /*
+     Musical frequency range:
+     high = 3951.066410048993
+     low = 16.351597831287414
+
+     minQ = 2
+     maxQ = 15
+
+     46 keys (excluding semi-tones)
+   */
+
+  const maxQ = 15; // Maximum value for adjustedQ
+
+  // Calculate adjustedQ based on note frequency
+  // If we fix the Q value to a specif number, the
+  // effect is more pronounced at a certain frequency
+  // range, by adjusting the Q value for each octave
+  // we try to even out the effect of the soundboard
+  // throughout the entire octave range because
+  // higher values affect lower notes, lower values affect
+  // the higher notes
+  const adjustedQ = Math.max(maxQ - freq / 100, 1);
+
+  // Use the adjustedQ value in your soundboardFilter setup
+  // soundboardFilter.Q.value = adjustedQ;
+
+  console.log("adjustedQ:", adjustedQ);
+
   const soundboardGain = actx.createGain();
   const soundboardFilter = actx.createBiquadFilter();
   soundboardFilter.type = "lowpass";
   soundboardFilter.frequency.value = freq;
-  soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness original val = 10 // increasing the value lengthens the duration of the note
+  // soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness original val = 10 // increasing the value lengthens the duration of the note
+  soundboardFilter.Q.value = adjustedQ;
   soundboardGain.gain.value = 1.0;
 
   // Now, do we have a recording facility set up for us in the global scope?
@@ -1055,7 +1085,7 @@ function createOsc9(freq, type = "sine", decay) {
     runningOscs[freq].start();
   }
 
-  let vel = 0.5; // loudness
+  let vel = 1.0; // loudness
 
   modalGain.gain.cancelScheduledValues(0);
   modalGain.gain.setValueAtTime(0.0, actx.currentTime);
