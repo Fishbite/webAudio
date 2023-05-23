@@ -1041,6 +1041,11 @@ function createOsc9(freq, type = "sine", decay) {
   // throughout the entire octave range because
   // higher values affect lower notes, lower values affect
   // the higher notes
+  /*
+     By dividing freq by 100, we ensure that the decrease in adjustedQ is proportionate to the note frequency. The Math.max function is used to ensure that the adjustedQ value doesn't go below 1, preventing glitches that result in silence.
+
+     You can adjust the division factor (in this case, 100) to control the rate at which adjustedQ decreases with increasing note frequency. Experiment with different values to find the desired effect.
+*/
   const adjustedQ = Math.max(maxQ - freq / 100, 1);
 
   // Use the adjustedQ value in your soundboardFilter setup
