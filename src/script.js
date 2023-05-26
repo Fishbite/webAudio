@@ -988,7 +988,8 @@ function createOsc8(freq, type = "sine", decay) {
 
 // here we are going to attempt to create a 'sound-board'
 // to add an additional level of richness to the sound
-function createOsc9(freq, type = "sine", decay) {
+// and then attempt to simulate the body of the piano :-P
+async function createOsc9(freq, type = "sine", decay) {
   console.log("createOsc9 called", freq, type, decay);
 
   // create oscillator node
@@ -1061,6 +1062,14 @@ function createOsc9(freq, type = "sine", decay) {
   soundboardFilter.Q.value = adjustedQ;
   soundboardGain.gain.value = 1.0;
 
+  // ****** Simulate the piano body (naively) using a convolver node running in an audioWorklet ****** \\
+
+  // load the convolver worklet
+  await actx.audioWorklet.addModule("convolverProcessor");
+
+  // create an AudioWorklet node using the convolver processor
+  const convolverNode = new AudioWorkletNode(actx, convolverProcessor);
+
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
   // our live music directly from the audio nodes, rather than a microphone :->
@@ -1074,7 +1083,7 @@ function createOsc9(freq, type = "sine", decay) {
       .connect(modalFilter)
       .connect(soundboardFilter)
       .connect(soundboardGain)
-      // .connect(modalFilter) // connect back to modalFilter to create feedback loop
+      .connect(convolverNode)
       .connect(mainVol);
     runningOscs[freq].start();
   } else {
@@ -1085,7 +1094,7 @@ function createOsc9(freq, type = "sine", decay) {
       .connect(modalFilter)
       .connect(soundboardFilter)
       .connect(soundboardGain)
-      // .connect(modalFilter) // connect back to modalFilter to create feedback loop
+      .connect(convolverNode)
       .connect(speakers);
     runningOscs[freq].start();
   }
