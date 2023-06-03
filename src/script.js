@@ -147,7 +147,7 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   if (voice === "seven") {
     console.log("should be playing createOsc9");
     // Slot for 'Experimental stuff
-    createOsc9(freq, type, decay); // Experimental add soundboard
+    // createOsc9(freq, type, decay); // Experimental add soundboard
   }
 }
 
