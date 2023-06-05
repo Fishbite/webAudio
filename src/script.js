@@ -145,9 +145,8 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "seven") {
-    console.log("should be playing createOsc9");
-    // Slot for 'Experimental stuff
-    // createOsc9(freq, type, decay); // Experimental add soundboard
+    // Piano - set type="saw" octave=1-3
+    createOsc9(freq, type, decay); // Experimental add soundboard
   }
 }
 
@@ -989,8 +988,143 @@ function createOsc8(freq, type = "sine", decay) {
 // here we are going to attempt to create a 'sound-board'
 // to add an additional level of richness to the sound
 // and then attempt to simulate the body of the piano :-P
-async function createOsc9(freq, type = "sine", decay) {
-  console.log("createOsc9 called", freq, type, decay);
+// async function createOsc9(freq, type = "sine", decay) {
+//   console.log("createOsc9 called", freq, type, decay);
+
+//   // create oscillator node
+//   const osc = actx.createOscillator();
+
+//   // default destination
+//   const speakers = actx.destination;
+
+//   // create the nodes used by chatGPT
+//   const modalGain = actx.createGain();
+//   const modalFilter = actx.createBiquadFilter();
+//   const modalExciter = actx.createGain();
+
+//   // and set the parameters
+//   modalFilter.Q.value = 20; // how fast the osc vibration is dampend
+//   // lower value = faster damping
+
+//   modalExciter.gain.value = 1.0;
+
+//   modalGain.gain.value = 0.0;
+
+//   // set the supplied values for the osc
+//   osc.frequency.value = freq;
+//   osc.type = type;
+
+//   // copy the osc to the runningOscs object
+//   runningOscs[freq] = osc;
+
+//   // Add a soundboard to add richness to the sound
+//   // setup the soundboard resonance effect
+
+//   /*
+//      Musical frequency range:
+//      high = 3951.066410048993
+//      low = 16.351597831287414
+
+//      minQ = 2
+//      maxQ = 15
+
+//      46 keys (excluding semi-tones)
+//    */
+
+//   const maxQ = 15; // Maximum value for adjustedQ
+
+//   // Calculate adjustedQ based on note frequency
+//   // If we fix the Q value to a specif number, the
+//   // effect is more pronounced at a certain frequency
+//   // range, by adjusting the Q value for each octave
+//   // we try to even out the effect of the soundboard
+//   // throughout the entire octave range because
+//   // higher values affect lower notes, lower values affect
+//   // the higher notes
+//   /*
+//      By dividing freq by 100, we ensure that the decrease in adjustedQ is proportionate to the note frequency. The Math.max function is used to ensure that the adjustedQ value doesn't go below 1, preventing glitches that result in silence.
+
+//      You can adjust the division factor (in this case, 100) to control the rate at which adjustedQ decreases with increasing note frequency. Experiment with different values to find the desired effect.
+// */
+//   const adjustedQ = Math.max(maxQ - freq / 100, 1);
+
+//   // Use the adjustedQ value in your soundboardFilter setup
+//   // soundboardFilter.Q.value = adjustedQ;
+
+//   console.log("adjustedQ:", adjustedQ);
+
+//   const soundboardGain = actx.createGain();
+//   const soundboardFilter = actx.createBiquadFilter();
+//   soundboardFilter.type = "lowpass";
+//   soundboardFilter.frequency.value = freq;
+//   // soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness original val = 10 // increasing the value lengthens the duration of the note
+//   soundboardFilter.Q.value = adjustedQ;
+//   soundboardGain.gain.value = 1.0;
+
+//   // ****** Simulate the piano body (naively) using a convolver node running in an audioWorklet ****** \\
+
+//   // load the convolver worklet
+//   await actx.audioWorklet.addModule("convolverProcessor");
+
+//   // create an AudioWorklet node using the convolver processor
+//   const convolverNode = new AudioWorkletNode(actx, convolverProcessor);
+
+//   // Now, do we have a recording facility set up for us in the global scope?
+//   // If we do, let's connect our audio graph to it so that we can record
+//   // our live music directly from the audio nodes, rather than a microphone :->
+//   // All we need to do is connect our last node to the `mainVol` node
+//   // defined in the global scope
+//   if (mainVol) {
+//     // Let's get connected!!!!
+//     runningOscs[freq]
+//       .connect(modalGain)
+//       .connect(modalExciter)
+//       .connect(modalFilter)
+//       .connect(soundboardFilter)
+//       .connect(soundboardGain)
+//       .connect(convolverNode)
+//       .connect(mainVol);
+//     runningOscs[freq].start();
+//   } else {
+//     //create the audio graph
+//     runningOscs[freq]
+//       .connect(modalGain)
+//       .connect(modalExciter)
+//       .connect(modalFilter)
+//       .connect(soundboardFilter)
+//       .connect(soundboardGain)
+//       .connect(convolverNode)
+//       .connect(speakers);
+//     runningOscs[freq].start();
+//   }
+
+//   let vel = 1.0; // loudness
+
+//   modalGain.gain.cancelScheduledValues(0);
+//   modalGain.gain.setValueAtTime(0.0, actx.currentTime);
+//   modalGain.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // attack
+
+//   // Finally ramp down to zero
+//   modalGain.gain.linearRampToValueAtTime(0, actx.currentTime + decay); // decay
+
+//   modalExciter.gain.cancelScheduledValues(0);
+//   modalExciter.gain.setValueAtTime(0.0, actx.currentTime);
+//   modalExciter.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001); // attck
+//   modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
+
+//   // osc.stop() handled by `keyup` event listener
+// }
+
+// here we are going to attempt to create a 'sound-board'
+// to add an additional level of richness to the sound.
+// We then add `pianobody` to simulate the sound of a piano
+// in a resonating space.
+// NOTE: `const` needs to be outside of the function because
+// of performance issues.
+const pianobody = await createReverb("../audio/IR-Reso-Space.wav"); // returns a convolver
+function createOsc9(freq, type = "sine", decay) {
+  // best defaults: type=saw octave=1to3 decay=2
+  console.log(freq, type, decay);
 
   // create oscillator node
   const osc = actx.createOscillator();
@@ -1018,57 +1152,18 @@ async function createOsc9(freq, type = "sine", decay) {
   // copy the osc to the runningOscs object
   runningOscs[freq] = osc;
 
-  // Add a soundboard to add richness to the sound
-  // setup the soundboard resonance effect
-
-  /*
-     Musical frequency range:
-     high = 3951.066410048993
-     low = 16.351597831287414
-
-     minQ = 2
-     maxQ = 15
-
-     46 keys (excluding semi-tones)
-   */
-
-  const maxQ = 15; // Maximum value for adjustedQ
-
-  // Calculate adjustedQ based on note frequency
-  // If we fix the Q value to a specif number, the
-  // effect is more pronounced at a certain frequency
-  // range, by adjusting the Q value for each octave
-  // we try to even out the effect of the soundboard
-  // throughout the entire octave range because
-  // higher values affect lower notes, lower values affect
-  // the higher notes
-  /*
-     By dividing freq by 100, we ensure that the decrease in adjustedQ is proportionate to the note frequency. The Math.max function is used to ensure that the adjustedQ value doesn't go below 1, preventing glitches that result in silence.
-
-     You can adjust the division factor (in this case, 100) to control the rate at which adjustedQ decreases with increasing note frequency. Experiment with different values to find the desired effect.
-*/
-  const adjustedQ = Math.max(maxQ - freq / 100, 1);
-
-  // Use the adjustedQ value in your soundboardFilter setup
-  // soundboardFilter.Q.value = adjustedQ;
-
-  console.log("adjustedQ:", adjustedQ);
-
+  /****** Simulate Soundboard ******/
   const soundboardGain = actx.createGain();
   const soundboardFilter = actx.createBiquadFilter();
-  soundboardFilter.type = "lowpass";
-  soundboardFilter.frequency.value = freq;
-  // soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness original val = 10 // increasing the value lengthens the duration of the note
-  soundboardFilter.Q.value = adjustedQ;
-  soundboardGain.gain.value = 1.0;
 
-  // ****** Simulate the piano body (naively) using a convolver node running in an audioWorklet ****** \\
+  // set the soundbooard params
+  soundboardGain.gain.value = 0.5;
+  soundboardFilter.type = "lowpass"; // allow all freq' below `frequency.value`
+  soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness, higher val for sharper resonance
+  soundboardFilter.frequency.value = 1000; // attenuate freq' above value
 
-  // load the convolver worklet
-  await actx.audioWorklet.addModule("convolverProcessor");
-
-  // create an AudioWorklet node using the convolver processor
-  const convolverNode = new AudioWorkletNode(actx, convolverProcessor);
+  /* simulate piano body */
+  // const pianobody = await createReverb("../audio/IR-MM-Hall.wav"); // returns a convolver. Performs poorly within the function body
 
   // Now, do we have a recording facility set up for us in the global scope?
   // If we do, let's connect our audio graph to it so that we can record
@@ -1083,9 +1178,8 @@ async function createOsc9(freq, type = "sine", decay) {
       .connect(modalFilter)
       .connect(soundboardFilter)
       .connect(soundboardGain)
-      .connect(convolverNode)
+      .connect(pianobody)
       .connect(mainVol);
-    runningOscs[freq].start();
   } else {
     //create the audio graph
     runningOscs[freq]
@@ -1094,12 +1188,11 @@ async function createOsc9(freq, type = "sine", decay) {
       .connect(modalFilter)
       .connect(soundboardFilter)
       .connect(soundboardGain)
-      .connect(convolverNode)
+      .connect(pianobody)
       .connect(speakers);
-    runningOscs[freq].start();
   }
 
-  let vel = 1.0; // loudness
+  let vel = 0.5; // loudness
 
   modalGain.gain.cancelScheduledValues(0);
   modalGain.gain.setValueAtTime(0.0, actx.currentTime);
@@ -1113,6 +1206,7 @@ async function createOsc9(freq, type = "sine", decay) {
   modalExciter.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001); // attck
   modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
 
+  runningOscs[freq].start();
   // osc.stop() handled by `keyup` event listener
 }
 
