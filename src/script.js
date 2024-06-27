@@ -1,5 +1,8 @@
 // import { soundEffect } from "../lib/soundToRecorder";
 
+// import `notes` array which maps keyboard to musical frequencies
+import { notes } from "./notes.js";
+
 console.log("Connected to the moon!");
 
 /* // ****** LICENSE NOTICE ****** \\
@@ -23,11 +26,9 @@ console.log("Connected to the moon!");
 */
 
 /*
-  The file computes note frequencies and sets up the keyboard
-  to play musical notes as heard on electronic keyboard & pianos.
+  This file:
 
-  Connection to the user interface is also established in here. That
-  gives the user the ability to change some attributes of the notes:
+  Connects to the user interface to give the user the ability to change some attributes of the notes:
 
     * Decay - the duration of the note/s to be played
 
@@ -37,6 +38,8 @@ console.log("Connected to the moon!");
       from octave 0 through to octave 7
 
     * voicePicker - select voices from a dropdown list
+
+    * Creates the synth' voices
 
 */
 
@@ -63,8 +66,10 @@ octaveValue.addEventListener("change", updateOctaveValue, false);
 
 // `vars` read by `function playNote()`
 let setWave,
-  setDecay = 2,
-  octaveCurrent = 4;
+  setDecay = 2;
+
+// exported so that it is available for `notes.js`
+export let octaveCurrent = 4;
 
 function updateWaveType(e) {
   setWave = waveTypes[waveTypeValue.value];
@@ -79,7 +84,7 @@ function updateDecay(e) {
   return setDecay;
 }
 
-// event listener callback functions update `vars` for `playNote()` & the GUI lables
+// event listener callback functions update `vars` for `playNote()` & the GUI labels
 function updateOctaveValue(e) {
   octaveCurrent = parseFloat(octaveValue.value);
 
@@ -132,7 +137,16 @@ function playNote(freq = 261.63, type = setWave, decay = setDecay) {
   }
 
   if (voice === "five") {
-    createOsc7(freq, type, decay);
+    createOsc7(freq, type, decay); // nice bass in octave 2
+  }
+
+  if (voice === "six") {
+    createOsc8(freq, type, decay); // chatGPT
+  }
+
+  if (voice === "seven") {
+    // Piano - set type="saw" octave=1-3
+    createOsc9(freq, type, decay); // Experimental add soundboard
   }
 }
 
@@ -668,6 +682,8 @@ function createOsc7(freq, type = "sine", decay) {
   runningOscs3[freq].start();
   // osc.stop(actx.currentTime + decay + 0.03);
 }
+
+/* Not sure what we were doing here
 let osc;
 function createOsc8(freq, type, decay) {
   partialAmplitudes = [1];
@@ -676,195 +692,525 @@ function createOsc8(freq, type, decay) {
     console.log(osc);
   }
 }
-
-// ************* Voice Generators END ************ \\
-
-// ************* The Musical Notes Bit! START ************ \\
-// Some musical note values:
-// let C4 = 261.63,
-//   D4 = 293.66,
-//   E4 = 329.63,
-//   F4 = 349.23,
-//   G4 = 392,
-//   A4 = 440,
-//   B4 = 493.88,
-//   C5 = 523.25,
-//   D5 = 587.33,
-//   E5 = 659.25;
-
-// let's calculate the notes instead of hard coding them:
-// All the A's A0 to A7
-// const A = [];
-// for (let i = -4; i < 4; i++) {
-//   // multiplying A4 by (a number multiplied by a negative power)
-//   // is the same as dividing A4 by a number with a positive power
-//   let a = A4 * Math.pow(2, i);
-
-//   A.push(a);
-//   // console.log(arrayOfAs.indexOf(a), a);
-// }
-
-// for (let i = 0; i < A.length; i++) {
-//   let val = A[i];
-//   // output the actual index of `val` & its value
-//   console.log(A.indexOf(val), val);
-// }
-
-// Now we need the octave to fill in the notes between A's
-
-/* Formula to Calculate The Frequencies of Notes of
-   The Even Tempered Scale:
-
-   Fn = Fo * (a)^n
-
-   Where Fo = A4 = 440Hz
-
-         n = the number of half steps away from A4
-             For notes higher than A4 n is positve
-             else lower notes, n is negative
-
-         Fn = the frequency of the note in half steps
-
-         a = (2)^1/12 = 12th root of 2, which is the number which when multiplied by itelf 12 times equals 2 = 1.059463....
-
-    e.g. C5 is 3/12 steps away from A4, thus:
-
-            C5 = Fn = Fo * (a)^n
-               = 3/12 steps = 440 * ((2)^1/12)^3 = 523.26...Hz
-
-         C4 is -9/12 steps away from A4, thus:
-
-            C4 = Fn = Fo * (a)^n
-               = -9/12 steps = 440 * ((2)^1/12)^-9 = 261.63...Hz
-
 */
 
-// Class to define an Octave template
-class Octave {
-  constructor(a) {
-    this.C = a * Math.pow(2, -9 / 12);
-    this.Cs = a * Math.pow(2, -8 / 12);
-    this.D = a * Math.pow(2, -7 / 12);
-    this.Ds = a * Math.pow(2, -6 / 12);
-    this.E = a * Math.pow(2, -5 / 12);
-    this.F = a * Math.pow(2, -4 / 12);
-    this.Fs = a * Math.pow(2, -3 / 12);
-    this.G = a * Math.pow(2, -2 / 12);
-    this.Gs = a * Math.pow(2, -1 / 12);
-    this.A = a;
-    this.As = a * Math.pow(2, 1 / 12);
-    this.B = a * Math.pow(2, 2 / 12);
+// ********************************************************** \\
+// ****************** The Voice of chatGPT ****************** \\
+// ********************************************************** \\
+
+// The commented out section below contains the original (but modified)
+// output from the chatGPT AI program
+// create nodes
+// const input = actx.createGain();
+// const output = actx.createGain();
+// const speakers = actx.destination; // connect to mainVol recording node if available
+// const modalFilters = [];
+// const modalGain = [];
+// const modalExciters = [];
+
+// // create modal filter bank
+// for (let i = 0; i < 88; i++) {
+//   // const f0 = 27.5 * Math.pow(2, (i - 21) / 12);
+//   const f0 = 27.5 * Math.pow(2, i / 12); // dump midi-note ref (-21)
+//   console.log("idx:", i, "f0:", f0);
+//   const modalFilter = actx.createBiquadFilter();
+//   modalFilter.type = "bandpass";
+//   modalFilter.frequency.value = f0;
+//   modalFilters.push(modalFilter);
+
+//   // console.log("modalFilters", modalFilters);
+// }
+
+// // create modal gain nodes
+// for (let i = 0; i < 88; i++) {
+//   const modalGainNode = actx.createGain();
+//   modalGainNode.gain.value = 0.0;
+//   modalGain.push(modalGainNode);
+// }
+
+// // create modal exciter nodes
+// for (let i = 0; i < 88; i++) {
+//   const modalExciter = actx.createGain();
+//   modalExciter.gain.value = 0.0;
+//   modalExciters.push(modalExciter);
+// }
+
+// // connect nodes
+// // input.connect(modalExciters[0]); // WHY???
+// for (let i = 0; i < 88; i++) {
+//   modalExciters[i].connect(modalFilters[i]);
+//   modalFilters[i].connect(modalGain[i]);
+//   modalGain[i].connect(output);
+//   if (mainVol) {
+//     output.connect(mainVol);
+//   } else {
+//     output.connect(speakers);
+//   }
+// }
+
+// // set parameters
+// for (let i = 0; i < 88; i++) {
+//   const q = 20; // how fast the osc vibration is dampend
+//   // lower number = faster damping
+//   // const f0 = 27.5 * Math.pow(2, (i - 21) / 12); // why is this here?
+//   modalFilters[i].Q.value = q;
+//   modalExciters[i].gain.value = 1.0;
+//   console.log("createOsc8 running");
+//   // chatGPT content of `triggerNote()` function goes here
+//   //why `note` - 21?
+//   /* The line `const i = note - 21;` is part of a function that converts a MIDI note number to a frequency in hertz. The reason for subtracting 21 from the MIDI note number is to account for the fact that the lowest note on a standard 88-key piano is A0, which has a MIDI note number of 21.
+
+// By subtracting 21 from the MIDI note number, we shift the range of MIDI note numbers down so that A0 maps to an index of 0 in the `frequencies` array. This is necessary because the `frequencies` array contains the frequencies of all the notes on a piano from A0 to C8, and we want to be able to look up the frequency of any note in that range using its MIDI note number as an index into the array.
+//   */
+
+//   // need to remove all references to midi note number and
+//   // pass in the actual frequency instead
+//   // in `triggerNote(note)` the midi-note number is passed
+//   // in to the function which is then mapped to the index No.
+//   // of the relevant arrays.
+//   // So, what do we want to do?
+//   // well A0 should be mapped to index No. 0 and C8 to idx No. 87
+//   // A0 = freq 27.5 mapped to idx No. 0
+//   // i.e. freq maps to the indexOf freq in the `modalFilters` array
+
+//   // Note: we need to find the index No. of the incoming `freq`
+//   // that is; its index in the `modalFliters` array. The problem
+//   // is that the incoming frequency value is only similar to the
+//   // its equivalent frequency value in the modalFilters array.
+//   // e.g:
+//   // 261.6255653005986 // freq-in originating in `scale` array (made by me)
+//   // 261.6255798339844 // freq-in originating from `modalFilters` array (made by chatGPT)
+
+//   // So! We are just going to compare the integer parts of the values.
+//   // Get the integer part of the incoming frequency so that
+//   // we can compare it to the integer part of the frequency
+//   // held in the `modalFilters` array
+
+//   // using a bitwise operation.
+//   const intOfFreq = freq | 0; // returns integer part of a number
+//   // const intOfFreq = 123.456 | 0; // returns 123
+
+//   // modalFilters.indexOf(
+//   //   modalFilters.find((o) => o.frequency.value === freq)
+//   // );
+
+//   // We could transform the number to a string in order to
+//   // get the integer part:
+//   // let fString = freq.toString();
+//   // console.log(i, freq, fString.split("."));
+
+//   // BUT! There is a quicker way:
+//   // console.log("integer part of `freq`", freq | 0 )
+
+//   // array to hold our frequency integers
+//   const arrayOfFreqIntegers = [];
+
+//   // all this because we (chatGPT) were only passing in the midi-note number
+//   // not the frequency value
+//   // const i = note - 21; // eliminate this
+//   let i; // var to hold the idx of the frequency
+
+//   // push the integers into the array
+//   for (let j = 0; j < 88; j++) {
+//     arrayOfFreqIntegers.push(modalFilters[j].frequency.value | 0);
+
+//     // we have to ush the int values to a new array because we
+//     // can't compare the result of the bitwise operation
+//     // like we would like to below
+//     // if (modalFilters[j].frequency.value | 0 === intOfFreq) i = j;
+//     if (modalFilters[j])
+//       if (arrayOfFreqIntegers[j] === intOfFreq) {
+//         i = j;
+//         console.log("idx of freq:", i);
+//         console.log("arrayOfFreqIntegers:", arrayOfFreqIntegers);
+//       }
+//   }
+
+//   const vel = 1.0; // loudness
+//   modalGain[i].gain.cancelScheduledValues(0);
+//   modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // need to change this?
+//   modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0); // change currrent time to decay
+//   modalExciters[i].gain.cancelScheduledValues(0);
+//   modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);
+//   modalExciters[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + 1.0); // change currrent time to decay
+
+//   // why `note` -49? lol! should be 69! chatGPT has flaws!
+//   // const frequency = 27.5 * Math.pow(2, (note - 49) / 12);
+//   // calculate the frequency of the midi note number
+//   // NOTE: A4 is midi note 69 and is the reference point
+//   // of all other notes
+//   // const frequency = 27.5 * Math.pow(2, (note - 69) / 12); // not needed
+//   const osc = actx.createOscillator();
+//   osc.frequency.setValueAtTime(freq, actx.currentTime);
+//   osc.frequency.value = freq;
+//   osc.type = type;
+//   osc.start();
+//   osc.stop(actx.currentTime + 1.0); // handle with keyup listener
+
+//   // osc.connect(modalFilters[i]); // remove
+//   // copy the osc to the runningOscs object
+//   runningOscs[freq] = osc;
+//   runningOscs[freq].connect(modalFilters[i]);
+// }
+
+// function createOsc8_HOLD(freq = 440, type, decay) {
+//   //why `note` - 21?
+//   /* The line `const i = note - 21;` is part of a function that converts a MIDI note number to a frequency in hertz. The reason for subtracting 21 from the MIDI note number is to account for the fact that the lowest note on a standard 88-key piano is A0, which has a MIDI note number of 21.
+
+// By subtracting 21 from the MIDI note number, we shift the range of MIDI note numbers down so that A0 maps to an index of 0 in the `frequencies` array. This is necessary because the `frequencies` array contains the frequencies of all the notes on a piano from A0 to C8, and we want to be able to look up the frequency of any note in that range using its MIDI note number as an index into the array.
+//   */
+//   const intOfFreq = freq | 0; // returns integer part of a number
+//   // array to hold our frequency integers
+//   const arrayOfFreqIntegers = [];
+
+//   // const i = note - 21; // remove this midi-note ref
+//   let i;
+
+//   // push the integers into the array
+//   for (let j = 0; j < 88; j++) {
+//     arrayOfFreqIntegers.push(modalFilters[j].frequency.value | 0);
+
+//     // we have to ush the int values to a new array because we
+//     // can't compare the result of the bitwise operation
+//     // like we would like to below
+//     // if (modalFilters[j].frequency.value | 0 === intOfFreq) i = j;
+
+//     if (arrayOfFreqIntegers[j] === intOfFreq) {
+//       i = j;
+//       //   console.log("idx of freq:", i);
+//       //   console.log("arrayOfFreqIntegers:", arrayOfFreqIntegers);
+//       // return;
+//     }
+//   }
+
+//   const vel = 1.0; // loudness
+//   modalGain[i].gain.cancelScheduledValues(0);
+//   modalGain[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalGain[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05);
+//   modalGain[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + decay);
+//   modalExciters[i].gain.cancelScheduledValues(0);
+//   modalExciters[i].gain.setValueAtTime(0.0, actx.currentTime);
+//   modalExciters[i].gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001);
+//   modalExciters[i].gain.linearRampToValueAtTime(0.0, actx.currentTime + decay);
+
+//   // why `note` -49? lol! should be 69! chatGPT has flaws!
+//   // const frequency = 27.5 * Math.pow(2, (note - 49) / 12);
+//   // calculate the frequency of the midi note number
+//   // NOTE: A4 is midi note 69 and is the reference point
+//   // of all other notes
+//   // const frequency = 27.5 * Math.pow(2, (note - 69) / 12);
+//   // const frequency = freq;
+//   const osc = actx.createOscillator();
+//   osc.frequency.setValueAtTime(freq, actx.currentTime);
+//   osc.type = type;
+//   osc.start();
+//   // osc.stop(actx.currentTime + 1.0);
+
+//   // osc.connect(modalFilters[i]); // remove
+//   // copy the osc to the runningOscs object
+//   runningOscs[freq] = osc;
+//   runningOscs[freq].connect(modalFilters[i]);
+// }
+
+// Implementing chatGPT output into a known working
+// "click-free" voice:
+// The Voice of chatGPT
+function createOsc8(freq, type = "sine", decay) {
+  console.log(freq, type, decay);
+
+  // create oscillator node
+  const osc = actx.createOscillator();
+
+  // default destination
+  const speakers = actx.destination;
+
+  // create the nodes used by chatGPT
+  const modalGain = actx.createGain();
+  const modalFilter = actx.createBiquadFilter();
+  const modalExciter = actx.createGain();
+
+  // and set the parameters
+  modalFilter.Q.value = 20; // how fast the osc vibration is dampend
+  // lower value = faster damping
+
+  modalExciter.gain.value = 1.0;
+
+  modalGain.gain.value = 0.0;
+
+  // set the supplied values for the osc
+  osc.frequency.value = freq;
+  osc.type = type;
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our last node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(speakers);
   }
+
+  let vel = 0.5; // loudness
+
+  modalGain.gain.cancelScheduledValues(0);
+  modalGain.gain.setValueAtTime(0.0, actx.currentTime);
+  modalGain.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // attack
+
+  // Finally ramp down to zero
+  modalGain.gain.linearRampToValueAtTime(0, actx.currentTime + decay); // decay
+
+  modalExciter.gain.cancelScheduledValues(0);
+  modalExciter.gain.setValueAtTime(0.0, actx.currentTime);
+  modalExciter.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001); // attck
+  modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
+
+  runningOscs[freq].start();
+  // osc.stop() handled by `keyup` event listener
 }
 
-const A4 = 440; // frequency in Hz
-let scale = []; // Array to hold all octaves
+// here we are going to attempt to create a 'sound-board'
+// to add an additional level of richness to the sound
+// and then attempt to simulate the body of the piano :-P
+// async function createOsc9(freq, type = "sine", decay) {
+//   console.log("createOsc9 called", freq, type, decay);
 
-// Create each octave and push it to the `scale` array
-for (let i = -4; i < 4; i++) {
-  let a = A4 * Math.pow(2, i);
-  let octave = new Octave(a);
+//   // create oscillator node
+//   const osc = actx.createOscillator();
 
-  scale.push(octave);
+//   // default destination
+//   const speakers = actx.destination;
+
+//   // create the nodes used by chatGPT
+//   const modalGain = actx.createGain();
+//   const modalFilter = actx.createBiquadFilter();
+//   const modalExciter = actx.createGain();
+
+//   // and set the parameters
+//   modalFilter.Q.value = 20; // how fast the osc vibration is dampend
+//   // lower value = faster damping
+
+//   modalExciter.gain.value = 1.0;
+
+//   modalGain.gain.value = 0.0;
+
+//   // set the supplied values for the osc
+//   osc.frequency.value = freq;
+//   osc.type = type;
+
+//   // copy the osc to the runningOscs object
+//   runningOscs[freq] = osc;
+
+//   // Add a soundboard to add richness to the sound
+//   // setup the soundboard resonance effect
+
+//   /*
+//      Musical frequency range:
+//      high = 3951.066410048993
+//      low = 16.351597831287414
+
+//      minQ = 2
+//      maxQ = 15
+
+//      46 keys (excluding semi-tones)
+//    */
+
+//   const maxQ = 15; // Maximum value for adjustedQ
+
+//   // Calculate adjustedQ based on note frequency
+//   // If we fix the Q value to a specif number, the
+//   // effect is more pronounced at a certain frequency
+//   // range, by adjusting the Q value for each octave
+//   // we try to even out the effect of the soundboard
+//   // throughout the entire octave range because
+//   // higher values affect lower notes, lower values affect
+//   // the higher notes
+//   /*
+//      By dividing freq by 100, we ensure that the decrease in adjustedQ is proportionate to the note frequency. The Math.max function is used to ensure that the adjustedQ value doesn't go below 1, preventing glitches that result in silence.
+
+//      You can adjust the division factor (in this case, 100) to control the rate at which adjustedQ decreases with increasing note frequency. Experiment with different values to find the desired effect.
+// */
+//   const adjustedQ = Math.max(maxQ - freq / 100, 1);
+
+//   // Use the adjustedQ value in your soundboardFilter setup
+//   // soundboardFilter.Q.value = adjustedQ;
+
+//   console.log("adjustedQ:", adjustedQ);
+
+//   const soundboardGain = actx.createGain();
+//   const soundboardFilter = actx.createBiquadFilter();
+//   soundboardFilter.type = "lowpass";
+//   soundboardFilter.frequency.value = freq;
+//   // soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness original val = 10 // increasing the value lengthens the duration of the note
+//   soundboardFilter.Q.value = adjustedQ;
+//   soundboardGain.gain.value = 1.0;
+
+//   // ****** Simulate the piano body (naively) using a convolver node running in an audioWorklet ****** \\
+
+//   // load the convolver worklet
+//   await actx.audioWorklet.addModule("convolverProcessor");
+
+//   // create an AudioWorklet node using the convolver processor
+//   const convolverNode = new AudioWorkletNode(actx, convolverProcessor);
+
+//   // Now, do we have a recording facility set up for us in the global scope?
+//   // If we do, let's connect our audio graph to it so that we can record
+//   // our live music directly from the audio nodes, rather than a microphone :->
+//   // All we need to do is connect our last node to the `mainVol` node
+//   // defined in the global scope
+//   if (mainVol) {
+//     // Let's get connected!!!!
+//     runningOscs[freq]
+//       .connect(modalGain)
+//       .connect(modalExciter)
+//       .connect(modalFilter)
+//       .connect(soundboardFilter)
+//       .connect(soundboardGain)
+//       .connect(convolverNode)
+//       .connect(mainVol);
+//     runningOscs[freq].start();
+//   } else {
+//     //create the audio graph
+//     runningOscs[freq]
+//       .connect(modalGain)
+//       .connect(modalExciter)
+//       .connect(modalFilter)
+//       .connect(soundboardFilter)
+//       .connect(soundboardGain)
+//       .connect(convolverNode)
+//       .connect(speakers);
+//     runningOscs[freq].start();
+//   }
+
+//   let vel = 1.0; // loudness
+
+//   modalGain.gain.cancelScheduledValues(0);
+//   modalGain.gain.setValueAtTime(0.0, actx.currentTime);
+//   modalGain.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // attack
+
+//   // Finally ramp down to zero
+//   modalGain.gain.linearRampToValueAtTime(0, actx.currentTime + decay); // decay
+
+//   modalExciter.gain.cancelScheduledValues(0);
+//   modalExciter.gain.setValueAtTime(0.0, actx.currentTime);
+//   modalExciter.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001); // attck
+//   modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
+
+//   // osc.stop() handled by `keyup` event listener
+// }
+
+// here we are going to attempt to create a 'sound-board'
+// to add an additional level of richness to the sound.
+// We then add `pianobody` to simulate the sound of a piano
+// in a resonating space.
+// NOTE: `const` needs to be outside of the function because
+// of performance issues.
+const pianobody = await createReverb("../audio/IR-Reso-Space.wav"); // returns a convolver
+function createOsc9(freq, type = "sine", decay) {
+  // best defaults: type=saw octave=1to3 decay=2
+  console.log(freq, type, decay);
+
+  // create oscillator node
+  const osc = actx.createOscillator();
+
+  // default destination
+  const speakers = actx.destination;
+
+  // create the nodes used by chatGPT
+  const modalGain = actx.createGain();
+  const modalFilter = actx.createBiquadFilter();
+  const modalExciter = actx.createGain();
+
+  // and set the parameters
+  modalFilter.Q.value = 20; // how fast the osc vibration is dampend
+  // lower value = faster damping
+
+  modalExciter.gain.value = 1.0;
+
+  modalGain.gain.value = 0.0;
+
+  // set the supplied values for the osc
+  osc.frequency.value = freq;
+  osc.type = type;
+
+  // copy the osc to the runningOscs object
+  runningOscs[freq] = osc;
+
+  /****** Simulate Soundboard ******/
+  const soundboardGain = actx.createGain();
+  const soundboardFilter = actx.createBiquadFilter();
+
+  // set the soundbooard params
+  soundboardGain.gain.value = 0.5;
+  soundboardFilter.type = "lowpass"; // allow all freq' below `frequency.value`
+  soundboardFilter.Q.value = 10; // adjust soundboard resonance sharpness, higher val for sharper resonance
+  soundboardFilter.frequency.value = 1000; // attenuate freq' above value
+
+  /* simulate piano body */
+  // const pianobody = await createReverb("../audio/IR-MM-Hall.wav"); // returns a convolver. Performs poorly within the function body
+
+  // Now, do we have a recording facility set up for us in the global scope?
+  // If we do, let's connect our audio graph to it so that we can record
+  // our live music directly from the audio nodes, rather than a microphone :->
+  // All we need to do is connect our last node to the `mainVol` node
+  // defined in the global scope
+  if (mainVol) {
+    // Let's get connected!!!!
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(soundboardFilter)
+      .connect(soundboardGain)
+      .connect(pianobody)
+      .connect(mainVol);
+  } else {
+    //create the audio graph
+    runningOscs[freq]
+      .connect(modalGain)
+      .connect(modalExciter)
+      .connect(modalFilter)
+      .connect(soundboardFilter)
+      .connect(soundboardGain)
+      .connect(pianobody)
+      .connect(speakers);
+  }
+
+  let vel = 0.5; // loudness
+
+  modalGain.gain.cancelScheduledValues(0);
+  modalGain.gain.setValueAtTime(0.0, actx.currentTime);
+  modalGain.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.05); // attack
+
+  // Finally ramp down to zero
+  modalGain.gain.linearRampToValueAtTime(0, actx.currentTime + decay); // decay
+
+  modalExciter.gain.cancelScheduledValues(0);
+  modalExciter.gain.setValueAtTime(0.0, actx.currentTime);
+  modalExciter.gain.linearRampToValueAtTime(vel, actx.currentTime + 0.001); // attck
+  modalExciter.gain.linearRampToValueAtTime(0.0, actx.currentTime + decay); // decay
+
+  runningOscs[freq].start();
+  // osc.stop() handled by `keyup` event listener
 }
 
-// console.log(scale[4].C);
-console.log(scale);
-
-// ************* The Musical Notes Bit! END ************ \\
-
-// ************* Keyboard Keys That Play Notes: START ************ \\
-// map of keyboard keys to notes in array scale
-const notes = {
-  // q: scale[octaveCurrent].C,
-  // Use getter functions so that the
-  // current value of `octaveCurrent` is read
-  get q() {
-    console.log(`C${octaveCurrent}`);
-    return scale[octaveCurrent].C;
-  },
-  // 2: scale[octaveCurrent].Cs,
-  get 2() {
-    console.log(`C${octaveCurrent}#`);
-    return scale[octaveCurrent].Cs;
-  },
-  // w: scale[octaveCurrent].D,
-  get w() {
-    console.log(`D${octaveCurrent}`);
-    return scale[octaveCurrent].D;
-  },
-  // 3: scale[octaveCurrent].Ds,
-  get 3() {
-    console.log(`D${octaveCurrent}#`);
-    return scale[octaveCurrent].Ds;
-  },
-  // e: scale[octaveCurrent].E,
-  get e() {
-    console.log(`E${octaveCurrent}`);
-    return scale[octaveCurrent].E;
-  },
-  // r: scale[octaveCurrent].F,
-  get r() {
-    console.log(`F${octaveCurrent}`);
-    return scale[octaveCurrent].F;
-  },
-  // 5: scale[octaveCurrent].Fs,
-  get 5() {
-    console.log(`F${octaveCurrent}#`);
-    return scale[octaveCurrent].Fs;
-  },
-  // t: scale[octaveCurrent].G,
-  get t() {
-    console.log(`G${octaveCurrent}`);
-    return scale[octaveCurrent].G;
-  },
-  // 6: scale[octaveCurrent].Gs,
-  get 6() {
-    console.log(`G${octaveCurrent}#`);
-    return scale[octaveCurrent].Gs;
-  },
-  get y() {
-    console.log(`A${octaveCurrent}`);
-    return scale[octaveCurrent].A;
-  },
-  // 7: scale[octaveCurrent].As,
-  get 7() {
-    console.log(`A${octaveCurrent}#`);
-    return scale[octaveCurrent].As;
-  },
-  // u: scale[octaveCurrent].B,
-  get u() {
-    console.log(`B${octaveCurrent}`);
-    return scale[octaveCurrent].B;
-  },
-  // i: scale[octaveCurrent + 1].C,
-  get i() {
-    console.log(`C${octaveCurrent + 1}`);
-    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].C;
-  },
-  // 9: scale[octaveCurrent + 1].Cs,
-  get 9() {
-    console.log(`C${octaveCurrent + 1}#`);
-    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].Cs;
-  },
-  // o: scale[octaveCurrent + 1].D,
-  get o() {
-    console.log(`D${octaveCurrent + 1}`);
-    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].D;
-  },
-  // 0: scale[octaveCurrent + 1].Ds,
-  get 0() {
-    console.log(`D${octaveCurrent + 1}#`);
-    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].Ds;
-  },
-  // p: scale[octaveCurrent + 1].E,
-  get p() {
-    console.log(`E${octaveCurrent + 1}`);
-    if (scale[octaveCurrent + 1]) return scale[octaveCurrent + 1].E;
-  },
-};
-
-// ************* Keyboard Keys That Play Notes: END ************ \\
+// ************* Voice Generators END ************ \\
 
 // ************* Keyboard Event Listeners START ************ \\
 window.addEventListener("keydown", keyDownHandler, false);
